@@ -115,6 +115,9 @@ img{
 .as {
 	align-items: flex-start;
 }
+.ast {
+    align-items: stretch;
+}
 .ae {
 	align-items: flex-end;
 }
@@ -203,6 +206,10 @@ img{
             height: $i + px;
         }
     }
+}
+
+.p30{
+    padding: 30px !important;
 }
 
 .delay3{

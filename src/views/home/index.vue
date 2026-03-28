@@ -33,15 +33,16 @@
             </van-swipe-item>
         </van-swipe>
 
-        <div class="bannerBox" v-if="banners.length>0">
-            <van-swipe class="bannerSwi" @change="onChange" :show-indicators="false" :autoplay="3000">
+        <div class="bannerBox">
+            <van-swipe class="bannerSwi" @change="onChange" :show-indicators="false" :autoplay="3000" v-if="banners.length>0">
                 <van-swipe-item v-for="item in banners">
                     <img :src="item.img_url" class="bannerImg">
                 </van-swipe-item>
             </van-swipe>
-            <div class="flex ac dotbox">
+            <div class="flex ac dotbox" v-if="banners.length>0">
                 <div class="dot mr6" :class="bannerCur==index?'dotAct':''" v-for="(_item,index) in banners"></div>
             </div>
+            <div class="bannerGap" v-else></div>
         </div>
 
         <div class="news mt40 flex jb ac" @click="routerPush('/notice')">
@@ -63,7 +64,7 @@
 
         <div class="flex ac mt40">
             <img src="@/assets/home/4.png" class="img48 mr10">
-            <div class="main size28 bold6">{{ $t('余币宝') }}</div>
+            <div class="main size28 bold6">{{ $t('余额宝') }}</div>
         </div>
 
         <div class="card mt30">
@@ -72,7 +73,7 @@
                     <img src="@/assets/common/usdt.png" class="img32 mr6">
                     <div class="size24 bold6">{{ assetUSDT }}</div>
                 </div>
-                <div class="flex ac size24 opc5">
+                <div class="flex ac size24 opc5" @click="routerPush('/yueBao')">
                     <div class="mr5">{{ $t('查看明细') }}</div>
                     <van-icon name="arrow" />
                 </div>
@@ -145,13 +146,6 @@ onMounted(()=>{
 </script>
 
 <style lang="scss" scoped>
-.pagebg{
-    width: 100vw;
-    height: auto;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
 .line{
     width: 100%;
     height: 1px;
@@ -169,6 +163,12 @@ onMounted(()=>{
     overflow: hidden;
     padding: 1px 0 0 1px;
     position: relative;
+    .bannerGap{
+        width: 686px;
+        height: 316px;
+        border-radius: 20px;
+        background-color: #000000;
+    }
     .bannerSwi{
         width: 686px;
         height: 316px;
@@ -237,8 +237,9 @@ onMounted(()=>{
 .card{
     border-radius: 30px;
     padding: 30px;
-    background: linear-gradient(#FFE5A51F, #FFE5A500 12%);
+    background: linear-gradient(#FFE5A51F, #FFE5A500);
     border: 1px solid transparent;
+    border-bottom: none;
     position: relative;
     &::before{
         content: '';

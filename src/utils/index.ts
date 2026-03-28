@@ -84,6 +84,22 @@ export function getAdaptHeight(px:number|string, designHeight:number|string) {
     return computedDiv(computedMul(screenHeight, px), designHeight)
 }
 
+/**
+ * 计算 a 占 b 的百分比
+ * @param {Number|String} a - 当前值
+ * @param {Number|String} b - 总值
+ * @returns {Number} 百分比，异常返回0，最大返回100
+ */
+export function getPercent(a:number|string, b:number|string) {
+    const numA = Number(a)
+    const numB = Number(b)
+
+    if(!Number.isFinite(numA) || !Number.isFinite(numB) || numA < 0 || numB <= 0)return 0
+    if(numA >= numB)return 100
+
+    return computedMul(computedDiv(numA, numB), 100)
+}
+
 export function isIOS() {
     const ua = navigator.userAgent;
     const isIPhone = /iPhone/i.test(ua);

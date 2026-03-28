@@ -18,18 +18,69 @@
         <RouterView></RouterView>
     </div>
 
-    <Tabbar></Tabbar>
+    <div class="gap100"></div>
+    <div class="safeArea"></div>
+    <div class="tabbar">
+        <div class="bar flex ac">
+
+            <div class="flex1 flex col ac" v-for="item in tabbar" @click="routerReplace(item.path)">
+                <img :src="currentRoute==item.path ? item.iconAct : item.icon" class="img44">
+                <div class="size24 mt4" :class="currentRoute==item.path?'main':''">{{ item.name }}</div>
+            </div>
+        </div>
+        <div class="safeArea"></div>
+    </div>
 
     <CusLang v-model:show="show"></CusLang>
 </template>
 
 <script setup lang="ts">
 import CusLang from '@/components/CusLang/index.vue';
-import { ref } from 'vue';
-import Tabbar from './Tabbar.vue';
+import { computed, ref } from 'vue';
 import { appName } from '@/config';
+import { useRoute } from 'vue-router';
+import homeIcon from '@/assets/tabbar/home.png'
+import homeActIcon from '@/assets/tabbar/homeAct.png'
+import payIcon from '@/assets/tabbar/pay.png'
+import payActIcon from '@/assets/tabbar/payAct.png'
+import cardIcon from '@/assets/tabbar/card.png'
+import cardActIcon from '@/assets/tabbar/cardAct.png'
+import userIcon from '@/assets/tabbar/user.png'
+import userActIcon from '@/assets/tabbar/userAct.png'
+import { t } from '@/locale';
+import { routerReplace } from '@/router';
+
+const tabbar = computed(()=>([
+    {
+        name: t('首页'),
+        icon: homeIcon,
+        iconAct: homeActIcon,
+        path: '/home/index'
+    },
+    {
+        name: t('全球付'),
+        icon: payIcon,
+        iconAct: payActIcon,
+        path: '/pay/index'
+    },
+    {
+        name: t('抢卡'),
+        icon: cardIcon,
+        iconAct: cardActIcon,
+        path: '/draw/index'
+    },
+    {
+        name: t('我的'),
+        icon: userIcon,
+        iconAct: userActIcon,
+        path: '/user/index'
+    }
+]))
 
 const show = ref(false)
+
+const route = useRoute()
+const currentRoute = computed(()=> route.fullPath)
 </script>
 
 <style lang="scss" scoped>
@@ -74,29 +125,33 @@ const show = ref(false)
         }
     }
 }
-
-.pop {
-    width: 520px;
-    height: 100vh;
-    padding-top: 100px;
-
-    .menu {
-        width: 520px;
-        height: calc(100vh - 100px);
-        padding: 40px 30px;
-        background-color: #191B1A;
-        position: relative;
-        .item{
-            height: 76px;
-            border-radius: 38px;
-            padding: 0 30px;
-            margin-bottom: 25px;
-        }
-        .border{
-            width: 460px;
-            height: 76px;
-            position: absolute;
-        }
+.tabbar{
+    width: 100vw;
+    background: linear-gradient(#000000, #222222);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    border: 1px solid transparent;
+    z-index: 10;
+    border-radius: 30px 30px 0 0;
+    &::before{
+        content: '';
+        position: absolute;
+        z-index: -1;
+        top: -1px;
+        left: -1px;
+        right: -1px;
+        bottom: -1px;
+        border-radius: 30px 30px 0 0;
+        background: linear-gradient(rgba(255, 255, 255, 0.2), #FFFFFF00);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: xor;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        padding: 1px;
+    }
+    .bar{
+        height: 100px;
     }
 }
 </style>
