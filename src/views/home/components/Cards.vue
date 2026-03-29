@@ -36,7 +36,7 @@
     </div>
 
     <div class="flex ac mt30">
-        <div class="update mainButton flex jc ac">
+        <div class="update mainButton flex jc ac" @click="openUpgradeRef?.open()">
             <img src="@/assets/home/3.png" class="img40 mr10">
             <div class="size32 main">升级</div>
         </div>
@@ -44,6 +44,8 @@
     </div>
 
     <OpenCard ref="openCardRef"></OpenCard>
+
+    <OpenUpgrade ref="openUpgradeRef"></OpenUpgrade>
 </template>
 
 <script setup lang="ts">
@@ -61,9 +63,11 @@ import card5 from '@/assets/card/5.png'
 import card6 from '@/assets/card/6.png'
 import { assetUSDT } from '@/config';
 import OpenCard from './OpenCard.vue';
+import OpenUpgrade from './OpenUpgrade.vue';
 import { ref } from 'vue';
 
 const openCardRef = ref()
+const openUpgradeRef = ref()
 
 // 卡
 const space = getAdaptPx(30)

@@ -27,7 +27,7 @@ const homePath = '/home'
 
 const token = getToken()
 
-if(!isH5){
+if(!isH5.value){
     // webview环境
     setTimeout(() => {
         if(token)routerReplace(homePath)
@@ -48,7 +48,7 @@ const dappLoginIn = async () => {
 }
 
 watch(providerStatus, status => {
-    if(!isH5)return;
+    if(!isH5.value)return;
     if(status==1){
         // 有钱包环境
         setTimeout(() => {

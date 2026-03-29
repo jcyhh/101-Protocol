@@ -7,7 +7,7 @@
     <div class="cell mb20 card" v-for="(item,index) in 10" :key="index">
         <div class="flex jb ac">
             <div class="flex ac">
-                <img src="@/assets/user/30.png" class="img32 mr10 animate__animated animate__zoomIn ani5" v-if="show">
+                <img src="@/assets/user/30.png" class="img32 mr10 animate__animated animate__zoomIn ani3" v-if="show">
                 <img src="@/assets/user/31.png" class="img32 mr10" v-if="show">
                 <div class="size28 bold5">12354320987@qq.com</div>
             </div>

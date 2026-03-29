@@ -27,3 +27,25 @@ export function useCardholder () {
         loadPickerList
     }
 }
+
+export function useCard () {
+    const pickerCurrent = ref(0)
+
+    const pickerShow = ref(false)
+
+    const pickerList = ref<any[]>([])
+
+    const currentPicker = computed(()=>pickerList.value.length==0?null:pickerList.value[pickerCurrent.value])
+
+    const loadPickerList = async () => {
+        pickerList.value = [1,2,3,4,5]
+    }
+
+    return {
+        pickerShow,
+        pickerList,
+        pickerCurrent,
+        currentPicker,
+        loadPickerList
+    }
+}

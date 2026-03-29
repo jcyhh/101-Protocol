@@ -57,15 +57,15 @@
             </div>
 
             <div class="flex ac mt40 size28 bold6 main">
-                <div class="flex1 mainButton btn flex jc ac">
+                <div class="flex1 mainButton btn flex jc ac" @click="rechargeRef?.open()">
                     <img src="@/assets/user/3.png" class="img40 mr10">
                     <div>充值</div>
                 </div>
-                <div class="flex1 mainButton btn flex jc ac ml15 mr15">
+                <div class="flex1 mainButton btn flex jc ac ml15 mr15" @click="transferRef?.open()">
                     <img src="@/assets/pay/3.png" class="img40 mr10">
                     <div>转账</div>
                 </div>
-                <div class="flex1 mainButton btn flex jc ac">
+                <div class="flex1 mainButton btn flex jc ac" @click="passwordRef?.open()">
                     <img src="@/assets/pay/4.png" class="img40 mr10">
                     <div>密码</div>
                 </div>
@@ -74,11 +74,11 @@
         </div>
 
         <div class="flex mt40">
-            <div class="card flex1 flex col ac">
+            <div class="card flex1 flex col ac" @click="routerPush('/physical/bind')">
                 <img src="@/assets/pay/5.png" class="img46">
                 <div class="size28 main mt8">绑定实体卡</div>
             </div>
-            <div class="card flex1 flex col ac ml20">
+            <div class="card flex1 flex col ac ml20" @click="routerPush('/physical/apply')">
                 <img src="@/assets/pay/6.png" class="img46">
                 <div class="size28 main mt8">申请实体卡</div>
             </div>
@@ -101,6 +101,10 @@
         </div>
 
     </div>
+
+    <Recharge ref="rechargeRef"></Recharge>
+    <Transfer ref="transferRef"></Transfer>
+    <Password ref="passwordRef"></Password>
 </template>
 
 <script setup lang="ts">
@@ -111,10 +115,18 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 // @ts-ignore
 import 'swiper/css';
 import { ref } from 'vue';
+import { routerPush } from '@/router';
+import Recharge from '../components/Recharge.vue';
+import Transfer from '../components/Transfer.vue';
+import Password from '../components/Password.vue';
 
 const space = getAdaptPx(30)
 
 const show = ref(false)
+
+const rechargeRef = ref()
+const transferRef = ref()
+const passwordRef = ref()
 </script>
 
 <style lang="scss" scoped>

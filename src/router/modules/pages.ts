@@ -40,6 +40,18 @@ export default [
         component: () => import('@/views/pay/card/physical.vue')
     },
     {
+        path:'/physical/apply',
+        component: () => import('@/views/pay/card/apply.vue')
+    },
+    {
+        path:'/physical/bind',
+        component: () => import('@/views/pay/card/bind.vue')
+    },
+    {
+        path:'/physical/record',
+        component: () => import('@/views/pay/card/record.vue')
+    },
+    {
         path:'/cardbag',
         component: () => import('@/views/user/cardbag.vue')
     },
@@ -86,5 +98,37 @@ export default [
     {
         path:'/setting',
         component: () => import('@/views/user/setting.vue')
+    },
+    {
+        path:'/draw/record',
+        component: () => import('@/views/draw/record.vue')
+    },
+    {
+        path:'/draw/rule',
+        component: () => import('@/views/draw/rule.vue')
+    },
+    {
+        path:'/user/recharge',
+        component: () => import('@/views/user/recharge.vue')
+    },
+    {
+        path:'/user/withdraw',
+        component: () => import('@/views/user/withdraw.vue')
+    },
+    {
+        path:'/user/transfer',
+        component: () => import('@/views/user/transfer.vue')
+    },
+    {
+        path:'/user/exclusion',
+        component: () => import('@/views/user/exclusion.vue')
+    },
+    {
+        path:'/user/order',
+        component: () => import('@/views/user/order.vue')
+    },
+    {
+        path:'/user/asset',
+        component: () => import('@/views/user/asset.vue')
     },
 ]

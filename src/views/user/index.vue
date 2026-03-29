@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <div class="mainCard mt30">
+        <div class="mainCard mt30" @click="routerPush('/user/asset')">
             <div class="flex jb ac">
                 <div class="size30 bold5 main">资产预览</div>
                 <div class="flex ac size24 opc5">
@@ -56,26 +56,26 @@
                 </div>
                 <div class="flex1 ml30">
                     <div class="size28" v-init="1000"></div>
-                    <div class="size24 opc5 mt10">{{ $t('收益') }} {{ assetNFTC }}</div>
+                    <div class="size24 opc5 mt10">{{ $t('年终奖') }}</div>
                 </div>
                 <div class="flex1"></div>
             </div>
         </div>
 
         <div class="mt20 flex jb ac size26 main">
-            <div class="item flex col jc ac">
+            <div class="item flex col jc ac" @click="routerPush('/user/recharge')">
                 <img src="@/assets/user/3.png" class="img40">
                 <div class="mt20">充值</div>
             </div>
-            <div class="item flex col jc ac">
+            <div class="item flex col jc ac" @click="routerPush('/user/withdraw')">
                 <img src="@/assets/user/4.png" class="img40">
                 <div class="mt20">提现</div>
             </div>
-            <div class="item flex col jc ac">
+            <div class="item flex col jc ac" @click="routerPush('/user/transfer')">
                 <img src="@/assets/user/5.png" class="img40">
                 <div class="mt20">转账</div>
             </div>
-            <div class="item flex col jc ac">
+            <div class="item flex col jc ac" @click="routerPush('/user/exclusion')">
                 <img src="@/assets/user/6.png" class="img40">
                 <div class="mt20">划转</div>
             </div>
@@ -115,7 +115,7 @@
             <van-icon name="arrow" color="#FFFFFF80" />
         </div>
 
-        <div class="cell flex jb ac mt20">
+        <div class="cell flex jb ac mt20" @click="routerPush('/user/order')">
             <div class="flex ac">
                 <img src="@/assets/user/11.png" class="img64 mr20">
                 <div class="size28">释放订单</div>

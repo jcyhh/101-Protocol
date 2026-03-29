@@ -59,7 +59,7 @@ import { ref } from 'vue';
 
 const { showConfetti } = useConfetti()
 
-const show = ref(true)
+const show = ref(false)
 
 const open = () => {
     show.value = true
