@@ -100,6 +100,19 @@ export function getPercent(a:number|string, b:number|string) {
     return computedMul(computedDiv(numA, numB), 100)
 }
 
+/**
+ * 个位数补0
+ * @param {Number|String} value - 数字或数字字符串
+ * @returns {String} 个位数补0后的字符串
+ */
+export function padZero(value:number|string) {
+    const num = Number(value)
+    if(Number.isFinite(num) && Number.isInteger(num) && num >= 0 && num < 10){
+        return `0${Math.trunc(num)}`
+    }
+    return `${value}`
+}
+
 export function isIOS() {
     const ua = navigator.userAgent;
     const isIPhone = /iPhone/i.test(ua);

@@ -44,6 +44,8 @@
                     </div>
                     <div class="mainButton mt40 flex jc ac size28 main bold6 btn" @click="showConfetti">继续抽卡</div>
                 </div>
+
+                <div class="safeArea"></div>
                 
             </div>
         </div>

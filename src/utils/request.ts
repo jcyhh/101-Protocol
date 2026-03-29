@@ -1,10 +1,10 @@
 import axios from 'axios'
-import { delToken } from '../config/storage'
+import { delToken, getToken } from '../config/storage'
 import { langKey, uploadApi, uploadFileName, timeOut, uploadTimeOut, addressKey } from '../config/http'
 import { getHeaderLang } from '../locale'
 import { closeToast, showLoadingToast, showToast } from 'vant';
 import { router, routerPush } from '@/router'
-import { getAddress, getToken, loginPath } from '@/dapp/config'
+import { getAddress, loginPath } from '@/dapp/config'
 
 const service = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,

@@ -10,7 +10,7 @@
                     <div class="size32 bold mt20">1234567890@qq.com</div>
                 </div>
             </div>
-            <img src="@/assets/user/2.png" class="img56 animate__animated animate__zoomIn">
+            <img src="@/assets/user/2.png" class="img56 animate__animated animate__zoomIn" @click="routerPush('/setting')">
         </div>
 
         <div class="top mt50" @click="routerPush('/cardbag')">
@@ -83,7 +83,7 @@
 
         <div class="mt40 size34 bold6 main">{{ $t('常用功能') }}</div>
 
-        <div class="cell flex jb ac mt30">
+        <div class="cell flex jb ac mt30" @click="routerPush('/community/my')">
             <div class="flex ac">
                 <img src="@/assets/user/7.png" class="img64 mr20">
                 <div class="size28">我的社区</div>
@@ -91,7 +91,7 @@
             <van-icon name="arrow" color="#FFFFFF80" />
         </div>
 
-        <div class="cell flex jb ac mt20">
+        <div class="cell flex jb ac mt20" @click="routerPush('/community')">
             <div class="flex ac">
                 <img src="@/assets/user/8.png" class="img64 mr20">
                 <div class="size28">全网社区</div>
@@ -99,7 +99,7 @@
             <van-icon name="arrow" color="#FFFFFF80" />
         </div>
 
-        <div class="cell flex jb ac mt20">
+        <div class="cell flex jb ac mt20" @click="routerPush('/news')">
             <div class="flex ac">
                 <img src="@/assets/user/9.png" class="img64 mr20">
                 <div class="size28">全网论坛</div>
@@ -123,7 +123,7 @@
             <van-icon name="arrow" color="#FFFFFF80" />
         </div>
 
-        <div class="cell flex jb ac mt20">
+        <div class="cell flex jb ac mt20" @click="routerPush('/cardholder')">
             <div class="flex ac">
                 <img src="@/assets/user/12.png" class="img64 mr20">
                 <div class="size28">持卡人管理</div>

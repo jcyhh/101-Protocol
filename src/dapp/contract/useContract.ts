@@ -1,4 +1,4 @@
-import { getPublicClient, getWalletClient, getConnectedAddress } from '@/dapp'
+import { getWalletClient, getConnectedAddress } from '@/dapp'
 import type { Abi, Address } from 'viem'
 import { useDappStore } from '../store'
 import { defaultGasPrice, gasLimitMultiplier } from '../config'
@@ -8,8 +8,8 @@ import { t } from '@/locale'
 export const useContract = <T extends Abi>(address: Address, abi: T) => {
     // 读合约
     const read = async (functionName: string, args: any[] = []) => {
-        const publicClient = getPublicClient()
-        return publicClient.readContract({
+        const walletClient = getWalletClient()
+        return walletClient.readContract({
             address,
             abi,
             functionName,
@@ -30,7 +30,6 @@ export const useContract = <T extends Abi>(address: Address, abi: T) => {
         try {
             const walletClient = getWalletClient()
             const account = await getConnectedAddress()
-            const publicClient = getPublicClient()
             
             const hash = await walletClient.writeContract({
                 address,
@@ -42,7 +41,7 @@ export const useContract = <T extends Abi>(address: Address, abi: T) => {
             })
             
             // 等待交易确认
-            const receipt = await publicClient.waitForTransactionReceipt({ hash })
+            const receipt = await walletClient.waitForTransactionReceipt({ hash })
             
             // 判断交易状态: 'success' | 'reverted'
             if (receipt.status === 'reverted') {
@@ -62,9 +61,9 @@ export const useContract = <T extends Abi>(address: Address, abi: T) => {
 
     // 估算 gas
     const estimateGas = async (functionName: string, args: any[] = []) => {
-        const publicClient = getPublicClient()
+        const walletClient = getWalletClient()
         const account = await getConnectedAddress()
-        return publicClient.estimateContractGas({
+        return walletClient.estimateContractGas({
             address,
             abi,
             functionName,

@@ -59,7 +59,7 @@
 
         <div class="mainCard mt40 rel">
             <div class="size34 bold5 main">{{ appName }} {{ $t('开卡') }}</div>
-            <OpenCard></OpenCard>
+            <Cards></Cards>
         </div>
 
         <div class="flex ac mt40">
@@ -106,7 +106,7 @@ import { useTransition } from '@vueuse/core'
 import { onMounted, ref } from 'vue';
 import { routerPush } from '@/router';
 import { useNotice } from '@/hooks/useNotice';
-import OpenCard from './components/OpenCard.vue';
+import Cards from './components/Cards.vue';
 import CusNumber from '@/components/CusNumber/index.vue'
 
 // 统计

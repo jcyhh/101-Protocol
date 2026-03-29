@@ -18,6 +18,7 @@ declare module 'vue' {
     CusProgress: typeof import('./src/components/CusProgress/index.vue')['default']
     CusSms: typeof import('./src/components/CusSms/index.vue')['default']
     CusTab: typeof import('./src/components/CusTab/index.vue')['default']
+    CusTitle: typeof import('./src/components/CusTitle/index.vue')['default']
     Demo: typeof import('./src/components/CusPicker/demo.vue')['default']
     Picker: typeof import('./src/components/CusPicker/Picker.vue')['default']
     Plasma: typeof import('./src/components/Plasma.vue')['default']

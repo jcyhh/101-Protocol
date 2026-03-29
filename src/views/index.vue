@@ -5,18 +5,63 @@
 </template>
 
 <script setup lang="ts">
-import { getToken, setRef } from '@/config/storage';
+import { getRef, getToken, setRef, setToken } from '@/config/storage';
+import { getSign } from '@/dapp';
 import { routerReplace } from '@/router';
+import { useAppStore, useDappStore } from '@/store';
+import { apiPost } from '@/utils/request';
+import { storeToRefs } from 'pinia';
+import { watch } from 'vue';
 import { useRoute } from 'vue-router';
+
+const appStore = useAppStore()
+const { isH5 } = storeToRefs(appStore)
+
+const dappStore = useDappStore()
+const { providerStatus, walletAddress } = storeToRefs(dappStore)
 
 const { params } = useRoute()
 if(params?.ref)setRef(params?.ref as any)
 
+const homePath = '/home'
+
 const token = getToken()
-setTimeout(() => {
-    if(token)routerReplace('/home')
-    else routerReplace('/login')
-}, 1200);
+
+if(!isH5){
+    // webview环境
+    setTimeout(() => {
+        if(token)routerReplace(homePath)
+        else routerReplace('/login')
+    }, 1200);
+}
+
+// 登录
+const dappLoginIn = async () => {
+    const signInfo = await getSign('Login')
+    const res:any = apiPost('/api/auth/login',{
+        ref: getRef(),
+        address: walletAddress.value,
+        ...signInfo
+    })
+    setToken(res.token)
+    routerReplace(homePath)
+}
+
+watch(providerStatus, status => {
+    if(!isH5)return;
+    if(status==1){
+        // 有钱包环境
+        setTimeout(() => {
+            token ? routerReplace(homePath) : dappLoginIn()
+        }, 1200)
+    }else if(status==2){
+        // 无钱包环境
+        setTimeout(() => {
+            if(token)routerReplace(homePath)
+            else routerReplace('/login')
+        }, 1200);
+    }
+}, {immediate: true})
 </script>
 
 <style lang="scss" scoped>

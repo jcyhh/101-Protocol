@@ -57,14 +57,7 @@ export const getEthereum = () => {
 }
 
 /**
- * viem读合约的实例
- */
-export const getPublicClient = () => {
-    return getWalletClient()
-}
-
-/**
- * viem写合约的实例
+ * 获取合约实例
  */
 export const getWalletClient = () => {
     if (!_walletClient) {
@@ -98,6 +91,7 @@ export const getConnectedAddress = async (): Promise<Address> => {
 export const checkChain = async () => {
     // 开发环境不判断网络
     if(!import.meta.env.PROD)return true;
+    
     const ethereum = getEthereum()
     
     // 获取当前网络 chainId
@@ -178,9 +172,8 @@ export const getSign = async (message: SignMessage) => {
  */
 export const getClients = async () => {
         await detectProvider()
-        const publicClient = getPublicClient()
         const walletClient = getWalletClient()
         const address = await getConnectedAddress()
         const ethereum = getEthereum()
-        return { publicClient, walletClient, address, ethereum }
+        return { walletClient, address, ethereum }
 }
