@@ -2,16 +2,14 @@
     <div class="cardSwiperWrap">
         <swiper
             class="cardSwiper"
-            :modules="modules"
             :slides-per-view="'auto'"
             :space-between="space"
             :centered-slides="true"
-            :loop="true"
-            :autoplay="autoplay"
+            @slide-change="onSlideChange"
         >
-            <swiper-slide v-for="item in cardSwiperList" :key="item" class="cardSlide">
+            <swiper-slide v-for="item in cardList" :key="item.id" class="cardSlide">
                 <div class="cardBlock">
-                    <img :src="item" class="cardImg">
+                    <img :src="item.cardIcon" class="cardImg">
                 </div>
             </swiper-slide>
         </swiper>
@@ -21,63 +19,92 @@
     <div class="line mt65"></div>
 
     <div class="flex jb ac size24 mt30">
-        <div>卡</div>
+        <div>{{ currentCard?.name }}</div>
         <div class="opc5">
             <span class="mr10">库存</span>
-            <span v-init="1000"></span>
+            <span>{{ currentCard?.stock }}</span>
         </div>
     </div>
 
     <div class="flex mt20">
         <div class="price bold">
-            <span class="size48" v-init="1000"></span>
+            <span class="size48" v-init="currentCard?.price"></span>
             <span class="size28 ml10">{{ assetUSDT }}</span>
         </div>
     </div>
 
     <div class="flex ac mt30">
-        <div class="update mainButton flex jc ac" @click="openUpgradeRef?.open()">
+        <div class="update mainButton flex jc ac animate__animated animate__fadeInLeft ani3" @click="openUpgrade" v-if="diff > 0">
             <img src="@/assets/home/3.png" class="img40 mr10">
             <div class="size32 main">升级</div>
         </div>
-        <div class="mainBtn flex1 ml20 flex jc ac size32 bold5" @click="openCardRef?.open()">立即开卡</div>
+        <div class="mainBtn flex1 ml20 flex jc ac size32 bold5" @click="openCard">立即开卡</div>
     </div>
 
-    <OpenCard ref="openCardRef"></OpenCard>
+    <OpenCard @success="loadData()" ref="openCardRef"></OpenCard>
 
-    <OpenUpgrade ref="openUpgradeRef"></OpenUpgrade>
+    <OpenUpgrade @success="loadData()" ref="openUpgradeRef"></OpenUpgrade>
 </template>
 
 <script setup lang="ts">
-import { getAdaptPx } from '@/utils';
+import { computedSub, getAdaptPx } from '@/utils';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Autoplay } from 'swiper/modules';
 // @ts-ignore
 import 'swiper/css';
-import card0 from '@/assets/card/0.png'
-import card1 from '@/assets/card/1.png'
-import card2 from '@/assets/card/2.png'
-import card3 from '@/assets/card/3.png'
-import card4 from '@/assets/card/4.png'
-import card5 from '@/assets/card/5.png'
-import card6 from '@/assets/card/6.png'
 import { assetUSDT } from '@/config';
 import OpenCard from './OpenCard.vue';
 import OpenUpgrade from './OpenUpgrade.vue';
-import { ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { apiProduct } from '@/api/home';
+import { useCardIcon } from '@/hooks/useCardIcon';
+import { useUserStore } from '@/store';
+import { storeToRefs } from 'pinia';
+
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
+
+const { getCardIcon } = useCardIcon()
 
 const openCardRef = ref()
 const openUpgradeRef = ref()
 
-// 卡
-const space = getAdaptPx(30)
-const modules = [Autoplay]
-const autoplay = {
-    delay: 3000,
-    disableOnInteraction: true
+const cardList = ref<any[]>([])
+const currentIndex = ref(0)
+const currentCard = computed(() => cardList.value[currentIndex.value] || null)
+const onSlideChange = (swiper: any) => {
+    currentIndex.value = Number(swiper?.realIndex ?? swiper?.activeIndex ?? 0)
+}
+const openUpgrade = () => {
+    openUpgradeRef.value?.open(currentCard.value)
+}
+const openCard = () => {
+    openCardRef.value?.open(currentCard.value)
+}
+const loadData = async () => {
+    const res:any = await apiProduct()
+    cardList.value = res.products.map((item:any)=>{
+        return {
+            ...item,
+            ...{
+                cardIcon: getCardIcon(item.id)
+            }
+        }
+    })
+    currentIndex.value = 0
 }
 
-const cardSwiperList = [card0, card1, card2, card3, card4, card5, card6]
+const diff = computed(()=>computedSub(currentCard.value?.price, userInfo.value?.card_amount))
+
+// 卡
+const space = getAdaptPx(30)
+
+onMounted(()=>{
+    loadData()
+})
+
+defineExpose({
+    currentCard
+})
 </script>
 
 <style lang="scss" scoped>
@@ -120,6 +147,6 @@ const cardSwiperList = [card0, card1, card2, card3, card4, card5, card6]
 }
 .update{
     width: 250px;
-    height: 80px;
+    height: 74px;
 }
 </style>

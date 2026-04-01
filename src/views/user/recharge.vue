@@ -17,7 +17,7 @@
 
         <div class="flex jc mt100">
             <div class="mainCard box flex jc ac">
-                <QRCode value="https://themusecatcher.blog.csdn.net" :size="160" :bordered="false" />
+                <QRCode :value="address" :size="160" :bordered="false" v-if="address" />
             </div>
         </div>
 
@@ -26,17 +26,25 @@
                 <div class="size28 main">充值地址</div>
                 <img src="@/assets/user/17.png" class="img26 ml10">
             </div>
-            <div class="br size24 bold5 lh40 opc6 mt30">0x5f9fb75cE68A3C37d23F0D1194</div>
+            <div class="br size24 bold5 lh40 opc6 mt30">{{ address }}</div>
         </div>
 
-        <div class="mainBtn flex jc ac size28 bold6 mt40">复制地址</div>
+        <div class="mainBtn flex jc ac size28 bold6 mt40" v-copy="address" v-if="address">复制地址</div>
 
     </div>
 </template>
 
 <script setup lang="ts">
+import { apiRecharge } from '@/api/user';
 import CusNav from '@/components/CusNav/index.vue'
 import { assetUSDT } from '@/config';
+import { ref } from 'vue';
+
+const address = ref()
+const loadData = async () => {
+    const res:any = await apiRecharge()
+    address.value = res.recharge_address
+}
 </script>
 
 <style lang="scss" scoped>

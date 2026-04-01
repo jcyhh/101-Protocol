@@ -13,6 +13,10 @@
 
         <Password v-model="password" :tips="$t('密码')"></Password>
 
+        <div class="gap30"></div>
+
+        <Password v-model="pay_password" :tips="$t('支付密码')"></Password>
+
         <div class="cell flex ac mt30">
             <input type="text" v-model="refCode" :placeholder="$t('邀请码')" class="flex1 size28">
         </div>
@@ -36,15 +40,21 @@ const email = ref()
 const password = ref()
 const emailCode = ref()
 const refCode = ref()
+const pay_password = ref()
 
 const storage = getRef()
 if(storage)refCode.value = storage
 
 const submit = async () => {
+    if(!email.value)return message(t('请输入邮箱'))
+    if(!emailCode.value)return message(t('请输入验证码'))
+    if(!password.value)return message(t('请设置登录密码'))
+    if(!pay_password.value)return message(t('请设置支付密码'))
     await apiRegister({
         email: email.value,
         password: password.value,
         email_code: emailCode.value,
+        pay_password: pay_password.value,
         ref: refCode.value
     })
     setAccount(email.value)

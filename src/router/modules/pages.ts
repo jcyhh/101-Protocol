@@ -32,6 +32,10 @@ export default [
         component: () => import('@/views/home/helps/detail.vue')
     },
     {
+        path:'/yuebao/record',
+        component: () => import('@/views/home/record.vue')
+    },
+    {
         path:'/virtual',
         component: () => import('@/views/pay/card/virtual.vue')
     },
@@ -116,6 +120,10 @@ export default [
         component: () => import('@/views/user/withdraw.vue')
     },
     {
+        path:'/user/withdraw/record',
+        component: () => import('@/views/user/withdrawRecord.vue')
+    },
+    {
         path:'/user/transfer',
         component: () => import('@/views/user/transfer.vue')
     },
@@ -130,5 +138,13 @@ export default [
     {
         path:'/user/asset',
         component: () => import('@/views/user/asset.vue')
+    },
+    {
+        path:'/pay/record',
+        component: () => import('@/views/pay/record.vue')
+    },
+    {
+        path:'/pay/remittance',
+        component: () => import('@/views/pay/pay.vue')
     },
 ]

@@ -35,7 +35,8 @@ import 'animate.css';
 /**
  * 指令
  */
-import { copy, filter, onShow } from '@/directives';
+import { copy, filter, scale, onShow } from '@/directives';
+app.directive('scale', scale);
 app.directive('copy', copy);
 app.directive('init', filter);
 app.directive('on-show', onShow);

@@ -5,6 +5,7 @@ import { getHeaderLang } from '../locale'
 import { closeToast, showLoadingToast, showToast } from 'vant';
 import { router, routerPush } from '@/router'
 import { getAddress, loginPath } from '@/dapp/config'
+import { message } from './message';
 
 const service = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -35,7 +36,7 @@ service.interceptors.response.use(
             logout()
             return Promise.reject(new Error(error.response.data || 'Error'))
         } else {
-            if (error.response.data)showToast(error.response.data)
+            if (error.response.data)message(error.response.data)
             return Promise.reject(new Error(error.response.data || 'Error'))
         }
     }

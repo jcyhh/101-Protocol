@@ -4,8 +4,8 @@
         
         <div class="mainCard rel">
             <div class="flex jb ac">
-                <div class="size34 bold5 main">{{ appName }} {{ $t('实体卡') }}</div>
-                <img src="@/assets/pay/2.png" class="img40">
+                <div class="size34 bold5 main">{{ appName }} {{ $t('虚拟卡') }}</div>
+                <img src="@/assets/pay/2.png" class="img40" @click="refresh">
             </div>
             
             <div class="cardSwiperWrap">
@@ -14,11 +14,12 @@
                     :slides-per-view="'auto'"
                     :space-between="space"
                     :centered-slides="true"
+                    @slide-change="onSlideChange"
                 >
-                    <swiper-slide v-for="item in 5" :key="item" class="cardSlide">
+                    <swiper-slide v-for="item in cardList" :key="item.id" class="cardSlide">
                         <div class="cardBlock">
-                            <img src="@/assets/card/physicalCard.png" class="cardImg">
-                            <div class="tag">ACTIVE</div>
+                            <img :src="getCardIcon(item.product_id)" class="cardImg">
+                            <div class="tag" :class="item.card_status=='ACTIVE'?'':'tagfail'" v-if="item.card_status">{{ item.card_status }}</div>
                         </div>
                     </swiper-slide>
                 </swiper>
@@ -29,39 +30,41 @@
 
             <div class="flex jb ac mt30">
                 <div class="flex ac">
-                    <div class="size32 mr12">全球黑金卡</div>
+                    <div class="size32 mr12">{{ currentCard?.product_name }}</div>
                     <img src="@/assets/login/eyeOpen.png" class="img30 animate__animated animate__zoomIn ani5" @click="show=false" v-if="show">
                     <img src="@/assets/login/eyeClose.png" class="img30" @click="show=true" v-else>
                 </div>
                 <div class="flex">
                     <div class="price bold">
-                        <span class="size48" v-init="1000"></span>
-                        <span class="size28 ml10">{{ assetUSDT }}</span>
+                        <span class="size48" v-init="currentCard?.available_balance" v-if="show"></span>
+                        <span class="size48" v-else>****</span>
+                        <span class="size28 ml10">{{ currentCard?.card_currency }}</span>
                     </div>
                 </div>
             </div>
 
             <div class="flex jb ac mt20">
-                <div class="flex ac">
-                    <div class="size30 bold6 main">3234 **** **** 7688</div>
+                <div class="flex ac" v-if="currentCard?.complete_card_number" v-copy="currentCard?.complete_card_number">
+                    <div class="size30 bold6 main">{{ show ? currentCard?.complete_card_number : currentCard?.card_number }}</div>
                     <img src="@/assets/card/copy.png" class="img32 ml10">
                 </div>
+                <div class="size30 bold6 main" v-else>**** **** **** ****</div>
                 <div class="size24 opc5">卡片金额</div>
             </div>
 
             <div class="mt20 flex ac">
                 <div class="size20 opc5">EXP DATE</div>
-                <div class="size28 ml10">****</div>
+                <div class="size28 ml10">{{ show ? (currentCard.expire_date || '***') : '***' }}</div>
                 <div class="size20 opc5 ml30">CVV NUM</div>
-                <div class="size28 ml10">****</div>
+                <div class="size28 ml10">{{ show ? (currentCard.cvv || '***') : '***' }}</div>
             </div>
 
             <div class="flex ac mt40 size28 bold6 main">
-                <div class="flex1 mainButton btn flex jc ac">
+                <div class="flex1 mainButton btn flex jc ac" @click="rechargeRef?.open()">
                     <img src="@/assets/user/3.png" class="img40 mr10">
                     <div>充值</div>
                 </div>
-                <div class="flex1 mainButton btn flex jc ac ml15 mr15">
+                <div class="flex1 mainButton btn flex jc ac ml15 mr15" @click="transferRef?.open()">
                     <img src="@/assets/pay/3.png" class="img40 mr10">
                     <div>转账</div>
                 </div>
@@ -71,35 +74,98 @@
 
         <div class="size34 main bold6 mt40 mb24">流水明细</div>
 
-        <div class="cell mb12" v-for="(item,index) in 5">
-            <div class="gap10"></div>
-            <div class="flex jb ac">
-                <div class="size28">备注</div>
-                <div class="size28 bold green">
-                    <span>-</span>
-                    <span v-init="1000"></span>
-                    <span>{{ assetUSDT }}</span>
+        <van-list v-bind="listProps">
+            <div class="cell mb12" v-for="(item,index) in list" :key="index">
+                <div class="gap10"></div>
+                <div class="flex jb ac">
+                    <div class="size28">{{ item.type_text }}</div>
+                    <div class="size28 bold" :class="item.is_inc ? 'green' : 'red'">
+                        <span>{{ item.is_inc ? '+' : '-' }}</span>
+                        <span v-init="item.amount"></span>
+                        <span>{{ item.currency }}</span>
+                    </div>
                 </div>
+                <div class="size24 opc5 mt20">{{ item.created_at }}</div>
+                <div class="gap10"></div>
             </div>
-            <div class="size24 opc5 mt20">2025.26.12 12:58:21</div>
-            <div class="gap10"></div>
-        </div>
+            <CusEmpty v-if="list?.length==0"></CusEmpty>
+        </van-list>
 
     </div>
+
+    <Recharge @success="loadCard()" ref="rechargeRef"></Recharge>
+    <Transfer ref="transferRef"></Transfer>
 </template>
 
 <script setup lang="ts">
 import CusNav from '@/components/CusNav/index.vue'
-import { appName, assetUSDT } from '@/config';
+import { appName } from '@/config';
 import { getAdaptPx } from '@/utils';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 // @ts-ignore
 import 'swiper/css';
-import { ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { apiGetCardList, apiRefreshCard } from '@/api/card';
+import { useCardIcon } from '@/hooks/useCardIcon';
+import { useLoadList } from '@/hooks/useLoadList';
+import CusEmpty from '@/components/CusEmpty/index.vue'
+import { message } from '@/utils/message';
+import { t } from '@/locale';
+import { useDappStore } from '@/store';
+import { storeToRefs } from 'pinia';
+import Recharge from '../components/Recharge.vue';
+import Transfer from '../components/Transfer.vue';
+
+const dappStore = useDappStore()
+const { dappLoading } = storeToRefs(dappStore)
+
+const { getCardIcon } = useCardIcon()
 
 const space = getAdaptPx(30)
 
+const rechargeRef = ref()
+const transferRef = ref()
+
+const { list, props: listProps, loadList } = useLoadList('/api/card/balance-logs', 'data')
+
+const cardList = ref<any[]>([])
+const currentIndex = ref(0)
+const currentCard = computed(() => cardList.value[currentIndex.value] ?? null)
+
+const onSlideChange = (swiper: any) => {
+    currentIndex.value = Number(swiper?.realIndex ?? swiper?.activeIndex ?? 0)
+    loadList()
+}
+
+const loadCard = async () => {
+    const res:any = await apiGetCardList({
+        card_type: 1,
+        pay_status: 2
+    })
+    cardList.value = res.data ?? []
+    currentIndex.value = 0
+    if(cardList.value.length>0)loadList()
+}
+
+const refresh = async () => {
+    try {
+        dappLoading.value = true
+        await apiRefreshCard({
+            card_id: currentCard.value.id
+        })
+        loadCard()
+        message(t('刷新成功'), 'success')
+        dappLoading.value = false
+    } catch (error) {
+        dappLoading.value = false
+    }
+}
+
 const show = ref(false)
+
+onMounted(()=>{
+    loadCard()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -139,6 +205,9 @@ const show = ref(false)
         top: 65px;
         right: 30px;
         z-index: 1;
+    }
+    .tagfail{
+        background-color: $red;
     }
 }
 .price{

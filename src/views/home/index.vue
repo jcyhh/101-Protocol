@@ -3,24 +3,17 @@
 
     <div class="rel pt40 pl30 pr30">
         
-        <div class="size25 bold5">{{ $t('今日开卡总额') }}</div>
+        <div class="size25 bold5">{{ $t('本周服务费') }}</div>
 
         <div class="main bold mt10">
-            <span class="size80" v-init="count1"></span>
+            <span class="size80" v-init="stats?.this_week_service_amount"></span>
             <span class="size48 ml5">{{ assetUSDT }}</span>
         </div>
 
-        <div class="flex wrap mt20 size24 lh60">
-            <div class="mr40">
-                <span>{{ $t('今日转账额度') }} : </span>
-                <span v-init="1000"></span>
-                <span>{{ assetUSDT }}</span>
-            </div>
-            <div class="mr40">
-                <span>{{ $t('今日服务费') }} : </span>
-                <span v-init="1000"></span>
-                <span>{{ assetUSDT }}</span>
-            </div>
+        <div class="flex wrap mt10 size24 lh60">
+            <span>{{ $t('上周服务费') }}</span>
+            <span class="ml10" v-init="stats?.last_week_service_amount"></span>
+            <span class="ml5">{{ assetUSDT }}</span>
         </div>
 
         <div class="line mt30"></div>
@@ -81,16 +74,16 @@
             <div class="flex ac mt30">
                 <div class="flex1">
                     <div class="size40 bold6 main">
-                        <CusNumber :amount="2834.2134" sizeClass="size28"></CusNumber>
+                        <CusNumber :amount="yuebao?.total_income" sizeClass="size28"></CusNumber>
                     </div>
                     <div class="size24 opc5 mt10">{{ $t('合计收益') }}</div>
                 </div>
                 <div class="cardLine mr60 ml60"></div>
                 <div class="flex1">
                     <div class="size40 bold6 main">
-                        <CusNumber :amount="2834.2134" sizeClass="size28"></CusNumber>
+                        <CusNumber :amount="yuebao?.yesterday_income" sizeClass="size28"></CusNumber>
                     </div>
-                    <div class="size24 opc5 mt10">{{ $t('今日收益') }}</div>
+                    <div class="size24 opc5 mt10">{{ $t('昨日收益') }}</div>
                 </div>
             </div>
         </div>
@@ -102,21 +95,24 @@
 <script setup lang="ts">
 import { apiBanner, apiMessage, apiStats } from '@/api/home';
 import { appName, assetUSDT } from '@/config';
-import { useTransition } from '@vueuse/core'
 import { onMounted, ref } from 'vue';
 import { routerPush } from '@/router';
 import { useNotice } from '@/hooks/useNotice';
 import Cards from './components/Cards.vue';
 import CusNumber from '@/components/CusNumber/index.vue'
+import { useUserStore } from '@/store';
+import { apiYuebaoStats } from '@/api/yuebao';
+
+const userStore = useUserStore()
+userStore.loadUserInfo()
 
 // 统计
-const today_open_crad_amount = ref(0)
+const stats = ref()
+const yuebao = ref()
 const loadStats = async () => {
-    const res:any = await apiStats()
-    const amount = Number(res?.today_open_crad_amount ?? 0)
-    today_open_crad_amount.value = Number.isFinite(amount) ? amount : 0
+    stats.value = await apiStats()
+    yuebao.value = await apiYuebaoStats()
 }
-const count1 = useTransition(today_open_crad_amount, {duration: 500})
 
 // 轮博图
 const banners = ref<any[]>([])

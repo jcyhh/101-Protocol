@@ -54,7 +54,7 @@
         <div class="safeArea"></div>
     </div>
 
-    <CusPicker v-model:show="pickerShow" :list="pickerList" :title="$t('选择币种')" :default-index="pickerCurrent" @change="$event=>pickerCurrent=$event">
+    <CusPicker v-model:show="pickerShow" :list="pickerList" :title="$t('请选择')" :default-index="pickerCurrent" @change="$event=>pickerCurrent=$event">
         <template v-slot="{ item }">
             <div class="flex jc ac">
                 <img :src="item.icon" class="img48 mr10">

@@ -12,13 +12,13 @@ const props = defineProps(['amount', 'sizeClass'])
 
 const amountInt = computed(()=>{
     if(!props.amount)return 0
-    return `${props.amount}`.split('.')[0]
+    return `${Number(props.amount)}`.split('.')[0]
 })
 
 const amountFloat = computed(()=>{
-    if(!props.amount)return '.00'
-    const arr = `${props.amount}`.split('.')
-    return arr.length > 1 ? `.${arr[1]}` : '.00'
+    if(!props.amount)return ''
+    const arr = `${Number(props.amount)}`.split('.')
+    return arr.length > 1 ? `.${arr[1]}` : ''
 })
 </script>
 

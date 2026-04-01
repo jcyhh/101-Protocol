@@ -7,12 +7,12 @@
                     <van-icon size="20" name="cross" color="#8D9094" @click="close" />
                 </div>
 
-                <div class="mt40 size48 bold" v-init="1000"></div>
+                <div class="mt40 size48 bold" v-init="cardInfo?.price"></div>
                 <div class="size24 mt20 opc5">开卡金额({{ assetUSDT }})</div>
                 <div class="flex jb ac mt30">
                     <div class="size24">
                         <span class="opc5">可用余额</span>
-                        <span class="main ml10" v-init="1000"></span>
+                        <span class="main ml10" v-init="userInfo?.balance_usdt"></span>
                         <span class="main ml5">{{ assetUSDT }}</span>
                     </div>
                     <div class="flex ac">
@@ -56,7 +56,7 @@
         </div>
     </VanPopup>
 
-    <CusPicker v-model:show="pickerShow" :list="pickerList" :title="$t('选择持卡人')" :default-index="pickerCurrent" @change="$event=>pickerCurrent=$event">
+    <CusPicker v-model:show="pickerShow" :list="pickerList" :title="$t('请选择')" :default-index="pickerCurrent" @change="$event=>pickerCurrent=$event">
         <template v-slot="{ item }">
             <span class="bold5">{{ item.first_name }} {{ item.last_name }}({{ item.country_code }})</span>
         </template>
@@ -68,20 +68,41 @@ import { assetUSD, assetUSDT } from '@/config';
 import { ref } from 'vue';
 import CusPicker from '@/components/CusPicker/index.vue';
 import { useCardholder } from '@/hooks/useCardholder';
+import { useUserStore } from '@/store';
+import { storeToRefs } from 'pinia';
+import { message } from '@/utils/message';
+import { t } from '@/locale';
+import { apiOpenVirtualCard } from '@/api/card';
+
+const emits = defineEmits(['success'])
 
 const { pickerShow, pickerList, currentPicker, pickerCurrent, loadPickerList } = useCardholder()
 
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
+
 const show = ref(false)
 
-const open = () => {
+const cardInfo = ref()
+
+const open = (data:any) => {
+    cardInfo.value = data
     show.value = true
     loadPickerList()
 }
 
 const close = () => show.value = false
 
-const submit = () => {
-
+const submit = async () => {
+    if(!currentPicker.value)return message(t('请选择持卡人'))
+    await apiOpenVirtualCard({
+        product_id: cardInfo.value.id,
+        cardholder_id: currentPicker.value.cardholder_id
+    })
+    message(t('开卡成功'), 'success')
+    userStore.loadUserInfo()
+    show.value = false
+    emits('success')
 }
 
 defineExpose({

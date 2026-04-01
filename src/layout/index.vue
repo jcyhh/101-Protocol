@@ -5,7 +5,7 @@
             <div class="size24 bold ml10">{{ appName }}</div>
         </div>
         <div class="flex ac">
-            <div class="flex ac level mr20">
+            <div class="flex ac level mr20 animate__animated animate__zoomIn ani5" v-if="userInfo?.is_council">
                 <img src="@/assets/tabbar/level.png" class="img44 mr8">
                 <div class="linearTxt size20 bold">理事会</div>
             </div>
@@ -49,6 +49,11 @@ import userIcon from '@/assets/tabbar/user.png'
 import userActIcon from '@/assets/tabbar/userAct.png'
 import { t } from '@/locale';
 import { routerReplace } from '@/router';
+import { useUserStore } from '@/store';
+import { storeToRefs } from 'pinia';
+
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 
 const tabbar = computed(()=>([
     {

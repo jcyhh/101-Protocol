@@ -1,5 +1,7 @@
 import { apiGet, apiPost } from "@/utils/request";
 
+export const apiUserInfo = async () => await apiGet('/api/users/my')
+
 export const apiCardholder = async (params:any) => await apiGet('/api/cardholder', params)
 
 export const apiCardholderAdd = async (params:any) => await apiPost('/api/cardholder', params)
@@ -7,3 +9,9 @@ export const apiCardholderAdd = async (params:any) => await apiPost('/api/cardho
 export const apiCardholderInfo = async (params:any) => await apiGet(`/api/cardholder/${params}`)
 
 export const apiCardholderUpdate = async (params:any) => await apiPost('/api/cardholder/update', params)
+
+export const apiRecharge = async () => await apiGet('/api/users/my/recharge_address')
+
+export const apiWithdrawConfig = async () => await apiGet('/api/withdraws/config')
+
+export const apiWithdraw = async (params:any) => await apiPost('/api/withdraws', params)

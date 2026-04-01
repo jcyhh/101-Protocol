@@ -38,8 +38,8 @@
 
                 <div class="size26 mt50">支付 199$ 申请</div>
 
-                <div class="mt50 flex ac">
-                    <div class="mainButton btn flex jc ac">取消</div>
+                <div class="mt50 flex ac bold5">
+                    <div class="mainButton btn flex jc ac main">取消</div>
                     <div class="mainBtn btn ml20 flex jc ac">确认</div>
                 </div>
             </div>

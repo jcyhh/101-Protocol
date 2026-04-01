@@ -1,17 +1,15 @@
+import { apiUserInfo } from '@/api/user'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
 
-    const isBindReferral = ref(false)
+    const userInfo = ref()
 
-    const orders = ref<any[]>([])
-
-    const list1Length = ref(0)
+    const loadUserInfo = async () => userInfo.value = await apiUserInfo()
 
     return {
-        isBindReferral,
-        orders,
-        list1Length
+        userInfo,
+        loadUserInfo
     }
 })

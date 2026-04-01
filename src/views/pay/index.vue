@@ -28,7 +28,7 @@
         </div>
 
         <div class="flex ac mt80 size28 bold6 main">
-            <div class="flex1 mainButton btn flex jc ac" >全球付</div>
+            <div class="flex1 mainButton btn flex jc ac" @click="routerPush('/pay/remittance')">全球付</div>
             <div class="flex1 mainButton btn flex jc ac ml15 mr15" @click="routerPush('/physical')">实体卡</div>
             <div class="flex1 mainButton btn flex jc ac" @click="routerPush('/virtual')">虚拟卡</div>
         </div>

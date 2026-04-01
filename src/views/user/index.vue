@@ -7,7 +7,7 @@
                 <img src="@/assets/user/1.png" class="img110 mr24">
                 <div>
                     <div class="size24 opc5">我的邮箱</div>
-                    <div class="size32 bold mt20">1234567890@qq.com</div>
+                    <div class="size32 bold mt20" v-init:address="userInfo?.email"></div>
                 </div>
             </div>
             <img src="@/assets/user/2.png" class="img56 animate__animated animate__zoomIn" @click="routerPush('/setting')">
@@ -37,25 +37,25 @@
             </div>
             <div class="flex mt40">
                 <div class="flex1">
-                    <div class="size28" v-init="1000"></div>
+                    <div class="size28" v-init="userInfo?.balance_aix"></div>
                     <div class="size24 opc5 mt10">{{ assetAIX }} {{ $t('余额') }}</div>
                 </div>
                 <div class="flex1 ml30">
-                    <div class="size28" v-init="1000"></div>
+                    <div class="size28" v-init="userInfo?.balance_nftc"></div>
                     <div class="size24 opc5 mt10">{{ assetNFTC }} {{ $t('余额') }}</div>
                 </div>
                 <div class="flex1">
-                    <div class="size28" v-init="1000"></div>
+                    <div class="size28" v-init="userInfo?.balance_usdt"></div>
                     <div class="size24 opc5 mt10">{{ assetUSDT }} {{ $t('余额') }}</div>
                 </div>
             </div>
             <div class="flex mt30">
                 <div class="flex1">
-                    <div class="size28" v-init="1000"></div>
+                    <div class="size28" v-init="userInfo?.balance_lottery_aix"></div>
                     <div class="size24 opc5 mt10">{{ $t('抽奖') }} {{ assetAIX }}</div>
                 </div>
                 <div class="flex1 ml30">
-                    <div class="size28" v-init="1000"></div>
+                    <div class="size28" v-init="userInfo?.balance_year"></div>
                     <div class="size24 opc5 mt10">{{ $t('年终奖') }}</div>
                 </div>
                 <div class="flex1"></div>
@@ -140,6 +140,12 @@
 import { assetAIX, assetNFTC, assetUSDT } from '@/config';
 import Banner from './components/Banner.vue';
 import { routerPush } from '@/router';
+import { useUserStore } from '@/store';
+import { storeToRefs } from 'pinia';
+
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
+userStore.loadUserInfo()
 </script>
 
 <style lang="scss" scoped>

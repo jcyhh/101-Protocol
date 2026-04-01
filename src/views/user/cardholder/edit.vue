@@ -60,7 +60,7 @@
         <div class="safeArea"></div>
     </div>
 
-    <CusPicker v-model:show="pickerShow" :list="countrys" :title="$t('选择国家')" :default-index="current" @change="$event=>current=$event">
+    <CusPicker v-model:show="pickerShow" :list="countrys" :title="$t('请选择')" :default-index="current" @change="$event=>current=$event">
         <template v-slot="{ item }">
             <span class="bold5">{{ item.name }}({{ item.country_code }})</span>
         </template>

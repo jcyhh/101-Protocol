@@ -11,13 +11,13 @@
                     <div class="size28 bold5">选择卡</div>
                     <div class="size24">
                         <span class="opc5">可用余额</span>
-                        <span class="bold5 main ml10" v-init="1000"></span>
+                        <span class="bold5 main ml10" v-init="currentPicker?.available_balance"></span>
                         <span class="bold5 main ml5">{{ assetUSD }}</span>
                     </div>
                 </div>
 
                 <div class="inp flex jb ac mt20 size28" @click="pickerShow=true">
-                    <div v-if="currentPicker">{{ currentPicker.first_name }} {{ currentPicker.last_name }}({{ currentPicker.country_code }})</div>
+                    <div v-if="currentPicker">{{ currentPicker.card_number }}</div>
                     <div class="gray" v-else>请选择卡</div>
                     <div class="gray">
                         <van-icon name="arrow" />
@@ -26,7 +26,7 @@
 
                 <div class="size28 bold5 mt30">转入卡号</div>
                 <div class="inp flex jb ac mt20 size28">
-                    <input type="text" placeholder="请输入转入卡号" class="flex1">
+                    <input type="text" v-model="toCardNumber" placeholder="请输入转入卡号" class="flex1">
                     <div class="line"></div>
                     <img src="@/assets/common/usdt.png" class="img36 ml20">
                     <div class="size20 ml6">{{ assetUSDT }}</div>
@@ -34,7 +34,7 @@
 
                 <div class="size28 bold5 mt30">转出金额</div>
                 <div class="inp flex jb ac mt20 size28">
-                    <input type="text" placeholder="请输入充值金额" class="flex1">
+                    <input type="number" v-model="inputAmount" placeholder="请输入充值金额" class="flex1">
                     <div class="line"></div>
                     <img src="@/assets/common/usdt.png" class="img36 ml20">
                     <div class="size20 ml6">{{ assetUSDT }}</div>
@@ -42,22 +42,22 @@
 
                 <div class="size28 bold5 mt30">到账金额</div>
                 <div class="inp flex jb ac mt20 size28">
-                    <div class="flex1" v-init="1"></div>
+                    <div class="flex1" v-init="inputAmount"></div>
                     <div class="line"></div>
                     <img src="@/assets/common/usd.png" class="img36 ml20">
                     <div class="size20 ml6">{{ assetUSD }}</div>
                 </div>
 
-                <div class="mainBtn mt100 flex jc ac size28 main bold6 btn">确认</div>
+                <div class="mainBtn mt100 flex jc ac size28 main bold6 btn" @click="submit">确认</div>
 
                 <div class="safeArea"></div>
             </div>
         </div>
     </VanPopup>
 
-    <CusPicker v-model:show="pickerShow" :list="pickerList" :title="$t('选择卡')" :default-index="pickerCurrent" @change="$event=>pickerCurrent=$event">
+    <CusPicker v-model:show="pickerShow" :list="pickerList" :title="$t('请选择')" :default-index="pickerCurrent" @change="$event=>pickerCurrent=$event">
         <template v-slot="{ item }">
-            <span class="bold5">1111 **** **** 1111</span>
+            <span class="bold5">{{ item.card_number }}</span>
         </template>
     </CusPicker>
 </template>
@@ -67,14 +67,38 @@ import { useCard } from '@/hooks/useCardholder';
 import { ref } from 'vue';
 import CusPicker from '@/components/CusPicker/index.vue';
 import { assetUSD, assetUSDT } from '@/config';
+import { apiTransfer } from '@/api/card';
+import { message } from '@/utils/message';
+import { t } from '@/locale';
+
+const emits = defineEmits(['success'])
 
 const { pickerShow, pickerList, currentPicker, pickerCurrent, loadPickerList } = useCard()
 
-const show = ref(true)
+const inputAmount = ref()
+const toCardNumber = ref()
+
+const show = ref(false)
 
 const open = () => {
+    inputAmount.value = ''
+    toCardNumber.value = ''
     show.value = true
     loadPickerList()
+}
+
+const submit = async () => {
+    if(!currentPicker.value)return message(t('请选择卡'))
+    if(!toCardNumber.value)return message(t('请输入转入卡号'))
+    if(!inputAmount.value)return message(t('请输入转入金额'))
+    await apiTransfer({
+        amount: inputAmount.value,
+        from_card_id: currentPicker.value.id,
+        to_card_id: toCardNumber.value
+    })
+    message(t('转账成功'), 'success')
+    show.value = false
+    emits('success')
 }
 
 defineExpose({

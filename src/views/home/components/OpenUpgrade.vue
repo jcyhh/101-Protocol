@@ -7,7 +7,7 @@
                     <van-icon size="20" name="cross" color="#8D9094" @click="close" />
                 </div>
 
-                <div class="mt100 size48 bold tc" v-init="1000"></div>
+                <div class="mt100 size48 bold tc" v-init="diff"></div>
                 <div class="size24 mt20 opc5 tc">升级补差金额({{ assetUSDT }})</div>
 
                 <div class="size26 bold6 mt100 mb30">支付方式</div>
@@ -25,20 +25,46 @@
 
 <script setup lang="ts">
 import { assetUSDT } from '@/config';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import CusPaytype from '@/components/CusPaytype/index.vue'
+import { useUserStore } from '@/store';
+import { storeToRefs } from 'pinia';
+import { computedSub } from '@/utils';
+import { apiUpgradeVirtualCard } from '@/api/card';
+import { message } from '@/utils/message';
+import { t } from '@/locale';
+
+const emits = defineEmits(['success'])
+
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 
 const show = ref(false)
 const paytype = ref('balance_aix')
 
-const open = () => {
+const cardInfo = ref()
+
+const diff = computed(()=>computedSub(cardInfo.value?.price, userInfo.value.card_amount))
+
+const open = (data:any) => {
+    cardInfo.value = data
     show.value = true
 }
 
 const close = () => show.value = false
 
-const submit = () => {
+const submit = async () => {
+    await apiUpgradeVirtualCard({
+        product_id: cardInfo.value.id
+    })
 
+    message(t('升级成功'), 'success')
+
+    show.value = false
+
+    userStore.loadUserInfo()
+
+    emits('success')
 }
 
 defineExpose({

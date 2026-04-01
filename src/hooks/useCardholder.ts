@@ -1,3 +1,4 @@
+import { apiGetCardList } from "@/api/card"
 import { apiCardholder } from "@/api/user"
 import { computed, ref } from "vue"
 
@@ -38,7 +39,10 @@ export function useCard () {
     const currentPicker = computed(()=>pickerList.value.length==0?null:pickerList.value[pickerCurrent.value])
 
     const loadPickerList = async () => {
-        pickerList.value = [1,2,3,4,5]
+        const res:any = await apiGetCardList({
+            pay_status: 2
+        })
+        pickerList.value = res.data.filter((item:any)=>item.complete_card_number)
     }
 
     return {

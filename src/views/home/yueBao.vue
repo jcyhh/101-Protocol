@@ -11,74 +11,109 @@
 
         <div class="card mt30">
             <div class="opc5 size24 tc">总金额({{ assetUSDT }})</div>
-            <div class="tc bold size52 mt20" v-init="1000"></div>
+            <div class="tc bold size52 mt20" v-init="stats?.deposit_amount"></div>
             <div class="stats mt30 flex ac tc">
                 <div class="flex1">
-                    <div class="size28 bold6" v-init="1000"></div>
+                    <div class="size28 bold6" v-init="stats?.total_income"></div>
                     <div class="size24 opc5 mt10">累计收益</div>
                 </div>
                 <div class="line"></div>
                 <div class="flex1">
-                    <div class="size28 bold6" v-init="1000"></div>
+                    <div class="size28 bold6" v-init="stats?.yesterday_income"></div>
                     <div class="size24 opc5 mt10">昨日收益</div>
                 </div>
             </div>
             <div class="pl6 pr6 mt40 flex size28 bold6">
-                <div class="btn btn1 flex jc ac">明细</div>
-                <div class="btn btn2 flex jc ac ml20">存入</div>
+                <div class="btn btn1 flex jc ac" @click="routerPush('/yuebao/record')">明细</div>
+                <div class="btn btn2 flex jc ac ml20" @click="saveRef?.open()">存入</div>
             </div>
         </div>
     </div>
 
     <CusTab v-model="current" :list="tabs"></CusTab>
 
-    <div class="pl30 pr30 rel">
+    <van-list class="page rel" v-bind="listProps">
+        <div class="pl30 pr30 rel">
 
-        <div class="cell item mb20" v-for="(item, index) in 10">
-            <div class="flex jb">
-                <div>
-                    <div class="size24 opc5">存入金额(USDT)</div>
-                    <div class="size40 bold6 main mt10" v-init="1000"></div>
-                    <div class="size24 mt10">
-                        <span>年化利率</span>
-                        <span class="green ml10">10%</span>
+            <div class="cell item mb20" v-for="(item, index) in list" :key="index">
+                <div class="flex jb">
+                    <div>
+                        <div class="size24 opc5">存入金额(USDT)</div>
+                        <div class="size40 bold6 main mt10" v-init="item.amount"></div>
+                        <div class="size24 mt10">
+                            <span>年化利率</span>
+                            <span class="green ml10">{{ item.annual_rate }}%</span>
+                        </div>
+                    </div>
+                    <div class="flex col ae">
+                        <div class="mainButton btn flex jc ac" v-if="item.can_withdraw && current==0" @click="openTakeout(item.id)">取出</div>
+                        <div class="progressBox mt30" v-if="!item.can_withdraw && current==0">
+                            <CusProgress :progress="getPercent(item.released_days, item?.package?.days)"></CusProgress>
+                        </div>
+                        <div class="size24 opc5 mt10">进度 {{ item.released_days }}/{{ item?.package?.days }}天</div>
                     </div>
                 </div>
-                <div class="flex col ae">
-                    <div class="mainButton btn flex jc ac">取出</div>
-                    <div class="progressBox mt30">
-                        <CusProgress :progress="getPercent(50,100)"></CusProgress>
+                <div class="flex mt40">
+                    <div class="flex1">
+                        <div v-init="item.total_profit"></div>
+                        <div class="mt10 size20 opc5">累计收益({{ assetUSDT }})</div>
                     </div>
-                    <div class="size24 opc5 mt10">进度 4/7天</div>
+                    <div class="flex1">
+                        <div v-init="item.daily_profit"></div>
+                        <div class="mt10 size20 opc5">每日预估收益({{ assetUSDT }})</div>
+                    </div>
+                    <div class="flex1">
+                        <div v-init="item.released_token_amount"></div>
+                        <div class="mt10 size20 opc5">
+                            已释放
+                            <span v-if="item.ccy=='balance_usdt'">({{ assetUSDT }})</span>    
+                            <span v-else-if="item.ccy=='balance_aix'">({{ assetAIX }})</span> 
+                            <span v-else>({{ assetNFTC }})</span> 
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="flex mt40">
-                <div class="flex1">
-                    <div v-init="1000"></div>
-                    <div class="mt10 size20 opc5">累计收益({{ assetUSDT }})</div>
+            <CusEmpty v-if="list?.length==0"></CusEmpty>
+        </div>
+    </van-list>
+    
+    <VanPopup v-model:show="showAsk" style="background: transparent;" overlay-class="cusMask" teleport="#app">
+        <div class="popupCenter mainCard">
+            <div class="content">
+                <div class="flex jb ac">
+                    <div class="size28 main bold6">{{ $t('提示') }}</div>
+                    <van-icon size="20" name="cross" color="#8D9094" @click="showAsk=false" />
                 </div>
-                <div class="flex1">
-                    <div v-init="1000"></div>
-                    <div class="mt10 size20 opc5">每日预估收益({{ assetUSDT }})</div>
-                </div>
-                <div class="flex1">
-                    <div v-init="1000"></div>
-                    <div class="mt10 size20 opc5">存入周期</div>
+
+                <div class="size26 mt50">确定要取出吗？</div>
+
+                <div class="mt50 flex ac bold5">
+                    <div class="mainButton btn flex jc ac main" @click="showAsk=false">取消</div>
+                    <div class="mainBtn btn ml20 flex jc ac" @click="takeOut">确认</div>
                 </div>
             </div>
         </div>
+    </VanPopup>
 
-    </div>
+    <Save ref="saveRef" @success="onSuccess()"></Save>
 </template>
 
 <script setup lang="ts">
 import CusNav from '@/components/CusNav/index.vue'
 import CusTab from '@/components/CusTab/index.vue'
-import { assetUSDT } from '@/config';
+import { assetAIX, assetNFTC, assetUSDT } from '@/config';
 import { t } from '@/locale';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import CusProgress from '@/components/CusProgress/index.vue'
 import { getPercent } from '@/utils';
+import { useLoadList } from '@/hooks/useLoadList';
+import CusEmpty from '@/components/CusEmpty/index.vue'
+import { apiTakeOut, apiYuebaoStats } from '@/api/yuebao';
+import { routerPush } from '@/router';
+import { message } from '@/utils/message';
+import Save from './components/Save.vue';
+
+const saveRef = ref()
 
 const current = ref(0)
 
@@ -92,6 +127,39 @@ const tabs = computed(()=>([
         value: 2
     }
 ]))
+
+const params = computed(()=>({status: tabs.value[current.value].value}))
+const { list, props: listProps, loadList } = useLoadList('/api/yuebao/orders', 'orders', params)
+
+watch(current, () => loadList(), {immediate:true})
+
+const stats = ref()
+const loadData = async () => stats.value = await apiYuebaoStats()
+
+const orderId = ref()
+const showAsk = ref(false)
+const openTakeout = (id:any) => {
+    orderId.value = id
+    showAsk.value = true
+}
+const takeOut = async () => {
+    await apiTakeOut({
+        order_id: orderId.value
+    })
+    message(t('操作成功'))
+    showAsk.value = false
+    loadData()
+    loadList()
+}
+
+const onSuccess = () => {
+    loadData()
+    loadList()
+}
+
+onMounted(()=>{
+    loadData()
+})
 </script>
 
 <style lang="scss" scoped>
