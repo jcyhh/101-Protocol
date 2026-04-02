@@ -12,8 +12,12 @@ export default [
         component: () => import('@/views/login/edit.vue')
     },
     {
-        path:'/bind',
-        component: () => import('@/views/login/bind.vue')
+        path:'/bindEmail',
+        component: () => import('@/views/login/bindEmail.vue')
+    },
+    {
+        path:'/bindAddress',
+        component: () => import('@/views/login/bindAddress.vue')
     },
     {
         path:'/editPay',

@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps(['list'])
+defineProps(['list'])
 const current = defineModel<number>({ default: 0 })
 
 const onTabClick = (index:any) => {

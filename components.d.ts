@@ -9,7 +9,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     CusAsk: typeof import('./src/components/CusAsk/index.vue')['default']
-    CusData: typeof import('./src/components/CusData/index.vue')['default']
     CusEmpty: typeof import('./src/components/CusEmpty/index.vue')['default']
     CusLang: typeof import('./src/components/CusLang/index.vue')['default']
     CusLoading: typeof import('./src/components/CusLoading/index.vue')['default']
@@ -21,9 +20,6 @@ declare module 'vue' {
     CusSms: typeof import('./src/components/CusSms/index.vue')['default']
     CusTab: typeof import('./src/components/CusTab/index.vue')['default']
     CusTitle: typeof import('./src/components/CusTitle/index.vue')['default']
-    Demo: typeof import('./src/components/CusPicker/demo.vue')['default']
-    Picker: typeof import('./src/components/CusPicker/Picker.vue')['default']
-    Plasma: typeof import('./src/components/Plasma.vue')['default']
     QRCode: typeof import('vue-amazing-ui')['QRCode']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

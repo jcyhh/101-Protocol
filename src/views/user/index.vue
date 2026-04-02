@@ -8,13 +8,13 @@
                 <div v-if="isH5">
                     <div class="size32 bold mt20" v-init:address="userInfo?.address"></div>
                     <div class="flex mt20" v-if="!userInfo?.email">
-                        <div class="mainButton flex jc ac bindTag" @click="routerPush('/bind')">绑定邮箱</div>
+                        <div class="mainButton flex jc ac bindTag" @click="routerPush('/bindEmail')">绑定邮箱</div>
                     </div>
                 </div>
                 <div v-else>
                     <div class="size32 bold mt20" v-init:address="userInfo?.email"></div>
                     <div class="flex mt20" v-if="!userInfo?.address">
-                        <div class="mainButton flex jc ac bindTag" @click="routerPush('/bind')">绑定钱包</div>
+                        <div class="mainButton flex jc ac bindTag" @click="routerPush('/bindAddress')">绑定钱包</div>
                     </div>
                 </div>
             </div>

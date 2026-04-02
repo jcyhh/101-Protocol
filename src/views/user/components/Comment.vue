@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps(['data'])
+defineProps(['data'])
 </script>
 
 <style lang="scss" scoped>

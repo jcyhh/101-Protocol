@@ -61,7 +61,6 @@ import { assetUSDT } from '@/config';
 import { padZero } from '@/utils';
 import { useLoadList } from '@/hooks/useLoadList';
 import { usePullRefresh } from '@/hooks/usePullRefresh';
-import CusEmpty from '@/components/CusEmpty/index.vue'
 
 const { list, props: listProps, loadList } = useLoadList('/api/community/rank', 'list')
 const { props } = usePullRefresh(loadList)

@@ -76,7 +76,7 @@ import CusPicker from '@/components/CusPicker/index.vue';
 import { t } from '@/locale';
 import { computedMul } from '@/utils';
 import { computed, ref } from 'vue';
-const props = defineProps(['currency', 'channel', 'form', 'serviceFeeUSD', 'totalPayUSD'])
+defineProps(['currency', 'channel', 'form', 'serviceFeeUSD', 'totalPayUSD'])
 const emits = defineEmits(['submit', 'prevStep'])
 
 // 选择国家
