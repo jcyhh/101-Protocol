@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="flex jb ac mt10">
-            <div class="size28 bold" v-init:address="userInfo?.email"></div>
+            <div class="size28 bold" v-init:address="userInfo?.email || userInfo?.address"></div>
             <div class="size24 gray" v-if="userInfo?.upgrade_level">当前等级</div>
             <div class="size24 gray" v-if="userInfo && !userInfo?.upgrade_level">已是最高等级</div>
         </div>
@@ -104,7 +104,7 @@
             <div class="cell mb12" v-for="(item,index) in list" :key="index">
                 <div class="gap10"></div>
                 <div class="flex jb ac">
-                    <div class="size28 bold6" v-init:address="item.email"></div>
+                    <div class="size28 bold6" v-init:address="item.email || item.address"></div>
                     <div class="size26 bold main">
                         <span v-init="item.kpi"></span>
                         <span>{{ assetUSDT }}</span>

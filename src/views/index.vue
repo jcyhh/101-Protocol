@@ -5,11 +5,11 @@
 </template>
 
 <script setup lang="ts">
+import { apiDappLogin } from '@/api/login';
 import { getRef, getToken, setRef, setToken } from '@/config/storage';
 import { getSign } from '@/dapp';
 import { routerReplace } from '@/router';
 import { useAppStore, useDappStore } from '@/store';
-import { apiPost } from '@/utils/request';
 import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
 import { useRoute } from 'vue-router';
@@ -38,7 +38,7 @@ if(!isH5.value){
 // 登录
 const dappLoginIn = async () => {
     const signInfo = await getSign('Login')
-    const res:any = apiPost('/api/auth/login',{
+    const res:any = await apiDappLogin({
         ref: getRef(),
         address: walletAddress.value,
         ...signInfo

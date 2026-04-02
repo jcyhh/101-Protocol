@@ -15,3 +15,5 @@ export const apiRecharge = async () => await apiGet('/api/users/my/recharge_addr
 export const apiWithdrawConfig = async () => await apiGet('/api/withdraws/config')
 
 export const apiWithdraw = async (params:any) => await apiPost('/api/withdraws', params)
+
+export const apiHelpDetail = async (params:any) => await apiGet(`/api/help_center/${params}`)

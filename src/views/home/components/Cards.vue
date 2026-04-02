@@ -34,7 +34,7 @@
     </div>
 
     <div class="flex ac mt30">
-        <div class="update mainButton flex jc ac animate__animated animate__fadeInLeft ani3 mr20" @click="openUpgrade" v-if="diff > 0">
+        <div class="update mainButton flex jc ac animate__animated animate__fadeInLeft ani3 mr20" v-scale @click="openUpgrade" v-if="diff > 0">
             <img src="@/assets/home/3.png" class="img40 mr10">
             <div class="size32 main">升级</div>
         </div>

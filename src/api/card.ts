@@ -18,6 +18,12 @@ export const apiDrawConfig = () => apiGet('/api/products/config')
 
 export const apiDraw = () => apiPost('/api/order/rush')
 
-export const apiCard = (params:any) => apiPost('/api/card', params)
+export const apiCard = (params:any) => apiPost('/api/order', params)
 
 export const apiDrawStats = () => apiGet('/api/order/rebate_stats')
+
+export const apiCardBind = (params:any) => apiPost('/api/card/physical/bind', params)
+
+export const apiCardApply = (params:any) => apiPost('/api/card/physical/apply', params)
+
+export const apiCardPsw = (params:any) => apiPost('/api/card/set-pin', params)

@@ -5,7 +5,7 @@
         <div class="mainCard">
             <div class="size40 main lh60">{{ info?.title }}</div>
             <div class="flex jb ac mt30">
-                <div class="size24">来自 {{ info?.email }}</div>
+                <div class="size24">来自 {{ info?.email || info?.address }}</div>
                 <div class="size24 opc5">{{ info?.created_at }}</div>
             </div>
             <div class="flex jb ac mt12">
@@ -18,6 +18,9 @@
             </div>
             <div class="line mt40 mb40"></div>
             <div class="size26 lh40">{{ info?.content }}</div>
+            <div class="flex pics grid col3 mt30 mb72" v-if="info?.images && info?.images.length>0">
+                <img :src="item" class="picitem" v-for="(item,index) in info?.images" :key="index">
+            </div>
         </div>
 
         <div class="size30 mt40 mb26">
@@ -50,12 +53,10 @@
 import CusNav from '@/components/CusNav/index.vue'
 import Comment from '../components/Comment.vue';
 import { useRoute } from 'vue-router';
-import { apiCommentDetail, apiCommentJudge } from '@/api/comment';
+import { apiCommentDetail } from '@/api/comment';
 import { computed, onMounted, ref } from 'vue';
 import { useLoadList } from '@/hooks/useLoadList';
 import CusEmpty from '@/components/CusEmpty/index.vue'
-import { message } from '@/utils/message';
-import { t } from '@/locale';
 import Judeg from '../components/Judeg.vue';
 
 const { params } = useRoute()
@@ -71,20 +72,6 @@ const paramsData = computed(()=>({
 }))
 const { list, props: listProps, loadList } = useLoadList('/api/forum/comments', 'comments', paramsData)
 loadList()
-
-const content = ref()
-
-const submit = async () => {
-    if(!content.value)return message(t('请输入评论'))
-    await apiCommentJudge({
-        parent_id: 0,
-        post_id: params?.id,
-        content: content.value
-    })
-    message(t('评论成功'), 'success')
-    content.value = ''
-    loadList()
-}
 
 onMounted(()=>{
     loadData()
@@ -117,6 +104,14 @@ onMounted(()=>{
             padding: 0 30px;
             font-size: 24px;
         }
+    }
+}
+.pics{
+    gap: 15px;
+    .picitem{
+        width: 200px;
+        height: 200px;
+        border-radius: 20px;
     }
 }
 </style>

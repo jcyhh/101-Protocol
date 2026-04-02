@@ -4,7 +4,7 @@
     <div v-if="cardList.length==0">
         <CusEmpty></CusEmpty>
         <div class="pl30 pr30 mt80">
-            <div class="flex1 mainButton btn flex jc ac" @click="routerReplace('/home/index')">
+            <div class="flex1 mainButton btn flex jc ac" v-scale @click="routerReplace('/home/index')">
                 <img src="@/assets/pay/5.png" class="img40 mr20">
                 <div>开卡</div>
             </div>
@@ -72,11 +72,11 @@
             </div>
 
             <div class="flex ac mt40 size28 bold6 main">
-                <div class="flex1 mainButton btn flex jc ac" @click="rechargeRef?.open()">
+                <div class="flex1 mainButton btn flex jc ac" v-scale @click="rechargeRef?.open()">
                     <img src="@/assets/user/3.png" class="img40 mr10">
                     <div>充值</div>
                 </div>
-                <div class="flex1 mainButton btn flex jc ac ml15 mr15" @click="transferRef?.open()">
+                <div class="flex1 mainButton btn flex jc ac ml15 mr15" v-scale @click="transferRef?.open()">
                     <img src="@/assets/pay/3.png" class="img40 mr10">
                     <div>转账</div>
                 </div>

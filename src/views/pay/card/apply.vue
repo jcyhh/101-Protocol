@@ -6,7 +6,7 @@
         
         <div class="size28 bold6">收件人姓名</div>
         <div class="cell card mb20 flex jb ac mt20">
-            <input type="text" placeholder="请输入收件人姓名" class="flex1 size28">
+            <input type="text" v-model="recipient_name" placeholder="请输入收件人姓名" class="flex1 size28">
         </div>
 
         <div class="size28 bold6 mt30">收件地址</div>
@@ -24,35 +24,46 @@
     <div class="safeArea"></div>
     <div class="gap130"></div>
     <div class="bottom">
-        <div class="mainBtn size28 bold6 flex jc ac">确认</div>
+        <div class="mainBtn size28 bold6 flex jc ac" @click="openAsk">确认</div>
         <div class="safeArea"></div>
     </div>
 
-    <VanPopup v-model:show="show" style="background: transparent;" overlay-class="cusMask" teleport="#app">
-        <div class="popupCenter mainCard">
-            <div class="content">
-                <div class="flex jb ac">
-                    <div class="size28 main bold6">{{ $t('申请实体卡') }}</div>
-                    <van-icon size="20" name="cross" color="#8D9094" @click="show=false" />
-                </div>
-
-                <div class="size26 mt50">支付 199$ 申请</div>
-
-                <div class="mt50 flex ac bold5">
-                    <div class="mainButton btn flex jc ac main">取消</div>
-                    <div class="mainBtn btn ml20 flex jc ac">确认</div>
-                </div>
-            </div>
-        </div>
-    </VanPopup>
+    <CusAsk v-model:show="show" :title="$t('申请实体卡')" @submit="submit">支付 199$ 申请</CusAsk>
 </template>
 
 <script setup lang="ts">
+import { apiCardApply } from '@/api/card';
 import CusNav from '@/components/CusNav/index.vue'
-import { routerPush } from '@/router';
+import { t } from '@/locale';
+import { routerPush, routerReplace } from '@/router';
+import { message } from '@/utils/message';
 import { ref } from 'vue';
+import CusAsk from '@/components/CusAsk/index.vue'
 
 const show = ref(false)
+
+const recipient_name = ref()
+const recipient_address = ref()
+const recipient_phone = ref()
+
+const openAsk = () => {
+    if(!recipient_name.value)return message(t('请选择持卡人'))
+    if(!recipient_address.value)return message(t('请输入卡号'))
+    if(!recipient_phone.value)return message(t('请输入卡号'))
+    show.value = true
+}
+
+const submit = async () => {
+    await apiCardApply({
+        recipient_name: recipient_name.value,
+        recipient_address: recipient_address.value,
+        recipient_phone: recipient_phone.value
+    })
+    message(t('提交成功'), 'success')
+    setTimeout(() => {
+        routerReplace('/physical/record')
+    }, 1200);
+}
 </script>
 
 <style lang="scss" scoped>

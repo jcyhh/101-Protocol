@@ -5,9 +5,17 @@
         <div class="flex jb ac">
             <div class="flex ac">
                 <img src="@/assets/user/1.png" class="img110 mr24">
-                <div>
-                    <div class="size24 opc5">我的邮箱</div>
+                <div v-if="isH5">
+                    <div class="size32 bold mt20" v-init:address="userInfo?.address"></div>
+                    <div class="flex mt20" v-if="!userInfo?.email">
+                        <div class="mainButton flex jc ac bindTag" @click="routerPush('/bind')">绑定邮箱</div>
+                    </div>
+                </div>
+                <div v-else>
                     <div class="size32 bold mt20" v-init:address="userInfo?.email"></div>
+                    <div class="flex mt20" v-if="!userInfo?.address">
+                        <div class="mainButton flex jc ac bindTag" @click="routerPush('/bind')">绑定钱包</div>
+                    </div>
                 </div>
             </div>
             <img src="@/assets/user/2.png" class="img56 animate__animated animate__zoomIn" @click="routerPush('/setting')">
@@ -67,17 +75,13 @@
                 <img src="@/assets/user/3.png" class="img40">
                 <div class="mt20">充值</div>
             </div>
-            <div class="item flex col jc ac" @click="routerPush('/user/withdraw')">
+            <div class="item flex col jc ac ml20 mr20" @click="routerPush('/user/withdraw')">
                 <img src="@/assets/user/4.png" class="img40">
                 <div class="mt20">提现</div>
             </div>
             <div class="item flex col jc ac" @click="routerPush('/user/transfer')">
                 <img src="@/assets/user/5.png" class="img40">
                 <div class="mt20">转账</div>
-            </div>
-            <div class="item flex col jc ac" @click="routerPush('/user/exclusion')">
-                <img src="@/assets/user/6.png" class="img40">
-                <div class="mt20">划转</div>
             </div>
         </div>
 
@@ -140,8 +144,11 @@
 import { assetAIX, assetNFTC, assetUSDT } from '@/config';
 import Banner from './components/Banner.vue';
 import { routerPush } from '@/router';
-import { useUserStore } from '@/store';
+import { useAppStore, useUserStore } from '@/store';
 import { storeToRefs } from 'pinia';
+
+const appStore = useAppStore()
+const { isH5 } = storeToRefs(appStore)
 
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
@@ -165,9 +172,14 @@ userStore.loadUserInfo()
     }
 }
 .item{
-    width: 160px;
+    flex: 1;
     height: 140px;
     background: linear-gradient(180deg, rgba(255, 229, 165, 0.12) 0%, rgba(255, 229, 165, 0.04) 100%);
     border-radius: 20px;
+}
+.bindTag{
+    font-size: 22px;
+    height: 48px;
+    padding: 0 20px;
 }
 </style>

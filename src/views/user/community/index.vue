@@ -12,7 +12,7 @@
                                 <div class="size28 bold6 main">{{ item.name }}</div>
                                 <div class="size24 bold6">{{ item.member_count }}/{{ item.community_max_num }}</div>
                             </div>
-                            <div class="size24 opc5 mt10">创建人 {{ item.email }}</div>
+                            <div class="size24 opc5 mt10">创建人 {{ item.email || item.address }}</div>
                         </div>
                     </div>
                     <div class="line mt24 mb20"></div>
@@ -21,7 +21,7 @@
                             <img src="@/assets/user/21.png" class="img26 mr10">
                             <div class="size24 opc5 line1 desc">{{ item.desc }}</div>
                         </div>
-                        <div class="mainButton btn flex ac main" @click="openAsk(item)">申请加入</div>
+                        <div class="mainButton btn flex ac main" v-scale @click="openAsk(item)">申请加入</div>
                     </div>
                 </div>
                 <CusEmpty v-if="list?.length == 0"></CusEmpty>

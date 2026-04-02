@@ -13,7 +13,7 @@
                         <img :src="item?.images[0]" class="img130 cover flex0" v-if="item?.images && item.images.length>0">
                         <div class="img130 flex0" v-else></div>
                     </div>
-                    <div class="size24 mt6">来自 {{ item.email }}</div>
+                    <div class="size24 mt6">来自 {{ item.email || item.address }}</div>
                     <div class="flex jb ac mt10">
                         <div class="flex ac">
                             <img src="@/assets/user/20.png" class="img34 mr6">

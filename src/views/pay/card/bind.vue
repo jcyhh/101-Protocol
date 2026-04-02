@@ -14,7 +14,7 @@
         <div class="mt30">
             <div class="size28 bold6">卡号</div>
             <div class="cell card mb20 flex jb ac mt20">
-                <input type="text" placeholder="请输入卡号" class="flex1 size28">
+                <input type="text" v-model="card_number" placeholder="请输入卡号" class="flex1 size28">
             </div>
         </div>
 
@@ -23,7 +23,7 @@
     <div class="safeArea"></div>
     <div class="gap130"></div>
     <div class="bottom">
-        <div class="mainBtn size28 bold6 flex jc ac">确认</div>
+        <div class="mainBtn size28 bold6 flex jc ac" @click="submit">确认</div>
         <div class="safeArea"></div>
     </div>
 
@@ -31,16 +31,38 @@
         <template v-slot="{ item }">
             <span class="bold5">{{ item.first_name }} {{ item.last_name }}({{ item.country_code }})</span>
         </template>
+        <template #empty>
+            <div class="mainBtn flex jc ac bold5 size30" @click="routerPush('/cardholder/add')">添加持卡人</div>
+        </template>
     </CusPicker>
 </template>
 
 <script setup lang="ts">
+import { apiCardBind } from '@/api/card';
 import CusNav from '@/components/CusNav/index.vue'
 import CusPicker from '@/components/CusPicker/index.vue';
 import { useCardholder } from '@/hooks/useCardholder';
-import { onMounted } from 'vue';
+import { t } from '@/locale';
+import { routerGo, routerPush } from '@/router';
+import { message } from '@/utils/message';
+import { onMounted, ref } from 'vue';
 
 const { pickerShow, pickerList, currentPicker, pickerCurrent, loadPickerList } = useCardholder()
+
+const card_number = ref()
+
+const submit = async () => {
+    if(!currentPicker.value)return message(t('请选择持卡人'))
+    if(!card_number.value)return message(t('请输入卡号'))
+    await apiCardBind({
+        cardholder_id: currentPicker.value?.cardholder_id,
+        card_number: card_number.value
+    })
+    message(t('绑定成功'), 'success')
+    setTimeout(() => {
+        routerGo()
+    }, 1200);
+}
 
 onMounted(()=>{
     loadPickerList()

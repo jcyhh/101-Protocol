@@ -22,7 +22,7 @@
                     <div class="size26 bold6 mt100 mb30">支付方式</div>
 
                     <CusPaytype v-model:paytype="paytype"></CusPaytype>
-                    <div class="mainButton mt40 flex jc ac size28 main bold6 btn" @click="submit">确认支付</div>
+                    <div class="mainButton mt40 flex jc ac size28 main bold6 btn" v-scale @click="submit">确认支付</div>
                 </div>
 
                 <div class="pt160" v-else-if="info?.type==2">
@@ -38,7 +38,7 @@
                         <span class="mr5">抽卡次数</span>
                         <span class="main">{{ Number(userInfo?.balance_lottery) }}</span>
                     </div>
-                    <div class="mainButton mt40 flex jc ac size28 main bold6 btn" @click="again">继续抽卡</div>
+                    <div class="mainButton mt40 flex jc ac size28 main bold6 btn" v-scale @click="again">继续抽卡</div>
                 </div>
 
                 <div class="pt160" v-else>
@@ -52,7 +52,7 @@
                         <span class="mr5">抽卡次数</span>
                         <span class="main">{{ Number(userInfo?.balance_lottery) }}</span>
                     </div>
-                    <div class="mainButton mt40 flex jc ac size28 main bold6 btn" @click="again">继续抽卡</div>
+                    <div class="mainButton mt40 flex jc ac size28 main bold6 btn" v-scale @click="again">继续抽卡</div>
                 </div>
 
                 <div class="safeArea"></div>
@@ -105,7 +105,7 @@ const submit = async () => {
         rush_id: info.value?.rush_id,
         ccy: paytype.value
     })
-    message(t('支付成功'))
+    message(t('支付成功'), 'success')
     show.value = false
     userStore.loadUserInfo()
 }

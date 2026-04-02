@@ -8,12 +8,12 @@
         
                 <div class="cell card mb20 flex jb ac" v-for="(item,index) in list" :key="index">
                     <div>
-                        <div class="size28 bold5">{{ item.email }}</div>
-                        <div class="size24 mt10 opc5">2026</div>
+                        <div class="size28 bold5">{{ item.email || item.address }}</div>
+                        <div class="size24 mt10 opc5">{{ item.created_at  }}</div>
                     </div>
                     <div class="flex size28 bold6" v-if="current==0">
-                        <div class="mainButton mainButtonDel flex jc ac main btn flex1 mr12" @click="audit(2, item.id)">拒绝</div>
-                        <div class="mainButton flex jc ac main btn flex1" @click="audit(1, item.id)">通过</div>
+                        <div class="mainButton mainButtonDel flex jc ac main btn flex1 mr12" v-scale @click="audit(2, item.id)">拒绝</div>
+                        <div class="mainButton flex jc ac main btn flex1" v-scale @click="audit(1, item.id)">通过</div>
                     </div>
                     <div class="size28 bold6 green" v-else-if="current==1">已通过</div>
                     <div class="size28 bold6 opc5" v-else>已拒绝</div>

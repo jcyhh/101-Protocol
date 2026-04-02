@@ -38,13 +38,17 @@
 import { apiRecharge } from '@/api/user';
 import CusNav from '@/components/CusNav/index.vue'
 import { assetUSDT } from '@/config';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const address = ref()
 const loadData = async () => {
     const res:any = await apiRecharge()
     address.value = res.recharge_address
 }
+
+onMounted(()=>{
+    loadData()
+})
 </script>
 
 <style lang="scss" scoped>

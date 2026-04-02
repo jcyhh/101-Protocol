@@ -1,5 +1,5 @@
 <template>
-    <CusNav :title="$t('修改密码')"></CusNav>
+    <CusNav :title="$t('修改支付密码')"></CusNav>
     <div class="pl30 pr30 pt30 rel">
 
         <Password v-model="o_password" :tips="$t('旧密码')"></Password>
@@ -24,7 +24,7 @@ import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { t } from '@/locale';
 import { apiEditPassword } from '@/api/login';
-import { routerReplace } from '@/router';
+import { routerGo } from '@/router';
 
 const o_password = ref()
 const n_password = ref()
@@ -39,11 +39,11 @@ const submit = async () => {
     await apiEditPassword({
         o_password: o_password.value,
         n_password: n_password.value,
-        type: 1
+        type: 2
     })
 
-    message(t('修改成功请重新登录'), 'success')
-    setTimeout(() => routerReplace('/login'), 1200);
+    message(t('修改成功'), 'success')
+    setTimeout(() => routerGo(), 1200);
 }
 
 </script>

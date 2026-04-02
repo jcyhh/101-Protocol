@@ -1,5 +1,5 @@
 <template>
-    <CusNav :title="$t('忘记密码')"></CusNav>
+    <CusNav :title="$t('绑定邮箱')"></CusNav>
     <div class="pl30 pr30 pt30 rel">
         
         <div class="cell flex ac">
@@ -9,15 +9,9 @@
         <div class="cell flex ac mt30 mb30">
             <input type="text" v-model="emailCode" :placeholder="$t('验证码')" class="flex1 size28">
             <div class="size28 main flex0">
-                <CusSms :account="email" type="3"></CusSms>
+                <CusSms :account="email" type="5"></CusSms>
             </div>
         </div>
-
-        <Password v-model="password" :tips="$t('新密码')"></Password>
-
-        <div class="gap30"></div>
-
-        <Password v-model="passwordAgain" :tips="$t('确认密码')"></Password>
 
         <div class="mainBtn mt60 flex jc ac size28 bold5" @click="submit">{{ $t('确认') }}</div>
 
@@ -26,36 +20,29 @@
 
 <script setup lang="ts">
 import CusNav from '@/components/CusNav/index.vue'
-import Password from './components/Password.vue';
 import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { t } from '@/locale';
-import { apiForgetPassword } from '@/api/login';
-import { routerReplace } from '@/router';
-import { setAccount } from '@/config/storage';
+import { apiBindEmail } from '@/api/login';
+import { routerGo } from '@/router';
+import CusSms from '@/components/CusSms/index.vue'
 
 const email = ref()
-const password = ref()
-const passwordAgain = ref()
 const emailCode = ref()
 
 const submit = async () => {
     if(!email.value)return message(t('请输入邮箱'))
     if(!emailCode.value)return message(t('请输入验证码'))
-    if(!password.value)return message(t('请输入新密码'))
-    if(!passwordAgain.value)return message(t('请再次输入密码'))
-    if(password.value != passwordAgain.value)return message(t('密码输入不一致'))
 
-    await apiForgetPassword({
+    await apiBindEmail({
         email: email.value,
-        password: password.value,
         email_code: emailCode.value
     })
 
-    setAccount(email.value)
-
-    message(t('修改成功'), 'success')
-    routerReplace('/login')
+    message(t('绑定成功'), 'success')
+    setTimeout(() => {
+        routerGo()
+    }, 1200);
 }
 
 </script>

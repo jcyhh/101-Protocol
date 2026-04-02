@@ -12,7 +12,7 @@
                 </div>
 
                 <div class="inp flex jb ac mt20 size28" @click="pickerShow=true">
-                    <div v-if="currentPicker">{{ currentPicker.first_name }} {{ currentPicker.last_name }}({{ currentPicker.country_code }})</div>
+                    <div v-if="currentPicker">{{ currentPicker.card_number }}</div>
                     <div class="gray" v-else>请选择卡</div>
                     <div class="gray">
                         <van-icon name="arrow" />
@@ -21,15 +21,15 @@
 
                 <div class="size28 bold5 mt30">新交易密码</div>
                 <div class="inp flex jb ac mt20 size28">
-                    <input type="password" placeholder="请输入交易密码" class="flex1">
+                    <input type="password" v-model="password" placeholder="请输入交易密码" class="flex1">
                 </div>
 
                 <div class="size28 bold5 mt30">确认密码</div>
                 <div class="inp flex jb ac mt20 size28">
-                    <input type="password" placeholder="请再次输入新交易密码" class="flex1">
+                    <input type="password" v-model="password1" placeholder="请再次输入新交易密码" class="flex1">
                 </div>
 
-                <div class="mainBtn mt100 flex jc ac size28 main bold6 btn">确认</div>
+                <div class="mainBtn mt100 flex jc ac size28 main bold6 btn" @click="submit">确认</div>
 
                 <div class="safeArea"></div>
             </div>
@@ -38,7 +38,7 @@
 
     <CusPicker v-model:show="pickerShow" :list="pickerList" :title="$t('请选择')" :default-index="pickerCurrent" @change="$event=>pickerCurrent=$event">
         <template v-slot="{ item }">
-            <span class="bold5">1111 **** **** 1111</span>
+            <span class="bold5">{{ item.card_number }}</span>
         </template>
     </CusPicker>
 </template>
@@ -47,15 +47,33 @@
 import { useCard } from '@/hooks/useCardholder';
 import { ref } from 'vue';
 import CusPicker from '@/components/CusPicker/index.vue';
-import { assetUSD, assetUSDT } from '@/config';
+import { message } from '@/utils/message';
+import { t } from '@/locale';
+import { apiCardPsw } from '@/api/card';
 
 const { pickerShow, pickerList, currentPicker, pickerCurrent, loadPickerList } = useCard()
 
 const show = ref(false)
 
+const password = ref()
+const password1 = ref()
+
 const open = () => {
     show.value = true
     loadPickerList()
+}
+
+const submit = async () => {
+    if(!currentPicker.value)return message(t('请选择卡'))
+    if(!password.value)return message(t('请输入交易密码'))
+    if(!password1.value)return message(t('请再次输入交易密码'))
+    if(password.value != password1.value)return message(t('密码输入不一致'))
+    await apiCardPsw({
+        pin: password.value,
+        card_id: currentPicker.value.id
+    })
+    message(t('修改成功'), 'success')
+    show.value = false
 }
 
 defineExpose({

@@ -16,7 +16,7 @@
         <div class="mt30">
             <div class="size28 bold6">转账账号</div>
             <div class="cell card mb20 flex jb ac mt20">
-                <input type="text" v-model="address" placeholder="请输入转账地址或邮箱" class="flex1 size28">
+                <input type="text" v-model="address" placeholder="请输入转账邮箱" class="flex1 size28">
             </div>
         </div>
 
@@ -80,14 +80,11 @@ import { computed, ref } from 'vue'
 import CusPicker from '@/components/CusPicker/index.vue';
 import iconUsdt from '@/assets/common/usdt.png'
 import iconAix from '@/assets/common/aix.png'
-import { useAppStore, useUserStore } from '@/store';
+import { useUserStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import { message } from '@/utils/message';
 import { t } from '@/locale';
 import { apiTransfer } from '@/api/card';
-
-const appStore = useAppStore()
-const { isH5 } = storeToRefs(appStore)
 
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)

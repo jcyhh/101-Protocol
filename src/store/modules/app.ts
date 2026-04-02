@@ -5,8 +5,7 @@ import { i18n } from '@/locale'
 
 export const useAppStore = defineStore('app', () => {
 
-    // const isH5 = ref((window as any).__FROM_FLUTTER__ !== true)
-    const isH5 = ref(false)
+    const isH5 = ref((window as any).__FROM_FLUTTER__ !== true)
 
     const lang = ref(getLang()) // 当前多语言
 

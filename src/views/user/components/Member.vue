@@ -12,7 +12,7 @@
                         <img src="@/assets/user/30.png" class="img32 mr10 animate__animated animate__zoomIn ani3" v-if="chooseIds.includes(item.user_id)">
                         <img src="@/assets/user/31.png" class="img32 mr10" v-else>
                     </div>
-                    <div class="size28 bold5">{{ item.email }}</div>
+                    <div class="size28 bold5">{{ item.email || item.address }}</div>
                     <div class="tag flex ac mainBtn ml20" v-if="leaderId==item.user_id">区长</div>
                 </div>
                 <div class="size28 bold main" v-init="item.kpi"></div>

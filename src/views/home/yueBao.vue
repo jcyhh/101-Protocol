@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     <div class="flex col ae">
-                        <div class="mainButton btn flex jc ac" v-if="item.can_withdraw && current==0" @click="openTakeout(item.id)">取出</div>
+                        <div class="mainButton btn flex jc ac" v-scale v-if="item.can_withdraw && current==0" @click="openTakeout(item.id)">取出</div>
                         <div class="progressBox mt30" v-if="!item.can_withdraw && current==0">
                             <CusProgress :progress="getPercent(item.released_days, item?.package?.days)"></CusProgress>
                         </div>
@@ -146,7 +146,7 @@ const takeOut = async () => {
     await apiTakeOut({
         order_id: orderId.value
     })
-    message(t('操作成功'))
+    message(t('操作成功'), 'success')
     showAsk.value = false
     loadData()
     loadList()

@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <div class="mainButton mt80 flex jc ac size28 main bold6 btn" @click="submit">发布</div>
+        <div class="mainButton mt80 flex jc ac size28 main bold6 btn" v-scale @click="submit">发布</div>
 
     </div>
 

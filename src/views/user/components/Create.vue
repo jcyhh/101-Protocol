@@ -24,7 +24,7 @@
                     <div class="tr size24 opc5">{{ desc.length }}/40</div>
                 </div>
 
-                <div class="mainButton mt40 flex jc ac size28 main bold6 btn" @click="submit">确认创建</div>
+                <div class="mainButton mt40 flex jc ac size28 main bold6 btn" v-scale @click="submit">确认创建</div>
                 <div class="safeArea"></div>
             </div>
         </div>

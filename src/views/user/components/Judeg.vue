@@ -20,7 +20,7 @@
                     <div class="tr size24 opc5">{{ content.length }}/40</div>
                 </div>
 
-                <div class="mainButton mt40 flex jc ac size28 main bold6 btn" @click="submit">发布评论</div>
+                <div class="mainButton mt40 flex jc ac size28 main bold6 btn" v-scale @click="submit">发布评论</div>
                 <div class="safeArea"></div>
             </div>
         </div>

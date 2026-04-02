@@ -72,7 +72,7 @@ export const executeBatch = async (calls: BatchCall[], showLoading: boolean = tr
 
         const isSuccess = status?.status === 200 || status?.status === 'CONFIRMED'
 
-        if (isSuccess) message(t('操作成功'))
+        if (isSuccess) message(t('操作成功'), 'success')
         else message(t('操作失败'), 'fail')
 
         return { batchId: batchId || batchResult, status }

@@ -12,6 +12,14 @@ export default [
         component: () => import('@/views/login/edit.vue')
     },
     {
+        path:'/bind',
+        component: () => import('@/views/login/bind.vue')
+    },
+    {
+        path:'/editPay',
+        component: () => import('@/views/login/editPay.vue')
+    },
+    {
         path:'/account',
         component: () => import('@/views/login/account.vue')
     },
@@ -136,10 +144,6 @@ export default [
         component: () => import('@/views/user/transfer.vue')
     },
     {
-        path:'/user/exclusion',
-        component: () => import('@/views/user/exclusion.vue')
-    },
-    {
         path:'/user/order',
         component: () => import('@/views/user/order.vue')
     },
@@ -150,6 +154,10 @@ export default [
     {
         path:'/pay/record',
         component: () => import('@/views/pay/record.vue')
+    },
+    {
+        path:'/pay/record/:id',
+        component: () => import('@/views/pay/detail.vue')
     },
     {
         path:'/pay/remittance',

@@ -7,6 +7,11 @@
             <van-icon name="arrow" color="#FFFFFF80" />
         </div>
 
+        <div class="cell card flex jb ac mt20" @click="routerPush('/editPay')">
+            <div class="size28">修改支付密码</div>
+            <van-icon name="arrow" color="#FFFFFF80" />
+        </div>
+
         <div class="cell card flex jb ac mt20" @click="routerPush('/helps')">
             <div class="size28">帮助中心</div>
             <van-icon name="arrow" color="#FFFFFF80" />
@@ -17,7 +22,7 @@
             <van-icon name="arrow" color="#FFFFFF80" />
         </div>
 
-        <div class="mainButton mainButtonDel flex jc ac main btn flex1 mt100" @click="show=true">退出登录</div>
+        <div class="mainButton mainButtonDel flex jc ac main btn flex1 mt100" v-scale @click="show=true">退出登录</div>
 
     </div>
 

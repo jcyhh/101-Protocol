@@ -28,7 +28,7 @@ const submit = async () => {
             type: props.type
         })
 
-        message(t('发送成功'))
+        message(t('发送成功'), 'success')
 
         count.value = 60
         timer = setInterval(() => {

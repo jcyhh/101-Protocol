@@ -19,7 +19,7 @@
                             <div class="size28 bold6">{{ info?.name }}</div>
                             <div class="size24 bold6">{{ info?.member_count }}/{{ info?.community_max_num }}</div>
                         </div>
-                        <div class="size24 opc5 mt10">创建人 {{ info?.email }}</div>
+                        <div class="size24 opc5 mt10">创建人 {{ info?.email || info?.address }}</div>
                     </div>
                 </div>
                 <div class="line mt24 mb20"></div>
@@ -30,8 +30,8 @@
             </div>
 
             <div class="flex mt30 size28 bold6">
-                <div class="mainButton mainButtonDel flex jc ac main btn flex1" @click="showDestory=true" v-if="isLeader">解散社团</div>
-                <div class="mainButton mainButtonDel flex jc ac main btn flex1" @click="showQuit=true" v-else>退出社团</div>
+                <div class="mainButton mainButtonDel flex jc ac main btn flex1" v-scale @click="showDestory=true" v-if="isLeader">解散社团</div>
+                <div class="mainButton mainButtonDel flex jc ac main btn flex1" v-scale @click="showQuit=true" v-else>退出社团</div>
             </div>
 
 
@@ -77,7 +77,7 @@
                                 <img src="@/assets/user/27.png" class="img32 mr8" v-else-if="index==1">
                                 <img src="@/assets/user/28.png" class="img32 mr8" v-else-if="index==2">
                                 <div class="flex jc ac img32 mr8 size24 opc5 bold" v-else>{{ index + 1 }}</div>
-                                <div class="size24 bold">{{ item.email }}</div>
+                                <div class="size24 bold">{{ item.email || item.address }}</div>
                             </div>
                             <div class="flex ac">
                                 <div class="size24 bold mr10" v-init="item.total_kpi"></div>
@@ -86,7 +86,7 @@
                         </div>
                     </div>
 
-                    <div class="mainButton mt30 flex jc ac size26 bold6 btn" @click="routerPush('/community/rank')">
+                    <div class="mainButton mt30 flex jc ac size26 bold6 btn" v-scale @click="routerPush('/community/rank')">
                         <img src="@/assets/user/29.png" class="img36 mr10">
                         <div>查看全部排行榜</div>
                     </div>
