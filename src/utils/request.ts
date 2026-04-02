@@ -2,7 +2,7 @@ import axios from 'axios'
 import { delToken, getToken } from '../config/storage'
 import { langKey, uploadApi, uploadFileName, timeOut, uploadTimeOut, addressKey } from '../config/http'
 import { getHeaderLang } from '../locale'
-import { closeToast, showLoadingToast, showToast } from 'vant';
+import { closeToast, showLoadingToast } from 'vant';
 import { router, routerPush } from '@/router'
 import { getAddress, loginPath } from '@/dapp/config'
 import { message } from './message';

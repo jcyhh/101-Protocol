@@ -1,20 +1,19 @@
 <template>
     <div class="card">
         <div class="flex jb ac">
-            <div class="size28 main">1234567891@qq.com</div>
-            <div class="flex ac">
+            <div class="size28 main">{{ data?.email || data?.address }}</div>
+            <!-- <div class="flex ac">
                 <div class="size22 opc5">200人评论</div>
                 <div class="line ml16 mr16"></div>
                 <img src="@/assets/user/36.png" class="img24">
-            </div>
+            </div> -->
         </div>
-        <div class="size24 mt10 opc5">2026</div>
-        <div class="size26 mt16 lh40">哎,我去的时候没攻略,都是走一步看一步,结果时间不够,好多没玩,/(ㄒoㄒ)/~~</div>
-        <div class="flex pics grid col3 mt30">
-            <img src="@/assets/user/20.png" class="picitem" v-for="(item,index) in 5" :key="index">
+        <div class="size24 mt10 opc5">{{ data?.created_at }}</div>
+        <div class="size26 mt16 lh40">{{ data?.content }}</div>
+        <div class="flex pics grid col3 mt30 mb72" v-if="data?.images && data?.images.length>0">
+            <img :src="item" class="picitem" v-for="(item,index) in data?.images" :key="index">
         </div>
-        <div class="mt72 pl12">
-
+        <!-- <div class="pl12">
             <div class="comment" :class="index<1?'':'borderNone'" v-for="(item,index) in 2" :key="index">
                 <img src="@/assets/user/37.png" class="img24 pic24">
                 <div class="flex jb ac">
@@ -27,19 +26,18 @@
                     <span class="opc5"> : 评论内容</span>
                 </div>
             </div>
-
         </div>
         <div class="lineCol mb22"></div>
         <div class="flex jc ac size24 opc5">
             <div class="mr10">展开更多</div>
             <van-icon name="arrow-down" />
-        </div>
+        </div> -->
     </div>
     <div class="gap20"></div>
 </template>
 
 <script setup lang="ts">
-
+const props = defineProps(['data'])
 </script>
 
 <style lang="scss" scoped>

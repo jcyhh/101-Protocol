@@ -92,6 +92,14 @@ export default [
         component: () => import('@/views/user/news/detail.vue')
     },
     {
+        path:'/news/create',
+        component: () => import('@/views/user/news/create.vue')
+    },
+    {
+        path:'/news/my',
+        component: () => import('@/views/user/news/my.vue')
+    },
+    {
         path:'/cardholder',
         component: () => import('@/views/user/cardholder/list.vue')
     },

@@ -3,56 +3,71 @@
 
     <CusTab v-model="current" :list="tabs"></CusTab>
 
-    <div class="pl30 pr30">
+    <van-pull-refresh class="page rel" v-bind="props">
+        <van-list class="page" v-bind="listProps">
+            <div class="pl30 pr30">
         
-        <div class="cell card mb20" v-for="(item, index) in 10">
-            <div class="flex jb ac">
-                <div class="size28">备注</div>
-                <div class="size28 bold green">
-                    <span class="mr5">-</span>
-                    <span v-init="1000"></span>
+                <div class="cell card mb20" v-for="(item, index) in list" :key="index">
+                    <div class="flex jb ac">
+                        <div class="size28">{{ item.content }}</div>
+                        <div class="size28 bold" :class="item.is_inc ? 'green' : 'red'">
+                            <span>{{ item.is_inc ? '+' : '-' }}</span>
+                            <span v-init="item.amount"></span>
+                        </div>
+                    </div>
+                    <div class="flex jb ac size24 opc5 mt20">
+                        <div>{{ item.created_at }}</div>
+                        <div>{{ tabs[current].name }}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="flex jb ac size24 opc5 mt20">
-                <div>2026</div>
-                <div>{{ tabs[current].name }}</div>
-            </div>
-        </div>
 
-    </div>
+                <CusEmpty v-if="list?.length==0"></CusEmpty>
+
+            </div>
+        </van-list>
+    </van-pull-refresh>
+    
 </template>
 
 <script setup lang="ts">
 import CusNav from '@/components/CusNav/index.vue'
 import CusTab from '@/components/CusTab/index.vue'
 import { assetAIX, assetNFTC, assetUSDT } from '@/config';
-import { t } from '@/locale';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
+import { useLoadList } from '@/hooks/useLoadList';
+import { usePullRefresh } from '@/hooks/usePullRefresh';
+import CusEmpty from '@/components/CusEmpty/index.vue'
 
 const current = ref(0)
 
 const tabs = computed(()=>([
     {
         name: assetUSDT,
-        value: 1
+        value: 'balance_usdt'
     },
     {
         name: assetAIX,
-        value: 2
+        value: 'balance_aix'
     },
     {
         name: assetNFTC,
-        value: 3
+        value: 'balance_nftc'
     },
     {
         name: `抽奖 ${assetAIX}`,
-        value: 4
+        value: 'balance_lottery_aix'
     },
     {
         name: `年终奖`,
-        value: 5
+        value: 'balance_year'
     }
 ]))
+
+const params = computed(()=>({ccy: tabs.value[current.value].value}))
+const { list, props: listProps, loadList } = useLoadList('/api/balance_logs', 'asset_logs', params)
+const { props } = usePullRefresh(loadList)
+
+watch(current, () => loadList(), {immediate:true})
 </script>
 
 <style lang="scss" scoped>
@@ -79,5 +94,10 @@ const tabs = computed(()=>([
     width: 100%;
     height: 1px;
     background-color: #FFFFFF1F;
+}
+.page{
+    width: 100vw;
+    min-height: calc(100vh - 200px);
+    min-height: calc(100dvh - 200px);
 }
 </style>

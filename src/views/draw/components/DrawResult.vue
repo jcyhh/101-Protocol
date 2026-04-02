@@ -7,7 +7,7 @@
                     <van-icon size="20" name="cross" color="#8D9094" @click="close" />
                 </div>
 
-                <div class="pt30" v-if="false">
+                <div class="pt30" v-if="info?.type==1">
                     <div class="red size24">请支付抢卡资金，取消支付则此卡作废</div>
                     <div class="mt100 flex jc ac">
                         <img src="@/assets/draw/8.png" class="pic8">
@@ -19,15 +19,13 @@
                     </div>
                     <div class="tc mt60 size48 bold main" v-init="0.99"></div>
                     <div class="tc mt20 size24 bold5 opc5">抢卡资金 ({{ assetUSDT }})</div>
-                    <div class="mt200 tc size24 bold6">
-                        <span class="grey mr10">可用余额</span>
-                        <span v-init="1000"></span>
-                        <span>{{ assetUSDT }}</span>
-                    </div>
-                    <div class="mainButton mt40 flex jc ac size28 main bold6 btn" @click="showConfetti">确认支付</div>
+                    <div class="size26 bold6 mt100 mb30">支付方式</div>
+
+                    <CusPaytype v-model:paytype="paytype"></CusPaytype>
+                    <div class="mainButton mt40 flex jc ac size28 main bold6 btn" @click="submit">确认支付</div>
                 </div>
 
-                <div class="pt160">
+                <div class="pt160" v-else-if="info?.type==2">
                     <div class="flex jc ac">
                         <img src="@/assets/draw/8.png" class="pic8">
                         <img src="@/assets/draw/10.png" class="pic9">
@@ -37,12 +35,24 @@
                         <span class="main ml10">"再来一次"</span>
                     </div>
                     <div class="mt200 tc size24 bold6">
-                        <span class="main">10{{ assetUSDT }}</span>
-                        <span class="ml5">抽1次</span>
-                        <span class="ml20">抽卡次数</span>
-                        <span class="main ml5">3</span>
+                        <span class="mr5">抽卡次数</span>
+                        <span class="main">{{ Number(userInfo?.balance_lottery) }}</span>
                     </div>
-                    <div class="mainButton mt40 flex jc ac size28 main bold6 btn" @click="showConfetti">继续抽卡</div>
+                    <div class="mainButton mt40 flex jc ac size28 main bold6 btn" @click="again">继续抽卡</div>
+                </div>
+
+                <div class="pt160" v-else>
+                    <div class="flex jc ac">
+                        <img src="@/assets/draw/11.png" class="pic9">
+                    </div>
+                    <div class="tc mt100 size28 bold5">
+                        <span>谢谢参与</span>
+                    </div>
+                    <div class="mt200 tc size24 bold6">
+                        <span class="mr5">抽卡次数</span>
+                        <span class="main">{{ Number(userInfo?.balance_lottery) }}</span>
+                    </div>
+                    <div class="mainButton mt40 flex jc ac size28 main bold6 btn" @click="again">继续抽卡</div>
                 </div>
 
                 <div class="safeArea"></div>
@@ -53,20 +63,52 @@
 </template>
 
 <script setup lang="ts">
+import { apiCard } from '@/api/card';
 import { assetUSDT } from '@/config';
 import { useConfetti } from '@/hooks/useConfetti';
+import { useUserStore } from '@/store';
+import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
+import CusPaytype from '@/components/CusPaytype/index.vue'
+import { message } from '@/utils/message';
+import { t } from '@/locale';
+
+const emits = defineEmits(['again'])
+
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 
 const { showConfetti } = useConfetti()
 
+const paytype = ref('balance_aix')
+
 const show = ref(false)
 
-const open = () => {
+const info = ref()
+
+const open = (data:any) => {
+    info.value =data
     show.value = true
-    showConfetti()
+    if(data.type<3)showConfetti()
+}
+
+const again = () => {
+    userStore.loadUserInfo()
+    show.value = false
+    emits('again')
 }
 
 const close = () => show.value = false
+
+const submit = async () => {
+    await apiCard({
+        rush_id: info.value?.rush_id,
+        ccy: paytype.value
+    })
+    message(t('支付成功'))
+    show.value = false
+    userStore.loadUserInfo()
+}
 
 defineExpose({
     open

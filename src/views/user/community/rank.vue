@@ -1,51 +1,57 @@
 <template>
     <CusNav :title="$t('排行榜')" :show-bg="false">
-        <div class="flex je ac">
+        <!-- <div class="flex je ac">
             <img src="@/assets/user/32.png" class="img32">
             <div class="size24 opc5 ml5">规则说明</div>
-        </div>
+        </div> -->
     </CusNav>
     <div class="bg"></div>
 
-    <div class="pl60 pr60 pt90 rel">
-        
-        <CusTitle title="全网社区排行榜"></CusTitle>
+    <van-pull-refresh class="fullPage rel" v-bind="props">
+        <van-list class="fullPage" v-bind="listProps">
+            <div class="pl60 pr60 pt90 rel">
 
-        <div class="gap50"></div>
+                <CusTitle title="全网社区排行榜"></CusTitle>
 
-        <div class="rank mb20" :class="{
-            'rank1': index==0,
-            'rank2': index==1,
-            'rank3': index==2,
-            'rank4': index>2
-        }" v-for="(item,index) in 10" :key="index">
-            <div class="flex jb ac">
-                <div class="avatarBox flex jc ac" v-if="index<=2">
-                    <img src="@/assets/user/33.png" class="avaterborder" v-if="index==0">
-                    <img src="@/assets/user/34.png" class="avaterborder" v-else-if="index==1">
-                    <img src="@/assets/user/35.png" class="avaterborder" v-else>
-                    <img src="@/assets/user/20.png" class="avatar img92">
-                </div>
-                <img src="@/assets/user/20.png" class="avatar img92" v-else>
-                <div class="flex jb ac flex1 ml20">
-                    <div>
-                        <div class="size28 bold6">社区名称</div>
-                        <div class="size24 opc5 mt10">社区人数 20人</div>
+                <div class="gap50"></div>
+
+                <div class="rank mb20" :class="{
+                    'rank1': index == 0,
+                    'rank2': index == 1,
+                    'rank3': index == 2,
+                    'rank4': index > 2
+                }" v-for="(item, index) in list" :key="index">
+                    <div class="flex jb ac">
+                        <div class="avatarBox flex jc ac" v-if="index <= 2">
+                            <img src="@/assets/user/33.png" class="avaterborder" v-if="index == 0">
+                            <img src="@/assets/user/34.png" class="avaterborder" v-else-if="index == 1">
+                            <img src="@/assets/user/35.png" class="avaterborder" v-else>
+                            <img src="@/assets/user/20.png" class="avatar img92">
+                        </div>
+                        <img :src="item.logo" class="avatar img92" v-else>
+                        <div class="flex jb ac flex1 ml20">
+                            <div>
+                                <div class="size28 bold6">{{ item.name }}</div>
+                                <div class="size24 opc5 mt10">社区人数 {{ item.member_count }}人</div>
+                            </div>
+                            <div class="size80 bold opc2">{{ padZero(Number(index) + 1) }}</div>
+                        </div>
                     </div>
-                    <div class="size80 bold opc2">{{ padZero(Number(index) + 1) }}</div>
+                    <div class="line mt12 mb24"></div>
+                    <div class="flex jb ac">
+                        <div class="size24 bold5">社区业绩</div>
+                        <div class="size24 bold6">
+                            <span v-init="item.total_kpi"></span>
+                            <span class="ml5">{{ assetUSDT }}</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="line mt12 mb24"></div>
-            <div class="flex jb ac">
-                <div class="size24 bold5">社区业绩</div>
-                <div class="size24 bold6">
-                    <span v-init="1000"></span>
-                    <span class="ml5">{{ assetUSDT }}</span>
-                </div>
-            </div>
-        </div>
 
-    </div>
+            </div>
+        </van-list>
+    </van-pull-refresh>
+
+
 </template>
 
 <script setup lang="ts">
@@ -53,10 +59,17 @@ import CusNav from '@/components/CusNav/index.vue'
 import CusTitle from '@/components/CusTitle/index.vue'
 import { assetUSDT } from '@/config';
 import { padZero } from '@/utils';
+import { useLoadList } from '@/hooks/useLoadList';
+import { usePullRefresh } from '@/hooks/usePullRefresh';
+import CusEmpty from '@/components/CusEmpty/index.vue'
+
+const { list, props: listProps, loadList } = useLoadList('/api/community/rank', 'list')
+const { props } = usePullRefresh(loadList)
+loadList()
 </script>
 
 <style lang="scss" scoped>
-.bg{
+.bg {
     width: 690px;
     height: calc(100vh - 140px);
     height: calc(100dvh - 140px);
@@ -66,14 +79,17 @@ import { padZero } from '@/utils';
     top: 140px;
     left: 30px;
 }
-.rank{
+
+.rank {
     padding: 20px 30px 30px 30px;
     border-radius: 20px;
-    .avatarBox{
+
+    .avatarBox {
         width: 124px;
         height: 124px;
         position: relative;
-        .avaterborder{
+
+        .avaterborder {
             width: 124px;
             height: 124px;
             position: absolute;
@@ -81,42 +97,52 @@ import { padZero } from '@/utils';
             left: 0;
             z-index: 1;
         }
-        .headimg{
+
+        .headimg {
             width: 92px;
             height: 92px;
             border-radius: 50%;
         }
     }
-    .line{
+
+    .line {
         width: 100%;
         height: 1px;
     }
 }
-.rank1{
+
+.rank1 {
     border: 2px solid #FFBB00;
     background-color: #88651F80;
-    .line{
+
+    .line {
         background-color: #FFBB00;
     }
 }
-.rank2{
+
+.rank2 {
     border: 2px solid #0099FF;
     background-color: #3A3E6980;
-    .line{
+
+    .line {
         background-color: #0099FF;
     }
 }
-.rank3{
+
+.rank3 {
     border: 2px solid #EB733C;
     background-color: #7D4D3780;
-    .line{
+
+    .line {
         background-color: #EB733C;
     }
 }
-.rank4{
+
+.rank4 {
     border: 2px solid #3C3C3C;
     background-color: #0B0B0B80;
-    .line{
+
+    .line {
         background-color: #3C3C3C;
     }
 }

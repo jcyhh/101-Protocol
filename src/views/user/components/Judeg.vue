@@ -3,28 +3,24 @@
         <div class="popup">
             <div class="content">
                 <div class="flex jb ac">
-                    <div class="size28 main bold6">{{ $t('创建社团') }}</div>
+                    <div class="size28 main bold6">{{ $t('评论') }}</div>
                     <van-icon size="20" name="cross" color="#8D9094" @click="show=false" />
                 </div>
 
-                <div class="flex jc mt80">
-                    <div @click="upload">
-                        <img :src="logo" class="upload" v-if="logo">
-                        <img src="@/assets/user/22.png" class="upload" v-else>
+                 <div class="size26 mt60">图片(选填 {{ images.length }}/9)</div>
+                <div class="grid col3 imgs mt20">
+                    <img :src="item" class="pic" v-for="(item,index) in images" :key="index" @click="upload(index)">
+                    <div class="cell pic flex jc ac" @click="upload(-1)">
+                        <van-icon name="plus" :size="40" />
                     </div>
                 </div>
-                <div class="tc size28 bold6 mt30">社团头像</div>
-                <div class="size26 mt40">社团名称</div>
-                <div class="inp mt30 flex">
-                    <input type="text" v-model="name" placeholder="请给社团起一个名称吧！" class="flex1 size28">
-                </div>
-                <div class="size26 mt40">社团介绍</div>
+                <div class="size26 mt30">内容</div>
                 <div class="area mt30">
-                    <textarea v-model="desc" :maxlength="40" placeholder="请简单介绍一下您的社团" class="size28 areainp" />
-                    <div class="tr size24 opc5">{{ desc.length }}/40</div>
+                    <textarea v-model="content" :maxlength="40" placeholder="请输入评论内容" class="size28 areainp" />
+                    <div class="tr size24 opc5">{{ content.length }}/40</div>
                 </div>
 
-                <div class="mainButton mt40 flex jc ac size28 main bold6 btn" @click="submit">确认创建</div>
+                <div class="mainButton mt40 flex jc ac size28 main bold6 btn" @click="submit">发布评论</div>
                 <div class="safeArea"></div>
             </div>
         </div>
@@ -32,42 +28,42 @@
 </template>
 
 <script setup lang="ts">
-import { apiCommunityCreate } from '@/api/community';
+import { apiCommentJudge } from '@/api/comment';
 import { t } from '@/locale';
 import { message } from '@/utils/message';
 import { apiUpload } from '@/utils/request';
 import { ref, watch } from 'vue';
 
+const props = defineProps(['id'])
+
 const emits = defineEmits(['success'])
 
 const show = defineModel<boolean>('show', { default: false })
 
-const logo = ref()
-const name = ref()
-const desc = ref()
+const images = ref<string[]>([])
+const content = ref()
 
 watch(show, () => {
-    logo.value = ''
-    name.value = ''
-    desc.value = ''
+    images.value = []
+    content.value = ''
 })
 
-const upload = async () => {
+const upload = async (index:any) => {
     const res:any = await apiUpload()
-    logo.value = res.url
+    if(index>=0)images.value = images.value.splice(index, 1, res.url)
+    else images.value.push(res.url)
 }
 
 const submit = async () => {
-    if(!logo.value)return message(t('请上传社团头像'))
-    if(!name.value)return message(t('请输入社团名称'))
-    if(!desc.value)return message(t('请输入社团介绍'))
-    await apiCommunityCreate({
-        logo: logo.value,
-        name: name.value,
-        desc: desc.value
+    if(!content.value)return message(t('请输入评论内容'))
+    await apiCommentJudge({
+        content: content.value,
+        images: images.value,
+        parent_id: 0,
+        post_id: props.id
     })
     show.value = false
-    message(t('创建成功'), 'success')
+    message(t('评论成功'), 'success')
     emits('success')
 }
 </script>
@@ -102,5 +98,10 @@ const submit = async () => {
         width: 100%;
         resize: none;
     }
+}
+.pic{
+    width: 215px;
+    height: 215px;
+    border-radius: 16px;
 }
 </style>

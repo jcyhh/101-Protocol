@@ -34,11 +34,11 @@
     </div>
 
     <div class="flex ac mt30">
-        <div class="update mainButton flex jc ac animate__animated animate__fadeInLeft ani3" @click="openUpgrade" v-if="diff > 0">
+        <div class="update mainButton flex jc ac animate__animated animate__fadeInLeft ani3 mr20" @click="openUpgrade" v-if="diff > 0">
             <img src="@/assets/home/3.png" class="img40 mr10">
             <div class="size32 main">升级</div>
         </div>
-        <div class="mainBtn flex1 ml20 flex jc ac size32 bold5" @click="openCard">立即开卡</div>
+        <div class="mainBtn flex1 flex jc ac size32 bold5" @click="openCard">立即开卡</div>
     </div>
 
     <OpenCard @success="loadData()" ref="openCardRef"></OpenCard>
@@ -93,7 +93,10 @@ const loadData = async () => {
     currentIndex.value = 0
 }
 
-const diff = computed(()=>computedSub(currentCard.value?.price, userInfo.value?.card_amount))
+const diff = computed(()=>{
+    if(userInfo.value?.card_amount == 0)return 0
+    return computedSub(currentCard.value?.price, userInfo.value?.card_amount)
+})
 
 // 卡
 const space = getAdaptPx(30)

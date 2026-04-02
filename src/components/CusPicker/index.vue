@@ -6,17 +6,23 @@
                     <div class="size28 main bold6">{{ title }}</div>
                     <van-icon size="20" name="cross" color="#8D9094" @click="close" />
                 </div>
-                <CusEmpty v-if="list.length==0"></CusEmpty>
+                <div v-if="list.length==0">
+                    <CusEmpty></CusEmpty>
+                    <div class="mt60">
+                        <slot name="empty"></slot>
+                    </div>
+                </div>
                 <div v-else>
                     <swiper slidesPerView="auto" :centeredSlides="true" direction="vertical" space-between="10" @swiper="onSwiper" @slide-change="slideChange">
                         <swiper-slide v-for="(item, index) in list" :key="index" @click="slideClick(index)">
                             <slot :item="item"></slot>
                         </swiper-slide>
                     </swiper>
+                    <div class="mt60">
+                        <div class="mainBtn flex jc ac bold5 size30" @click="submit">{{ submitTxt }}</div>
+                    </div>
                 </div>
-                <div class="mt60">
-                    <div class="mainBtn flex jc ac bold5 size30" @click="submit">{{ submitTxt }}</div>
-                </div>
+                
                 <div class="safeBottom"></div>
             </div>
         </div>

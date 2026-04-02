@@ -11,3 +11,13 @@ export const apiRefreshCard = (params:any) => apiPost('/api/card/refresh', param
 export const apiRecharge = (params:any) => apiPost('/api/card/recharge', params)
 
 export const apiTransfer = (params:any) => apiPost('/api/card/transfer', params)
+
+export const apiDrawList = () => apiGet('/api/products/rush')
+
+export const apiDrawConfig = () => apiGet('/api/products/config')
+
+export const apiDraw = () => apiPost('/api/order/rush')
+
+export const apiCard = (params:any) => apiPost('/api/card', params)
+
+export const apiDrawStats = () => apiGet('/api/order/rebate_stats')

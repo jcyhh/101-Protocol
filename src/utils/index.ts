@@ -113,6 +113,95 @@ export function padZero(value:number|string) {
     return `${value}`
 }
 
+const CHINA_TZ = 'Asia/Shanghai'
+
+/**
+ * 判断当前是否在中国时区（Asia/Shanghai）的 start～end 时间段内；与设备本地时区无关
+ * @param startStr - 开始：支持 HH:mm / HH:mm:ss，或 dayjs 可解析的日期时间字符串
+ * @param endStr - 结束：同上；仅时间时按上海「当天」比较；若 start>end 视为跨天（如 22:00～06:00）
+ */
+export function isNowInChinaRange(startStr: string, endStr: string): boolean {
+    if (!startStr || !endStr) return false
+    const now = dayjs.tz(new Date(), CHINA_TZ)
+
+    const parseMinutes = (s: string) => {
+        const m = String(s).trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/)
+        if (!m) return null
+        return Number(m[1]) * 60 + Number(m[2])
+    }
+
+    const startM = parseMinutes(startStr)
+    const endM = parseMinutes(endStr)
+    if (startM !== null && endM !== null) {
+        const n = now.hour() * 60 + now.minute()
+        if (startM <= endM) return n >= startM && n <= endM
+        return n >= startM || n <= endM
+    }
+
+    const start = dayjs.tz(startStr, CHINA_TZ)
+    const end = dayjs.tz(endStr, CHINA_TZ)
+    if (!start.isValid() || !end.isValid()) return false
+    return (now.isAfter(start) || now.isSame(start)) && (now.isBefore(end) || now.isSame(end))
+}
+
+export type ChinaFlashSalePhase = 'before' | 'during' | 'after'
+
+/**
+ * 抢购倒计时：当前时刻一律按中国时区；返回阶段与距下一节点的剩余毫秒（供 van-count-down 等使用）
+ * - before：未到 start，ms 为距开始的剩余时间
+ * - during：在 start～end 内，ms 为距结束的剩余时间
+ * - after：已过 end
+ */
+export function getChinaFlashSaleCountdown(startStr: string, endStr: string): { phase: ChinaFlashSalePhase; ms: number } {
+    if (!startStr || !endStr) return { phase: 'after', ms: 0 }
+    const now = dayjs.tz(new Date(), CHINA_TZ)
+
+    const parseMinutes = (s: string) => {
+        const m = String(s).trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/)
+        if (!m) return null
+        return Number(m[1]) * 60 + Number(m[2])
+    }
+
+    const startM = parseMinutes(startStr)
+    const endM = parseMinutes(endStr)
+    if (startM !== null && endM !== null) {
+        const sod = now.clone().startOf('day')
+        const n = now.hour() * 60 + now.minute()
+
+        if (startM > endM) {
+            if (n >= startM) {
+                const endNext = sod.add(1, 'day').add(endM, 'minute')
+                return { phase: 'during', ms: Math.max(0, endNext.diff(now)) }
+            }
+            if (n <= endM) {
+                const endToday = sod.add(endM, 'minute')
+                return { phase: 'during', ms: Math.max(0, endToday.diff(now)) }
+            }
+            const startToday = sod.add(startM, 'minute')
+            return { phase: 'before', ms: Math.max(0, startToday.diff(now)) }
+        }
+
+        const startDt = sod.add(startM, 'minute')
+        const endDt = sod.add(endM, 'minute')
+        const nowMs = now.valueOf()
+        const sMs = startDt.valueOf()
+        const eMs = endDt.valueOf()
+        if (nowMs < sMs) return { phase: 'before', ms: sMs - nowMs }
+        if (nowMs <= eMs) return { phase: 'during', ms: eMs - nowMs }
+        return { phase: 'after', ms: 0 }
+    }
+
+    const start = dayjs.tz(startStr, CHINA_TZ)
+    const end = dayjs.tz(endStr, CHINA_TZ)
+    if (!start.isValid() || !end.isValid()) return { phase: 'after', ms: 0 }
+    const nowMs = now.valueOf()
+    const sMs = start.valueOf()
+    const eMs = end.valueOf()
+    if (nowMs < sMs) return { phase: 'before', ms: sMs - nowMs }
+    if (nowMs <= eMs) return { phase: 'during', ms: eMs - nowMs }
+    return { phase: 'after', ms: 0 }
+}
+
 export function isIOS() {
     const ua = navigator.userAgent;
     const isIPhone = /iPhone/i.test(ua);

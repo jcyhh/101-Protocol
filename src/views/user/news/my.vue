@@ -1,7 +1,5 @@
 <template>
-    <CusNav :title="$t('全网论坛')" :show-bg="false">
-        <div class="tr size24" @click="routerPush('/news/my')">我的帖子</div>
-    </CusNav>
+    <CusNav :title="$t('我的帖子')" :show-bg="false"></CusNav>
     <van-pull-refresh class="fullPage rel" v-bind="props">
         <van-list class="fullPage" v-bind="listProps">
             <div class="pl30 pr30 pt30">
@@ -43,7 +41,7 @@ import { useLoadList } from '@/hooks/useLoadList';
 import { usePullRefresh } from '@/hooks/usePullRefresh';
 import CusEmpty from '@/components/CusEmpty/index.vue'
 
-const { list, props: listProps, loadList } = useLoadList('/api/forum/posts', 'posts')
+const { list, props: listProps, loadList } = useLoadList('/api/forum/my/posts', 'posts')
 const { props } = usePullRefresh(loadList)
 loadList()
 </script>

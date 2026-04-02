@@ -90,4 +90,9 @@ watch(current, () => loadList(), {immediate:true})
     height: 1px;
     background-color: #FFFFFF1F;
 }
+.page{
+    width: 100vw;
+    min-height: calc(100vh - 200px);
+    min-height: calc(100dvh - 200px);
+}
 </style>

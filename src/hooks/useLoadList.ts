@@ -2,7 +2,7 @@ import { t } from "@/locale";
 import { apiGet } from "@/utils/request";
 import { nextTick, ref, computed, type ComputedRef, type Ref } from "vue";
 
-export function useLoadList(api:string, listName:string = 'list', params:Ref | ComputedRef | null = null, size:number = 10){
+export function useLoadList(api:string, listName:string = '', params:Ref | ComputedRef | null = null, size:number = 10){
     let pageNo:number = 1
     let pageSize:number = size
     const list = ref<any[]>()
@@ -18,14 +18,14 @@ export function useLoadList(api:string, listName:string = 'list', params:Ref | C
         if(params)obj = { ...obj, ...params.value }
         apiGet(api, obj).then((res:any)=>{
             listData.value = res
-            if(res[listName]){
-                const data = listName ? res[listName] : res
-                list.value = isFirst ? data : list.value?.concat(data)
+            const arr = listName ? res[listName] : res
+            if(arr){
+                list.value = isFirst ? arr : list.value?.concat(arr)
                 loading.value = false
-                finished.value = data.length < pageSize
+                finished.value = arr.length < pageSize
             }else{
                 loading.value = false
-                finished.value = false
+                finished.value = true
             }
         })
     }

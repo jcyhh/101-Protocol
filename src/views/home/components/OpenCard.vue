@@ -60,6 +60,9 @@
         <template v-slot="{ item }">
             <span class="bold5">{{ item.first_name }} {{ item.last_name }}({{ item.country_code }})</span>
         </template>
+        <template #empty>
+            <div class="mainBtn flex jc ac bold5 size30" @click="routerPush('/cardholder/add')">添加持卡人</div>
+        </template>
     </CusPicker>
 </template>
 
@@ -73,6 +76,7 @@ import { storeToRefs } from 'pinia';
 import { message } from '@/utils/message';
 import { t } from '@/locale';
 import { apiOpenVirtualCard } from '@/api/card';
+import { routerPush } from '@/router';
 
 const emits = defineEmits(['success'])
 

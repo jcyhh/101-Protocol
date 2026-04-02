@@ -17,14 +17,31 @@
             <van-icon name="arrow" color="#FFFFFF80" />
         </div>
 
-        <div class="mainButton mainButtonDel flex jc ac main btn flex1 mt100">退出登录</div>
+        <div class="mainButton mainButtonDel flex jc ac main btn flex1 mt100" @click="show=true">退出登录</div>
 
     </div>
+
+    <CusAsk v-model:show="show" @submit="logout">确定要退出登录吗？</CusAsk>
 </template>
 
 <script setup lang="ts">
 import CusNav from '@/components/CusNav/index.vue'
-import { routerPush } from '@/router';
+import { delToken } from '@/config/storage';
+import { routerPush, routerReplace } from '@/router';
+import { useAppStore } from '@/store';
+import { storeToRefs } from 'pinia';
+import CusAsk from '@/components/CusAsk/index.vue'
+import { ref } from 'vue';
+
+const appStore = useAppStore()
+const { isH5 } = storeToRefs(appStore)
+
+const show = ref(false)
+
+const logout = () => {
+    delToken()
+    routerReplace(isH5.value ? '/' : '/login')
+}
 </script>
 
 <style lang="scss" scoped>

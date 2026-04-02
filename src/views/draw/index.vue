@@ -18,7 +18,7 @@
             <span class="ml10 main">{{ $t('限时抢卡') }}</span>
         </div>
 
-        <van-swipe class="notice mt20" :show-indicators="false" :vertical="true" :autoplay="3000">
+        <van-swipe class="notice mt20 mb20" :show-indicators="false" :vertical="true" :autoplay="3000">
             <van-swipe-item v-for="item in messages">
                 <div class="notice flex ac main size24 br">
                     {{ $t('恭喜') }} "{{ item.user_email }}" {{ $t('抢得') }} “{{ item.product_name }}” {{ $t('喜得10倍收益') }}
@@ -26,20 +26,7 @@
             </van-swipe-item>
         </van-swipe>
 
-        <div class="flex jc ac mt20 mb60">
-            <div class="size24 mr20">距离本场结束还剩</div>
-            <div class="flex ac size26 bold6">
-                <div class="time flex jc ac">00</div>
-                <div class="ml10 mr10">:</div>
-                <div class="time flex jc ac">00</div>
-                <div class="ml10 mr10">:</div>
-                <div class="time flex jc ac">00</div>
-            </div>
-        </div>
-
         <Draw></Draw>
-        
-        <div class="tc mt30 size28 bold6">今日剩余次数：3次</div>
 
         <div class="flex mt50">
             <div class="card flex1">
@@ -50,7 +37,7 @@
                     </div>
                 </div>
                 <div class="size40 bold6 main mt30">
-                    <CusNumber :amount="2834.2134" sizeClass="size28"></CusNumber>
+                    <CusNumber :amount="stats?.total_amount" sizeClass="size28"></CusNumber>
                 </div>
                 <div class="size24 opc5 mt10">{{ $t('抢卡总收益') }}</div>
             </div>
@@ -62,7 +49,7 @@
                     </div>
                 </div>
                 <div class="size40 bold6 main mt30">
-                    <CusNumber :amount="2834.2134" sizeClass="size28"></CusNumber>
+                    <CusNumber :amount="stats?.today_amount" sizeClass="size28"></CusNumber>
                 </div>
                 <div class="size24 opc5 mt10">{{ $t('今日抢卡收益') }}</div>
             </div>
@@ -80,6 +67,7 @@ import { onMounted, ref } from 'vue';
 import CusNumber from '@/components/CusNumber/index.vue'
 import Draw from './components/Draw.vue';
 import { routerPush } from '@/router';
+import { apiDrawStats } from '@/api/card';
 
 // 通知
 const messages = ref()
@@ -88,8 +76,15 @@ const loadMessage = async () => {
     messages.value = res.list
 }
 
+const stats = ref()
+const loadStats = async () => {
+    const res:any = await apiDrawStats()
+    stats.value = res
+}
+
 onMounted(()=>{
     loadMessage()
+    loadStats()
 })
 </script>
 
@@ -104,12 +99,6 @@ onMounted(()=>{
 .notice{
     width: 100%;
     height: 80px;
-}
-.time{
-    width: 40px;
-    height: 40px;
-    background-image: url("@/assets/draw/1.png");
-    background-size: 100% 100%;
 }
 .card{
     border-radius: 30px;
@@ -170,9 +159,9 @@ onMounted(()=>{
     }
 }
 .rule1{
-    bottom: 526px;
+    bottom: 616px;
 }
 .rule2{
-    bottom: 434px;
+    bottom: 524px;
 }
 </style>

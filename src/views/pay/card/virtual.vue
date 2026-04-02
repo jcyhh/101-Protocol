@@ -1,6 +1,18 @@
 <template>
     <CusNav :title="$t('虚拟卡')" :show-bg="false"></CusNav>
-    <div class="pl30 pr30 pt30 rel">
+
+    <div v-if="cardList.length==0">
+        <CusEmpty></CusEmpty>
+        <div class="pl30 pr30 mt80">
+            <div class="flex1 mainButton btn flex jc ac" @click="routerReplace('/home/index')">
+                <img src="@/assets/pay/5.png" class="img40 mr20">
+                <div>开卡</div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="pl30 pr30 pt30 rel" v-else>
         
         <div class="mainCard rel">
             <div class="flex jb ac">
@@ -115,6 +127,7 @@ import { useDappStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import Recharge from '../components/Recharge.vue';
 import Transfer from '../components/Transfer.vue';
+import { routerReplace } from '@/router';
 
 const dappStore = useDappStore()
 const { dappLoading } = storeToRefs(dappStore)
@@ -126,11 +139,12 @@ const space = getAdaptPx(30)
 const rechargeRef = ref()
 const transferRef = ref()
 
-const { list, props: listProps, loadList } = useLoadList('/api/card/balance-logs', 'data')
-
 const cardList = ref<any[]>([])
 const currentIndex = ref(0)
 const currentCard = computed(() => cardList.value[currentIndex.value] ?? null)
+
+const params = computed(()=>({card_id: currentCard.value?.id}))
+const { list, props: listProps, loadList } = useLoadList('/api/card/balance-logs', 'data', params)
 
 const onSlideChange = (swiper: any) => {
     currentIndex.value = Number(swiper?.realIndex ?? swiper?.activeIndex ?? 0)
