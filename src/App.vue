@@ -7,6 +7,17 @@
     </RouterView>
 
     <CusLoading v-model="dappLoading"></CusLoading>
+
+    <img
+        ref="kefu"
+        src="@/assets/kefu.png"
+        class="kefu"
+        :style="kefuStyle"
+        @click="openLink(kf_url)"
+        @touchstart="onKefuTouchStart"
+        @touchmove="onKefuTouchMove"
+        @touchend="onKefuTouchEnd"
+    >
 </template>
 
 <script setup lang="ts">
@@ -17,6 +28,9 @@ import { delToken } from './config/storage';
 import { routerReplace } from './router';
 import { checkChain, getConnectedAddress } from './dapp';
 import detectEthereumProvider from '@metamask/detect-provider';
+import { computed, onMounted, ref } from 'vue';
+import { apiConfig } from './api/home';
+import { openLink } from './utils';
 
 const dappStore = useDappStore()
 const { dappLoading } = storeToRefs(dappStore)
@@ -25,6 +39,65 @@ const appStore = useAppStore()
 const { isH5 } = storeToRefs(appStore)
 
 let ethereum:any = null
+const kefu = ref<HTMLImageElement>()
+const kefuLeft = ref(0)
+const kefuTop = ref(0)
+const kefuDragging = ref(false)
+const dragOffsetX = ref(0)
+const dragOffsetY = ref(0)
+
+const kf_url = ref()
+const loadData = async () => {
+    const res:any = await apiConfig()
+    kf_url.value = res.kf_url
+}
+loadData()
+
+const getKefuMaxPosition = () => {
+    const width = kefu.value?.offsetWidth || 100
+    const height = kefu.value?.offsetHeight || 100
+    return {
+        maxLeft: Math.max(window.innerWidth - width, 0),
+        maxTop: Math.max(window.innerHeight - height, 0)
+    }
+}
+
+const clampKefuPosition = (left: number, top: number) => {
+    const { maxLeft, maxTop } = getKefuMaxPosition()
+    return {
+        left: Math.min(Math.max(left, 0), maxLeft),
+        top: Math.min(Math.max(top, 0), maxTop)
+    }
+}
+
+const kefuStyle = computed(() => ({
+    left: `${kefuLeft.value}px`,
+    top: `${kefuTop.value}px`,
+    transition: kefuDragging.value ? 'none' : 'left 0.3s ease, top 0.3s ease'
+}))
+
+const onKefuTouchStart = (event: TouchEvent) => {
+    const touch = event.touches[0]
+    if (!touch) return
+    kefuDragging.value = true
+    dragOffsetX.value = touch.clientX - kefuLeft.value
+    dragOffsetY.value = touch.clientY - kefuTop.value
+}
+
+const onKefuTouchMove = (event: TouchEvent) => {
+    const touch = event.touches[0]
+    if (!touch) return
+    const position = clampKefuPosition(
+        touch.clientX - dragOffsetX.value,
+        touch.clientY - dragOffsetY.value
+    )
+    kefuLeft.value = position.left
+    kefuTop.value = position.top
+}
+
+const onKefuTouchEnd = () => {
+    kefuDragging.value = false
+}
 
 // 检测钱包环境
 const detectProvider = async () => {
@@ -76,7 +149,22 @@ const init = async () => {
     createListener() // 创建监听
 }
 
+onMounted(() => {
+    const position = clampKefuPosition(window.innerWidth - 80, window.innerHeight - 80)
+    kefuLeft.value = position.left
+    kefuTop.value = position.top
+})
+
 if(isH5.value)init()
 </script>
 
-<style scoped></style>
+<style scoped>
+.kefu{
+	width: 100px;
+	height: 100px;
+	position: fixed;
+	z-index: 9999;
+	touch-action: none;
+	user-select: none;
+}
+</style>

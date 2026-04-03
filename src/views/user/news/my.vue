@@ -1,5 +1,5 @@
 <template>
-    <CusNav :title="$t('我的帖子')" :show-bg="false"></CusNav>
+    <CusNav :title="$t('我的发布')" :show-bg="false"></CusNav>
     <van-pull-refresh class="fullPage rel" v-bind="props">
         <van-list class="fullPage" v-bind="listProps">
             <div class="pl30 pr30 pt30">

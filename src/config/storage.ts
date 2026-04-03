@@ -8,7 +8,14 @@ const langKey: string = 'LANG' // 存储多语言的KEY
 
 const accountKey: string = 'ACCOUNT' // 存储登入账户的KEY
 
+const accountListKey: string = 'ACCOUNT_LIST' // 存储已缓存账号列表的KEY
+
 const reportKey: string = 'REPORT' // 测试
+
+export interface LoginAccountItem {
+    email: string
+    token: string
+}
 
 interface ReportItem {
     timeId: string
@@ -39,6 +46,34 @@ export const delToken = (): void => localStorage.removeItem(tokenKey)
 export const setAccount = (data: string): void => localStorage.setItem(accountKey, data)
 export const getAccount = (): string => localStorage.getItem(accountKey)||''
 export const delAccount = (): void => localStorage.removeItem(accountKey)
+
+// 存储已缓存账号列表
+export const setAccountList = (data: LoginAccountItem[]): void => localStorage.setItem(accountListKey, JSON.stringify(data || []))
+export const getAccountList = (): LoginAccountItem[] => {
+    try {
+        const data = JSON.parse(localStorage.getItem(accountListKey) || '[]')
+        return Array.isArray(data) ? data : []
+    } catch {
+        return []
+    }
+}
+export const delAccountList = (): void => localStorage.removeItem(accountListKey)
+export const upsertAccountItem = (data: LoginAccountItem): void => {
+    const list = getAccountList()
+    const index = list.findIndex(item => item.email === data.email)
+
+    if (index > -1) {
+        list[index] = data
+    } else {
+        list.unshift(data)
+    }
+
+    setAccountList(list)
+}
+export const removeAccountItem = (email: string): void => {
+    const list = getAccountList().filter(item => item.email !== email)
+    setAccountList(list)
+}
 
 export const setReport = (data: string): void => localStorage.setItem(reportKey, data)
 export const getReport = (): string => localStorage.getItem(reportKey)||'[]'

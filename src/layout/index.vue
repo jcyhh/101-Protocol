@@ -47,6 +47,8 @@ import cardIcon from '@/assets/tabbar/card.png'
 import cardActIcon from '@/assets/tabbar/cardAct.png'
 import userIcon from '@/assets/tabbar/user.png'
 import userActIcon from '@/assets/tabbar/userAct.png'
+import newsIcon from '@/assets/tabbar/news.png'
+import newsActIcon from '@/assets/tabbar/newsAct.png'
 import { t } from '@/locale';
 import { routerReplace } from '@/router';
 import { useUserStore } from '@/store';
@@ -73,6 +75,12 @@ const tabbar = computed(()=>([
         icon: cardIcon,
         iconAct: cardActIcon,
         path: '/draw/index'
+    },
+    {
+        name: t('论坛'),
+        icon: newsIcon,
+        iconAct: newsActIcon,
+        path: '/news/index'
     },
     {
         name: t('我的'),

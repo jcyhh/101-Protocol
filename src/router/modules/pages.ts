@@ -1,7 +1,15 @@
 export default [
     {
+        path:'/download',
+        component: () => import('@/views/download.vue')
+    },
+    {
         path:'/login',
         component: () => import('@/views/login/index.vue')
+    },
+    {
+        path:'/register',
+        component: () => import('@/views/login/register.vue')
     },
     {
         path:'/forget',
@@ -94,10 +102,6 @@ export default [
     {
         path:'/community/rank',
         component: () => import('@/views/user/community/rank.vue')
-    },
-    {
-        path:'/news',
-        component: () => import('@/views/user/news/list.vue')
     },
     {
         path:'/news/:id',

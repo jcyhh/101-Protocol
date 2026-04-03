@@ -33,6 +33,10 @@ import { getRef, setAccount } from '@/config/storage';
 import { apiRegister } from '@/api/login';
 import { message } from '@/utils/message';
 import { t } from '@/locale';
+import { apiVersion } from '@/api/user';
+import { openLink } from '@/utils';
+
+const props = defineProps(['type'])
 
 const emits = defineEmits(['change'])
 
@@ -44,6 +48,13 @@ const pay_password = ref()
 
 const storage = getRef()
 if(storage)refCode.value = storage
+
+const download_url = ref()
+const loadData = async () => {
+    const res:any = await apiVersion()
+    download_url.value = res.download_url
+}
+loadData()
 
 const submit = async () => {
     if(!email.value)return message(t('请输入邮箱'))
@@ -59,8 +70,11 @@ const submit = async () => {
     })
     setAccount(email.value)
     message(t('注册成功'), 'success')
-    emits('change')
-
+    if(props?.type){
+        openLink(download_url.value)
+    }else{
+        emits('change')
+    }
 }
 </script>
 

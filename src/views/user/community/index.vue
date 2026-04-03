@@ -4,7 +4,30 @@
     <van-pull-refresh class="fullPage rel" v-bind="props">
         <van-list class="fullPage" v-bind="listProps">
             <div class="pl30 pr30 pt30 rel">
-                <div class="cell card mb20" v-for="(item, index) in list" :key="index">
+                <div class="box">
+                    <CusTitle title="全网社区排行榜"></CusTitle>
+                    <div class="pl20 pr20 mt35">
+                        <div class="pt15 pb15 flex jb ac" v-for="(item,index) in rankList" :key="index">
+                            <div class="flex ac">
+                                <img src="@/assets/user/26.png" class="img32 mr8" v-if="index==0">
+                                <img src="@/assets/user/27.png" class="img32 mr8" v-else-if="index==1">
+                                <img src="@/assets/user/28.png" class="img32 mr8" v-else-if="index==2">
+                                <div class="flex jc ac img32 mr8 size24 opc5 bold" v-else>{{ index + 1 }}</div>
+                                <div class="size24 bold">{{ item.email || item.address }}</div>
+                            </div>
+                            <div class="flex ac">
+                                <div class="size24 bold mr10" v-init="item.total_kpi"></div>
+                                <img src="@/assets/common/usdt.png" class="img24">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mainButton mt30 flex jc ac size26 bold6 btn" v-scale @click="routerPush('/community/rank')">
+                        <img src="@/assets/user/29.png" class="img36 mr10">
+                        <div>查看全部排行榜</div>
+                    </div>
+                </div>
+                <div class="cell card mb20 mt30" v-for="(item, index) in list" :key="index">
                     <div class="flex ac">
                         <img :src="item.logo" class="img100 avatar">
                         <div class="flex1">
@@ -39,13 +62,25 @@ import { usePullRefresh } from '@/hooks/usePullRefresh';
 import CusEmpty from '@/components/CusEmpty/index.vue'
 import CusAsk from '@/components/CusAsk/index.vue'
 import { ref } from 'vue';
-import { apiCommunityApply } from '@/api/community';
+import { apiCommunityApply, apiCommunityRank } from '@/api/community';
 import { message } from '@/utils/message';
 import { t } from '@/locale';
+import CusTitle from '@/components/CusTitle/index.vue'
+import { routerPush } from '@/router';
 
 const { list, props: listProps, loadList } = useLoadList('/api/community/rank', 'list')
 const { props } = usePullRefresh(loadList)
 loadList()
+
+const rankList = ref<any[]>([])
+const loadRank = async () => {
+    const res:any = await apiCommunityRank({
+        page_no: 1,
+        page_size: 4
+    })
+    rankList.value = res.list
+}
+loadRank()
 
 const currentData = ref()
 const openAsk = (data:any) => {
@@ -94,6 +129,17 @@ const submit = async () => {
         font-size: 28px;
         font-weight: 600;
     }
+}
+
+.box {
+    background: linear-gradient(#C19F4F4D, #C19F4F00);
+    padding: 40px 10px 12px 10px;
+    border-radius: 20px;
+}
+
+.btn {
+    height: 88px;
+    border-radius: 44px;
 }
 
 .bottom {

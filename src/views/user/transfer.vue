@@ -16,7 +16,7 @@
         <div class="mt30">
             <div class="size28 bold6">转账账号</div>
             <div class="cell card mb20 flex jb ac mt20">
-                <input type="text" v-model="address" placeholder="请输入转账邮箱" class="flex1 size28">
+                <input type="text" v-model="address" placeholder="请输入转账邮箱或地址" class="flex1 size28">
             </div>
         </div>
 
@@ -46,11 +46,11 @@
             <div class="size28 bold6">到账金额</div>
             <div class="size24">
                 <span class="opc5 mr10">手续费</span>
-                <span class="main">2%</span>
+                <span class="main">{{ currentPicker.fee }}%</span>
             </div>
         </div>
         <div class="cell card mb20 flex jb ac mt20 bold6">
-            <div>0.00</div>
+            <div v-init="receiveAmount"></div>
             <div>{{ currentPicker.name }}</div>
         </div>
 
@@ -76,7 +76,7 @@
 <script setup lang="ts">
 import CusNav from '@/components/CusNav/index.vue'
 import { assetAIX, assetNFTC, assetUSDT } from '@/config'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import CusPicker from '@/components/CusPicker/index.vue';
 import iconUsdt from '@/assets/common/usdt.png'
 import iconAix from '@/assets/common/aix.png'
@@ -84,7 +84,8 @@ import { useUserStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import { message } from '@/utils/message';
 import { t } from '@/locale';
-import { apiTransfer } from '@/api/card';
+import { apiTransfer, apiTransferConfig } from '@/api/user';
+import { computedDiv, computedMul, computedSub } from '@/utils';
 
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
@@ -109,11 +110,27 @@ const inputAll = () => {
 const pickerCurrent = ref(0)
 const pickerShow = ref(false)
 const pickerList = [
-    {name:assetUSDT, icon: iconUsdt, value:'balance_usdt'},
-    {name:assetAIX, icon: iconAix, value:'balance_aix'},
-    {name:assetNFTC, icon: iconUsdt, value:'balance_nftc'}
+    {name:assetUSDT, icon: iconUsdt, value:'balance_usdt', fee:0},
+    {name:assetAIX, icon: iconAix, value:'balance_aix', fee:0},
+    {name:assetNFTC, icon: iconUsdt, value:'balance_nftc', fee:0}
 ]
 const currentPicker = computed(()=>pickerList[pickerCurrent.value])
+const receiveAmount = computed(() => {
+    const amount = Number(inputAmount.value || 0)
+    const fee = Number(currentPicker.value?.fee || 0)
+    if (!Number.isFinite(amount) || amount <= 0) return '0.00'
+    if (!Number.isFinite(fee) || fee <= 0) return `${amount}`
+
+    const feeAmount = computedDiv(computedMul(amount, fee), 100)
+    return `${computedSub(amount, feeAmount)}`
+})
+
+const loadData = async () => {
+    const res:any = await apiTransferConfig()
+    pickerList[0].fee = res.transfer_usdt_fee
+    pickerList[1].fee = res.transfer_aix_fee
+    pickerList[2].fee = res.transfer_nftc_fee
+}
 
 const submit = async () => {
     if(!address.value)return message(t('请输入转账账号'))
@@ -130,6 +147,10 @@ const submit = async () => {
     pay_password.value = ''
     address.value = ''
 }
+
+onMounted(()=>{
+    loadData()
+})
 </script>
 
 <style lang="scss" scoped>

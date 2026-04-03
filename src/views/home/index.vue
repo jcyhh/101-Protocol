@@ -1,19 +1,29 @@
 <template>
     <img src="@/assets/login/bg.png" class="pagebg animate__animated animate__slideInDown">
 
-    <div class="rel pt40 pl30 pr30">
+    <div class="rel pt30 pl30 pr30">
         
-        <div class="size25 bold5">{{ $t('本周服务费') }}</div>
-
-        <div class="main bold mt10">
-            <span class="size80" v-init="stats?.this_week_service_amount"></span>
-            <span class="size48 ml5">{{ assetUSDT }}</span>
-        </div>
-
-        <div class="flex wrap mt10 size24 lh60">
-            <span>{{ $t('上周服务费') }}</span>
-            <span class="ml10" v-init="stats?.last_week_service_amount"></span>
-            <span class="ml5">{{ assetUSDT }}</span>
+        <div class="flex">
+            <div class="card flex1 mr20">
+                <div class="flex ac">
+                    <img src="@/assets/common/aix.png" class="img52 mr12">
+                    <div class="size24 bold6">{{ assetAIX }}</div>
+                </div>
+                <div class="size40 bold6 main mt30">
+                    $<span v-init="stats?.aix_price"></span>
+                </div>
+                <div class="size24 opc5 mt10">{{ $t('实时币价') }}</div>
+            </div>
+            <div class="card flex1">
+                <div class="flex ac">
+                    <img src="@/assets/common/usdt.png" class="img52 mr12">
+                    <div class="size24 bold6">{{ assetNFTC }}</div>
+                </div>
+                <div class="size40 bold6 main mt30">
+                    $<span v-init="stats?.nftc_price"></span>
+                </div>
+                <div class="size24 opc5 mt10">{{ $t('实时币价') }}</div>
+            </div>
         </div>
 
         <div class="line mt30"></div>
@@ -57,7 +67,7 @@
 
         <div class="flex ac mt40">
             <img src="@/assets/home/4.png" class="img48 mr10">
-            <div class="main size28 bold6">{{ $t('余额宝') }}</div>
+            <div class="main size28 bold6">{{ $t('赚币宝') }}</div>
         </div>
 
         <div class="card mt30">
@@ -93,8 +103,8 @@
 </template>
 
 <script setup lang="ts">
-import { apiBanner, apiMessage, apiStats } from '@/api/home';
-import { appName, assetUSDT } from '@/config';
+import { apiBanner, apiConfig, apiMessage } from '@/api/home';
+import { appName, assetAIX, assetNFTC, assetUSDT } from '@/config';
 import { onMounted, ref } from 'vue';
 import { routerPush } from '@/router';
 import { useNotice } from '@/hooks/useNotice';
@@ -110,7 +120,7 @@ userStore.loadUserInfo()
 const stats = ref()
 const yuebao = ref()
 const loadStats = async () => {
-    stats.value = await apiStats()
+    stats.value = await apiConfig()
     yuebao.value = await apiYuebaoStats()
 }
 

@@ -17,12 +17,12 @@
             <van-icon name="arrow" color="#FFFFFF80" />
         </div>
 
-        <div class="cell card flex jb ac mt20" @click="routerPush('/account')">
+        <div class="cell card flex jb ac mt20" @click="routerPush('/account')" v-if="!isH5">
             <div class="size28">切换账号</div>
             <van-icon name="arrow" color="#FFFFFF80" />
         </div>
 
-        <div class="mainButton mainButtonDel flex jc ac main btn flex1 mt100" v-scale @click="show=true">退出登录</div>
+        <div class="mainButton mainButtonDel flex jc ac main btn flex1 mt100" v-scale @click="show=true" v-if="!isH5">退出登录</div>
 
     </div>
 
@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import CusNav from '@/components/CusNav/index.vue'
-import { delToken } from '@/config/storage';
+import { delAccount, delToken, getAccount, removeAccountItem } from '@/config/storage';
 import { routerPush, routerReplace } from '@/router';
 import { useAppStore } from '@/store';
 import { storeToRefs } from 'pinia';
@@ -44,7 +44,12 @@ const { isH5 } = storeToRefs(appStore)
 const show = ref(false)
 
 const logout = () => {
+    const email = getAccount()
+    if (email) {
+        removeAccountItem(email)
+    }
     delToken()
+    delAccount()
     routerReplace(isH5.value ? '/' : '/login')
 }
 </script>

@@ -38,6 +38,15 @@ export default [
         }]
     },
     {
+        path:'/news',
+        component: Layout,
+        redirect: '/news/index',
+        children:[{
+            path:'index',
+            component: () => import('@/views/user/news/list.vue')
+        }]
+    },
+    {
         path:'/user',
         component: Layout,
         redirect: '/user/index',

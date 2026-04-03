@@ -3,13 +3,13 @@
 
     <div v-if="cardList.length==0">
         <div class="pl30 pr30 pt30 flex">
+            <div class="card flex1 flex col ac mr20" @click="routerPush('/physical/apply')">
+                <img src="@/assets/pay/6.png" class="img46">
+                <div class="size28 main mt8">申请实体卡</div>
+            </div>
             <div class="card flex1 flex col ac" @click="routerPush('/physical/bind')">
                 <img src="@/assets/pay/5.png" class="img46">
                 <div class="size28 main mt8">绑定实体卡</div>
-            </div>
-            <div class="card flex1 flex col ac ml20" @click="routerPush('/physical/apply')">
-                <img src="@/assets/pay/6.png" class="img46">
-                <div class="size28 main mt8">申请实体卡</div>
             </div>
         </div>
     </div>
@@ -94,13 +94,13 @@
         </div>
 
         <div class="flex mt40">
+            <div class="card flex1 flex col ac mr20" @click="routerPush('/physical/apply')">
+                <img src="@/assets/pay/6.png" class="img46">
+                <div class="size28 main mt8">申请实体卡</div>
+            </div>
             <div class="card flex1 flex col ac" @click="routerPush('/physical/bind')">
                 <img src="@/assets/pay/5.png" class="img46">
                 <div class="size28 main mt8">绑定实体卡</div>
-            </div>
-            <div class="card flex1 flex col ac ml20" @click="routerPush('/physical/apply')">
-                <img src="@/assets/pay/6.png" class="img46">
-                <div class="size28 main mt8">申请实体卡</div>
             </div>
         </div>
 

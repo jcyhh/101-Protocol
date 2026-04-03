@@ -5,6 +5,7 @@
             :slides-per-view="'auto'"
             :space-between="space"
             :centered-slides="true"
+            :loop="cardList.length > 1"
             @slide-change="onSlideChange"
         >
             <swiper-slide v-for="item in cardList" :key="item.id" class="cardSlide">

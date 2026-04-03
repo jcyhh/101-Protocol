@@ -1,5 +1,5 @@
 <template>
-    <CusNav :title="$t('余额宝')"></CusNav>
+    <CusNav :title="$t('赚币宝')"></CusNav>
     <div class="pl30 pr30 pt30 rel">
         
         <div class="flex jc">

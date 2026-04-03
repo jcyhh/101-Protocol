@@ -13,7 +13,7 @@
                         <img src="@/assets/user/31.png" class="img32 mr10" v-else>
                     </div>
                     <div class="size28 bold5">{{ item.email || item.address }}</div>
-                    <div class="tag flex ac mainBtn ml20" v-if="leaderId==item.user_id">区长</div>
+                    <div class="tag flex ac mainBtn ml20" v-if="leaderId==item.user_id">社区ceo</div>
                 </div>
                 <div class="size28 bold main" v-init="item.kpi"></div>
             </div>

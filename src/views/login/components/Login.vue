@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { apiLogin } from '@/api/login';
-import { getAccount, setAccount, setToken } from '@/config/storage';
+import { getAccount, setAccount, setToken, upsertAccountItem } from '@/config/storage';
 import { t } from '@/locale';
 import { routerPush, routerReplace } from '@/router';
 import { message } from '@/utils/message';
@@ -40,6 +40,10 @@ const submit = async () => {
 
     setToken(res.token)
     setAccount(email.value)
+    upsertAccountItem({
+        email: email.value,
+        token: res.token
+    })
 
     routerReplace('/home')
 }

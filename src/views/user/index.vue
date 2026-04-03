@@ -23,7 +23,7 @@
 
         <div class="top mt50" @click="routerPush('/cardbag')">
             <div class="flex jb ac">
-                <div class="size30 bold5">我的卡包</div>
+                <div class="size30 bold5">抢购订单</div>
                 <div class="flex ac size24 opc5">
                     <div class="mr5">查看全部</div>
                     <van-icon name="arrow" />
@@ -103,10 +103,10 @@
             <van-icon name="arrow" color="#FFFFFF80" />
         </div>
 
-        <div class="cell flex jb ac mt20" @click="routerPush('/news')">
+        <div class="cell flex jb ac mt20" @click="routerPush('/news/my')">
             <div class="flex ac">
                 <img src="@/assets/user/9.png" class="img64 mr20">
-                <div class="size28">全网论坛</div>
+                <div class="size28">我的发布</div>
             </div>
             <van-icon name="arrow" color="#FFFFFF80" />
         </div>

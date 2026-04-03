@@ -1,9 +1,6 @@
 <template>
-    <CusNav :title="$t('全网论坛')" :show-bg="false">
-        <div class="tr size24" @click="routerPush('/news/my')">我的帖子</div>
-    </CusNav>
-    <van-pull-refresh class="fullPage rel" v-bind="props">
-        <van-list class="fullPage" v-bind="listProps">
+    <van-pull-refresh class="page rel" v-bind="props">
+        <van-list class="page" v-bind="listProps">
             <div class="pl30 pr30 pt30">
         
                 <div class="cell card mb24" v-for="(item,index) in list" :key="index" @click="routerPush(`/news/${item.id}`)">
@@ -37,7 +34,6 @@
 </template>
 
 <script setup lang="ts">
-import CusNav from '@/components/CusNav/index.vue'
 import { routerPush } from '@/router';
 import { useLoadList } from '@/hooks/useLoadList';
 import { usePullRefresh } from '@/hooks/usePullRefresh';
@@ -65,11 +61,16 @@ loadList()
         background-color: #FFFFFF33;
     }
 }
+.page{
+    width: 100vw;
+    min-height: calc(100vh - 200px);
+    min-height: calc(100dvh - 200px);
+}
 .create{
     width: 92px;
     height: 92px;
     position: fixed;
-    bottom: 60px;
+    bottom: 160px;
     right: 20px;
     z-index: 10;
 }

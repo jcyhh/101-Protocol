@@ -30,8 +30,12 @@ const token = getToken()
 if(!isH5.value){
     // webview环境
     setTimeout(() => {
-        if(token)routerReplace(homePath)
-        else routerReplace('/login')
+        if(params?.ref){
+            routerReplace('/register')
+        }else{
+            if(token)routerReplace(homePath)
+            else routerReplace('/login')
+        }
     }, 1200);
 }
 

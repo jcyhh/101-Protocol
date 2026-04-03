@@ -68,29 +68,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="box mt38">
-                    <CusTitle title="全网社区排行榜"></CusTitle>
-                    <div class="pl20 pr20 mt35">
-                        <div class="pt15 pb15 flex jb ac" v-for="(item,index) in rankList" :key="index">
-                            <div class="flex ac">
-                                <img src="@/assets/user/26.png" class="img32 mr8" v-if="index==0">
-                                <img src="@/assets/user/27.png" class="img32 mr8" v-else-if="index==1">
-                                <img src="@/assets/user/28.png" class="img32 mr8" v-else-if="index==2">
-                                <div class="flex jc ac img32 mr8 size24 opc5 bold" v-else>{{ index + 1 }}</div>
-                                <div class="size24 bold">{{ item.email || item.address }}</div>
-                            </div>
-                            <div class="flex ac">
-                                <div class="size24 bold mr10" v-init="item.total_kpi"></div>
-                                <img src="@/assets/common/usdt.png" class="img24">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mainButton mt30 flex jc ac size26 bold6 btn" v-scale @click="routerPush('/community/rank')">
-                        <img src="@/assets/user/29.png" class="img36 mr10">
-                        <div>查看全部排行榜</div>
-                    </div>
-                </div>
+                
             </div>
 
             <div class="gap40"></div>
@@ -121,8 +99,7 @@ import CusNumber from '@/components/CusNumber/index.vue'
 import Member from '../components/Member.vue';
 import { assetUSDT } from '@/config';
 import { routerGo, routerPush } from '@/router';
-import CusTitle from '@/components/CusTitle/index.vue'
-import { apiCommunityDistory, apiCommunityQuit, apiCommunityRank, apiMyCommunity } from '@/api/community';
+import { apiCommunityDistory, apiCommunityQuit, apiMyCommunity } from '@/api/community';
 import { onMounted, ref } from 'vue';
 import CusEmpty from '@/components/CusEmpty/index.vue'
 import Create from '../components/Create.vue';
@@ -137,21 +114,11 @@ const showQuit = ref(false)
 const showDestory = ref(false)
 const isLeader = ref(true)
 
-const rankList = ref<any[]>([])
-const loadRank = async () => {
-    const res:any = await apiCommunityRank({
-        page_no: 1,
-        page_size: 4
-    })
-    rankList.value = res.list
-}
-
 const loadData = async () => {
     const res: any = await apiMyCommunity()
     if (res && JSON.stringify(res) != '[]') {
         info.value = res
         isLeader.value = res.is_creator
-        loadRank()
     }else info.value = null
 }
 
@@ -229,12 +196,6 @@ onMounted(() => {
     border-radius: 24px;
     background-color: #FFFFFF1A;
     padding: 0 12px;
-}
-
-.box {
-    background: linear-gradient(#C19F4F4D, #C19F4F00);
-    padding: 40px 10px 12px 10px;
-    border-radius: 20px;
 }
 
 .bottom {
