@@ -27,3 +27,7 @@ export const apiCardBind = (params:any) => apiPost('/api/card/physical/bind', pa
 export const apiCardApply = (params:any) => apiPost('/api/card/physical/apply', params)
 
 export const apiCardPsw = (params:any) => apiPost('/api/card/set-pin', params)
+
+export const apiCardInfo = async (params:any) => await apiGet('/api/card/sensitive', params)
+
+export const apiCardInfoUpdate = (params:any) => apiPost('/api/card/update-sensitive', params)

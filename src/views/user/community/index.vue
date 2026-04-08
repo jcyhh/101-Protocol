@@ -21,6 +21,7 @@
                             </div>
                         </div>
                     </div>
+                    <CusEmpty v-if="rankList?.length == 0"></CusEmpty>
 
                     <div class="mainButton mt30 flex jc ac size26 bold6 btn" v-scale @click="routerPush('/community/rank')">
                         <img src="@/assets/user/29.png" class="img36 mr10">
@@ -68,7 +69,7 @@ import { t } from '@/locale';
 import CusTitle from '@/components/CusTitle/index.vue'
 import { routerPush } from '@/router';
 
-const { list, props: listProps, loadList } = useLoadList('/api/community/rank', 'list')
+const { list, props: listProps, loadList } = useLoadList('/api/community', 'list')
 const { props } = usePullRefresh(loadList)
 loadList()
 

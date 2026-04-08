@@ -367,5 +367,12 @@
     "收款币种": "Tiền tệ nhận",
     "条件": "Điều kiện",
     "来自": "Từ",
-    "社区CEO": "CEO cộng đồng"
+    "社区CEO": "CEO cộng đồng",
+    "编辑": "Chỉnh sửa",
+    "绑定": "Liên kết",
+    "保存卡信息": "Lưu thông tin thẻ",
+    "卡片信息": "Thông tin thẻ",
+    "点击": "Nhấn",
+    "复制卡片信息后填入进行绑定或修改卡信息": "Sao chép thông tin thẻ rồi dán vào để liên kết hoặc chỉnh sửa thông tin thẻ",
+    "请输入CVV": "Vui lòng nhập CVV"
 }

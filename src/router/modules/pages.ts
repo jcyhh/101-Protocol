@@ -171,4 +171,8 @@ export default [
         path:'/pay/remittance',
         component: () => import('@/views/pay/pay.vue')
     },
+    {
+        path:'/setcard/:id',
+        component: () => import('@/views/pay/card/setcard.vue')
+    },
 ]

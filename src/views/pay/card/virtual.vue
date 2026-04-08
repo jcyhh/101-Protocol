@@ -64,11 +64,18 @@
                 <div class="size24 opc5">{{ $t('卡片金额') }}</div>
             </div>
 
-            <div class="mt20 flex ac">
-                <div class="size20 opc5">EXP DATE</div>
-                <div class="size28 ml10">{{ show ? (currentCard.expire_date || '***') : '***' }}</div>
-                <div class="size20 opc5 ml30">CVV NUM</div>
-                <div class="size28 ml10">{{ show ? (currentCard.cvv || '***') : '***' }}</div>
+            <div class="mt20 flex ac jb">
+                <div>
+                    <div class="size20 opc5">EXP DATE</div>
+                    <div class="size28 ml10">{{ show ? (currentCard.expire_date || '***') : '***' }}</div>
+                    <div class="size20 opc5 ml30">CVV NUM</div>
+                    <div class="size28 ml10">{{ show ? (currentCard.cvv || '***') : '***' }}</div>
+                </div>
+
+                <div class="flex ac">
+                    <div class="size30 bold main" @click="routerPush(`/setcard/${currentCard?.id}`)">{{ currentCard?.complete_card_number ? t('编辑') : t('绑定') }}</div>
+                    <img src="@/assets/card/8.png" class="img36 ml5">
+                </div>
             </div>
 
             <div class="flex ac mt40 size28 bold6 main">
@@ -127,7 +134,7 @@ import { useDappStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import Recharge from '../components/Recharge.vue';
 import Transfer from '../components/Transfer.vue';
-import { routerReplace } from '@/router';
+import { routerPush, routerReplace } from '@/router';
 
 const dappStore = useDappStore()
 const { dappLoading } = storeToRefs(dappStore)

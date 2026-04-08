@@ -367,5 +367,12 @@
     "收款币种": "Receiving currency",
     "条件": "Conditions",
     "来自": "From",
-    "社区CEO": "Community CEO"
+    "社区CEO": "Community CEO",
+    "编辑": "Edit",
+    "绑定": "Bind",
+    "保存卡信息": "Save card information",
+    "卡片信息": "Card information",
+    "点击": "Click",
+    "复制卡片信息后填入进行绑定或修改卡信息": "Copy the card information, then paste it in to bind or edit the card information",
+    "请输入CVV": "Please enter CVV"
 }
