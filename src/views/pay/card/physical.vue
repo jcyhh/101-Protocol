@@ -33,7 +33,7 @@
                     <swiper-slide v-for="item in cardList" :key="item.id" class="cardSlide">
                         <div class="cardBlock">
                             <img src="@/assets/card/physicalCard.png" class="cardImg">
-                            <div class="active" v-if="item.card_status == 'PENDING'">{{ $t('点击激活') }}</div>
+                            <div class="active" v-if="item.card_status == 'PENDING'" @click="activeRef?.open(currentCard?.id)">{{ $t('点击激活') }}</div>
                             <div v-else>
                                 <div class="tag" :class="item.card_status=='ACTIVE'?'':'tagfail'" v-if="item.card_status">{{ item.card_status }}</div>
                             </div>
@@ -136,6 +136,7 @@
     <Recharge @success="loadCard()" ref="rechargeRef"></Recharge>
     <Transfer ref="transferRef"></Transfer>
     <Password ref="passwordRef"></Password>
+    <Active ref="activeRef"></Active>
 </template>
 
 <script setup lang="ts">
@@ -156,6 +157,7 @@ import { storeToRefs } from 'pinia';
 import Recharge from '../components/Recharge.vue';
 import Transfer from '../components/Transfer.vue';
 import Password from '../components/Password.vue';
+import Active from '../components/Active.vue';
 import { routerPush } from '@/router';
 
 const dappStore = useDappStore()
@@ -166,6 +168,7 @@ const space = getAdaptPx(30)
 const rechargeRef = ref()
 const transferRef = ref()
 const passwordRef = ref()
+const activeRef = ref()
 
 const cardList = ref<any[]>([])
 const currentIndex = ref(0)

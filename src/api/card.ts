@@ -20,6 +20,8 @@ export const apiDraw = () => apiPost('/api/order/rush')
 
 export const apiCard = (params:any) => apiPost('/api/order', params)
 
+export const apiCardActive = (params:any) => apiPost('/api/card/active', params)
+
 export const apiDrawStats = () => apiGet('/api/order/rebate_stats')
 
 export const apiCardBind = (params:any) => apiPost('/api/card/physical/bind', params)

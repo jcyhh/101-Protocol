@@ -374,5 +374,9 @@
     "卡片信息": "Maklumat kad",
     "点击": "Klik",
     "复制卡片信息后填入进行绑定或修改卡信息": "Salin maklumat kad kemudian tampal untuk memaut atau mengubah maklumat kad",
-    "请输入CVV": "Sila masukkan CVV"
+    "请输入CVV": "Sila masukkan CVV",
+    "激活": "Aktifkan",
+    "交易密码": "Kata laluan transaksi",
+    "请设置交易密码": "Sila tetapkan kata laluan transaksi",
+    "激活成功": "Pengaktifan berjaya"
 }

@@ -374,5 +374,9 @@
     "卡片信息": "Thông tin thẻ",
     "点击": "Nhấn",
     "复制卡片信息后填入进行绑定或修改卡信息": "Sao chép thông tin thẻ rồi dán vào để liên kết hoặc chỉnh sửa thông tin thẻ",
-    "请输入CVV": "Vui lòng nhập CVV"
+    "请输入CVV": "Vui lòng nhập CVV",
+    "激活": "Kích hoạt",
+    "交易密码": "Mật khẩu giao dịch",
+    "请设置交易密码": "Vui lòng đặt mật khẩu giao dịch",
+    "激活成功": "Kích hoạt thành công"
 }
