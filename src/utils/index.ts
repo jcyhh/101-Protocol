@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
+import { showImagePreview } from 'vant';
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -316,4 +317,11 @@ export function getCurrentUTCDate(): string {
 
 export function openLink (link: string) {
     location.href = link
+}
+
+export function previewImgs (list:string[], index:number=0) {
+    showImagePreview({
+        images: list,
+        startPosition: index
+    })
 }

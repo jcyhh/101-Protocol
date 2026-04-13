@@ -15,7 +15,7 @@
                     <div class="size24 mt6">{{ $t('来自') }} {{ item.email || item.address }}</div>
                     <div class="flex jb ac mt10">
                         <div class="flex ac">
-                            <img src="@/assets/user/20.png" class="img34 mr6">
+                            <img :src="item.community_logo" class="img34 mr6">
                             <div class="size20 opc5 mr10">{{ item.community_name }}</div>
                             <div class="size20 main">{{ $t('NO.') }}{{ item.community_rank }}</div>
                         </div>

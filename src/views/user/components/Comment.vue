@@ -11,7 +11,7 @@
         <div class="size24 mt10 opc5">{{ data?.created_at }}</div>
         <div class="size26 mt16 lh40">{{ data?.content }}</div>
         <div class="flex pics grid col3 mt30 mb72" v-if="data?.images && data?.images.length>0">
-            <img :src="item" class="picitem" v-for="(item,index) in data?.images" :key="index">
+            <img :src="item" class="picitem netimg" v-for="(item,index) in data?.images" :key="index" @click="previewImgs(data?.images, Number(index))">
         </div>
         <!-- <div class="pl12">
             <div class="comment" :class="index<1?'':'borderNone'" v-for="(item,index) in 2" :key="index">
@@ -37,6 +37,8 @@
 </template>
 
 <script setup lang="ts">
+import { previewImgs } from '@/utils';
+
 defineProps(['data'])
 </script>
 

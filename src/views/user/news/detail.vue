@@ -10,7 +10,7 @@
             </div>
             <div class="flex jb ac mt12">
                 <div class="flex ac">
-                    <img src="@/assets/user/20.png" class="img34 mr6">
+                    <img :src="info?.community_logo" class="img34 mr6">
                     <div class="size20 opc5 mr10">{{ info?.community_name }}</div>
                     <div class="size20 main">{{ $t('NO.') }}{{ info?.community_rank }}</div>
                 </div>
@@ -19,7 +19,7 @@
             <div class="line mt40 mb40"></div>
             <div class="size26 lh40">{{ info?.content }}</div>
             <div class="flex pics grid col3 mt30 mb72" v-if="info?.images && info?.images.length>0">
-                <img :src="item" class="picitem" v-for="(item,index) in info?.images" :key="index">
+                <img :src="item" class="picitem netimg" v-for="(item,index) in info?.images" :key="index" @click="previewImgs(info?.images, Number(index))">
             </div>
         </div>
 
@@ -58,6 +58,7 @@ import { computed, onMounted, ref } from 'vue';
 import { useLoadList } from '@/hooks/useLoadList';
 import CusEmpty from '@/components/CusEmpty/index.vue'
 import Judeg from '../components/Judeg.vue';
+import { previewImgs } from '@/utils';
 
 const { params } = useRoute()
 

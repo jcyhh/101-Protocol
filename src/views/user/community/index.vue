@@ -16,7 +16,7 @@
                                 <div class="size24 bold">{{ item.email || item.address }}</div>
                             </div>
                             <div class="flex ac">
-                                <div class="size24 bold mr10" v-init="item.total_kpi"></div>
+                                <div class="size24 bold mr10" v-init="item.kpi"></div>
                                 <img src="@/assets/common/usdt.png" class="img24">
                             </div>
                         </div>

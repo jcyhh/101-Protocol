@@ -9,12 +9,13 @@
 
                 <div class="mt100 size48 bold tc" v-init="diff"></div>
                 <div class="size24 mt20 opc5 tc">升级补差金额({{ assetUSDT }})</div>
-
-                <div class="size26 bold6 mt100 mb30">支付方式</div>
-
-                <CusPaytype v-model:paytype="paytype"></CusPaytype>
                 
-                <div class="mainBtn mt100 flex jc ac size28 main bold6 btn" @click="submit">确认升级</div>
+                <div class="tc mt200 mb20 size24">
+                    <span class="opc5 mr10">可用余额</span>
+                    <span class="main bold5" v-init="userInfo?.balance_usdt"></span>
+                    <span class="main bold5">{{ assetUSDT }}</span>
+                </div>
+                <div class="mainBtn flex jc ac size28 main bold6 btn" @click="submit">确认升级</div>
 
                 <div class="safeArea"></div>
                 
@@ -26,7 +27,6 @@
 <script setup lang="ts">
 import { assetUSDT } from '@/config';
 import { computed, ref } from 'vue';
-import CusPaytype from '@/components/CusPaytype/index.vue'
 import { useUserStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import { computedSub } from '@/utils';
@@ -40,13 +40,13 @@ const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
 
 const show = ref(false)
-const paytype = ref('balance_aix')
 
 const cardInfo = ref()
 
 const diff = computed(()=>computedSub(cardInfo.value?.price, userInfo.value.card_amount))
 
 const open = (data:any) => {
+    userStore.loadUserInfo()
     cardInfo.value = data
     show.value = true
 }

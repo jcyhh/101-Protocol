@@ -41,7 +41,7 @@
                     <div class="flex jb ac">
                         <div class="size24 bold5">{{ $t('社区业绩') }}</div>
                         <div class="size24 bold6">
-                            <span v-init="item.total_kpi"></span>
+                            <span v-init="item.kpi"></span>
                             <span class="ml5">{{ assetUSDT }}</span>
                         </div>
                     </div>
