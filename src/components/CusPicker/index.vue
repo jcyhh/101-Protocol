@@ -3,7 +3,7 @@
         <div class="popup">
             <div class="content">
                 <div class="flex jb ac mb60">
-                    <div class="size28 main bold6">{{ title }}</div>
+                    <div class="size28 bold6">{{ title }}</div>
                     <van-icon size="20" name="cross" color="#8D9094" @click="close" />
                 </div>
                 <div v-if="list.length==0">

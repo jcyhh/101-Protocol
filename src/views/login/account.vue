@@ -2,10 +2,10 @@
     <CusNav :title="$t('切换账号')"></CusNav>
     <div class="pl30 pr30 pt30 rel">
         <template v-if="accountList.length > 0">
-            <div class="flex jb ac cell mb20" v-for="item in accountList" :key="item.email">
-                <div class="size28 bold6" v-init:address="item.email"></div>
+            <div class="flex jb ac cell mb20" v-for="item in accountList" :key="item.account">
+                <div class="size28 bold6" v-init:address="item.account"></div>
                 <div>
-                    <div class="size28 main bold6" v-if="item.email === currentEmail">{{ $t('当前登录') }}</div>
+                    <div class="size28 main bold6" v-if="item.account === currentAccount">{{ $t('当前登录') }}</div>
                     <div class="mainButton btn size24 bold6 flex ac" v-else @click="switchAccount(item)">{{ $t('切换') }}</div>
                 </div>
             </div>
@@ -17,7 +17,7 @@
     <div class="safeArea"></div>
     <div class="gap130"></div>
     <div class="bottom">
-        <div class="mainBtn size28 bold6 flex jc ac" @click="routerPush('/login')">{{ $t('添加账号') }}</div>
+        <div class="mainBtn size28 bold6 flex jc ac" @click="routerPush(routerLogin)">{{ $t('添加账号') }}</div>
         <div class="safeArea"></div>
     </div>
 </template>
@@ -25,22 +25,29 @@
 <script setup lang="ts">
 import CusNav from '@/components/CusNav/index.vue'
 import CusEmpty from '@/components/CusEmpty/index.vue'
-import { getAccount, getAccountList, setAccount, setToken, type LoginAccountItem } from '@/config/storage'
+import { useStorage } from '@/config/storage'
 import { t } from '@/locale'
 import { routerPush, routerReplace } from '@/router'
 import { message } from '@/utils/message'
 import { ref } from 'vue'
+import { useAccount } from '@/hooks/useAccount'
+import type { LoginAccountItem } from '@/config/interface'
+import { routerHome, routerLogin } from '@/config/router'
 
-const accountList = ref<LoginAccountItem[]>(getAccountList())
-const currentEmail = ref(getAccount())
+const { getList } = useAccount()
+
+const { getAccount, setToken, setAccount } = useStorage()
+
+const accountList = ref<LoginAccountItem[]>(getList())
+const currentAccount = ref(getAccount())
 
 const switchAccount = (item: LoginAccountItem) => {
     if (!item?.token) return
     setToken(item.token)
-    setAccount(item.email)
-    currentEmail.value = item.email
+    setAccount(item.account)
+    currentAccount.value = item.account
     message(t('切换成功'), 'success')
-    routerReplace('/user/index')
+    routerReplace(routerHome)
 }
 </script>
 

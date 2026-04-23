@@ -1,105 +1,68 @@
-const addressKey: string = 'WELLET_ADDRESS' // 存储钱包地址的KEY
+/**
+ * 本地存储
+ */
 
-const refKey: string = 'REF' // 存储邀请码的KEY
+import { appDefaultLang } from "."
+import type { TypeLang } from "./type"
 
-const tokenKey: string = 'TOKEN' // 存储TOKEN的KEY
+const storageAddress: string = 'WELLET_ADDRESS' // 钱包地址
 
-const langKey: string = 'LANG' // 存储多语言的KEY
+const storageRef: string = 'REF' // 邀请码
 
-const accountKey: string = 'ACCOUNT' // 存储登入账户的KEY
+const storageToken: string = 'TOKEN' // Token
 
-const accountListKey: string = 'ACCOUNT_LIST' // 存储已缓存账号列表的KEY
+const storageLang: string = 'LANG' // 多语言
 
-const reportKey: string = 'REPORT' // 测试
+const storageAccount: string = 'ACCOUNT' // 登录账户
 
-export interface LoginAccountItem {
-    email: string
-    token: string
-}
+const storageAccountList: string = 'ACCOUNT_LIST' // 已登录账户列表
 
-interface ReportItem {
-    timeId: string
-    message: string
-}
+// 存
+const setStorage = (key:string, data: string): void => localStorage.setItem(key, data)
 
-// 存储多语言
-export const setLang = (data: string): void => localStorage.setItem(langKey, data)
-export const getLang = (): string => localStorage.getItem(langKey) || (import.meta.env.PROD ? 'en' : 'zh')
-export const delLang = (): void => localStorage.removeItem(langKey)
+// 取
+const getStorage = (key:string): string | null => localStorage.getItem(key)
 
-// 存储钱包地址
-export const setAddress = (data: string): void => localStorage.setItem(addressKey, data)
-export const getAddress = (): string => localStorage.getItem(addressKey)||''
-export const delAddress = (): void => localStorage.removeItem(addressKey)
+// 删
+const delStorage = (key:string): void => localStorage.removeItem(key)
 
-// 存储邀请码
-export const setRef = (data: string): void => localStorage.setItem(refKey, data)
-export const getRef = (): string => localStorage.getItem(refKey)||''
-export const delRef = (): void => localStorage.removeItem(refKey)
+export function useStorage () {
+    // 多语言
+    const setLang = (lang:TypeLang): void => setStorage(storageLang, lang)
+    const getLang = (): TypeLang => (getStorage(storageLang) as TypeLang) || appDefaultLang
+    const delLang = (): void => delStorage(storageLang)
 
-// 存储Token
-export const setToken = (data: string): void => localStorage.setItem(tokenKey, data)
-export const getToken = (): string => localStorage.getItem(tokenKey)||''
-export const delToken = (): void => localStorage.removeItem(tokenKey)
+    // 钱包地址
+    const setAddress = (address:string): void => setStorage(storageAddress, address)
+    const getAddress = (): string | null => getStorage(storageAddress)
+    const delAddress = (): void => delStorage(storageAddress)
 
-// 存储登入账户
-export const setAccount = (data: string): void => localStorage.setItem(accountKey, data)
-export const getAccount = (): string => localStorage.getItem(accountKey)||''
-export const delAccount = (): void => localStorage.removeItem(accountKey)
+    // 邀请码
+    const setRef = (code:string): void => setStorage(storageRef, code)
+    const getRef = (): string | null => getStorage(storageRef)
+    const delRef = (): void => delStorage(storageRef)
 
-// 存储已缓存账号列表
-export const setAccountList = (data: LoginAccountItem[]): void => localStorage.setItem(accountListKey, JSON.stringify(data || []))
-export const getAccountList = (): LoginAccountItem[] => {
-    try {
-        const data = JSON.parse(localStorage.getItem(accountListKey) || '[]')
-        return Array.isArray(data) ? data : []
-    } catch {
-        return []
+    // Token
+    const setToken = (token:string): void => setStorage(storageToken, token)
+    const getToken = (): string | null => getStorage(storageToken)
+    const delToken = (): void => delStorage(storageToken)
+
+    // 账号
+    const setAccount = (account:string): void => setStorage(storageAccount, account)
+    const getAccount = (): string | null => getStorage(storageAccount)
+    const delAccount = (): void => delStorage(storageAccount)
+
+    // 已登录账号列表
+    const setAccountList = (accounts:string): void => setStorage(storageAccountList, accounts)
+    const getAccountList = (): string | null => getStorage(storageAccountList)
+    const delAccountList = (): void => delStorage(storageAccountList)
+
+    return {
+        setRef, getRef, delRef,
+        setLang, getLang, delLang,
+        setToken, getToken, delToken,
+        setAccount, getAccount, delAccount,
+        setAddress, getAddress, delAddress,
+        setAccountList, getAccountList, delAccountList
     }
-}
-export const delAccountList = (): void => localStorage.removeItem(accountListKey)
-export const upsertAccountItem = (data: LoginAccountItem): void => {
-    const list = getAccountList()
-    const index = list.findIndex(item => item.email === data.email)
-
-    if (index > -1) {
-        list[index] = data
-    } else {
-        list.unshift(data)
-    }
-
-    setAccountList(list)
-}
-export const removeAccountItem = (email: string): void => {
-    const list = getAccountList().filter(item => item.email !== email)
-    setAccountList(list)
-}
-
-export const setReport = (data: string): void => localStorage.setItem(reportKey, data)
-export const getReport = (): string => localStorage.getItem(reportKey)||'[]'
-export const delReport = (): void => localStorage.removeItem(reportKey)
-export const upsertReport = (timeId: string, message: string): void => {
-    let list: ReportItem[] = []
-
-    try {
-        const cache = JSON.parse(getReport())
-        list = Array.isArray(cache) ? cache : []
-    } catch {
-        list = []
-    }
-
-    const index = list.findIndex(item => item.timeId === timeId)
-
-    if (index > -1) {
-        list[index].message = message
-    } else {
-        list.unshift({ timeId, message })
-    }
-
-    setReport(JSON.stringify(list))
-}
-
-// 保存
-export function saveRef(){
-
 }

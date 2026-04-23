@@ -10,6 +10,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     CusAsk: typeof import('./src/components/CusAsk/index.vue')['default']
     CusEmpty: typeof import('./src/components/CusEmpty/index.vue')['default']
+    CusFloatButton: typeof import('./src/components/CusFloatButton/index.vue')['default']
     CusLang: typeof import('./src/components/CusLang/index.vue')['default']
     CusLoading: typeof import('./src/components/CusLoading/index.vue')['default']
     CusNav: typeof import('./src/components/CusNav/index.vue')['default']

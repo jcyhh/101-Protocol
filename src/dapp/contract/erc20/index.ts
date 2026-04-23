@@ -1,11 +1,15 @@
 import type { Abi } from 'viem'
 import { useContract } from "../useContract";
 import abi from './abi.json'
-import { approveAmount, getAddress } from '@/dapp/config';
+import { dappApproveMaxAmount, dappApproveMaxAmountEnable } from '@/config/dapp';
 import { t } from '@/locale';
 import { message } from '@/utils/message';
+import { useStorage } from '@/config/storage';
 
 export function useErc20 () {
+
+    const { getAddress } = useStorage()
+
     const contract = useContract(import.meta.env.VITE_USDT, abi as Abi)
     
     // 读余额
@@ -28,12 +32,8 @@ export function useErc20 () {
         const allowance = await readAllowance(spender)
         // 授权额度小于输入的额度，去授权
         if (allowance < amount){
-            
-            // 授权最大额度
-            await contract.write('approve', [spender, approveAmount])
-
-            // 授权输入的额度
-            // await contract.write('approve', [spender, amount])
+            if(dappApproveMaxAmountEnable)await contract.write('approve', [spender, dappApproveMaxAmount]) // 授权最大额度
+            else await contract.write('approve', [spender, amount]) // 授权输入的额度
         }
     }
 

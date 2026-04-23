@@ -50,14 +50,6 @@
     animation: rotate 1s linear infinite;
 }
 
-.pagebg{
-    width: 100vw;
-    height: auto;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-
 .fullPage{
     width: 100vw;
     min-height: calc(100vh - 100px);
@@ -65,10 +57,10 @@
 }
 
 .mainBtn{
-    background: linear-gradient(90deg, #EFB152 0%, #F0CD80 49.4%, #EFB152 100%);
+    background: $main-color;
     height: 74px;
     border-radius: 37px;
-    color: #000000;
+    color: #FFFFFF;
     font-size: 28px;
 }
 
@@ -152,7 +144,7 @@
         border-bottom: none;
         position: relative;
         z-index: 1;
-        background: linear-gradient(#322F27, #000000);
+        background: linear-gradient(#0F0000, #341D00);
         &::before{
             content: '';
             position: absolute;
@@ -162,7 +154,7 @@
             right: -1px;
             bottom: -1px;
             border-radius: 20px 20px 0 0;
-            background: linear-gradient(#EFCD80, #EFCD8000);
+            background: linear-gradient(#FECD67, #FECD6700);
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             mask-composite: xor;
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);

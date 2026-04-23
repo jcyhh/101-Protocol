@@ -9,4 +9,4 @@ export function setupStore(app: App<Element>) {
 
 export * from './modules/app';
 export * from './modules/user';
-export * from '@/dapp/store/index';
+export * from './modules/dapp';

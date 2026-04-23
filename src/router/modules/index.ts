@@ -3,9 +3,12 @@
  */
 import Start from '@/views/index.vue'
 import Layout from '@/layout/index.vue'
-import pages from './pages'
+import loginPages from './login'
+import assetPages from './asset'
+import { appWebviewEnable } from '@/config'
+import type { RouteRecordRaw } from 'vue-router'
 
-export default [
+let routes: RouteRecordRaw[] = [
     {
         path:'/', // 启动
         component: Start
@@ -20,44 +23,33 @@ export default [
         }]
     },
     {
-        path:'/pay',
+        path:'/team',
         component: Layout,
-        redirect: '/pay/index',
+        redirect: '/team/index',
         children:[{
             path:'index',
-            component: () => import('@/views/pay/index.vue')
+            component: () => import('@/views/team/index.vue')
         }]
+    }
+]
+
+const theEndPages = [
+    {
+        path:'/pdf/:type', // PDF 文件预览
+        component: () => import('@/views/pdf/index.vue')
     },
     {
-        path:'/draw',
-        component: Layout,
-        redirect: '/draw/index',
-        children:[{
-            path:'index',
-            component: () => import('@/views/draw/index.vue')
-        }]
-    },
-    {
-        path:'/news',
-        component: Layout,
-        redirect: '/news/index',
-        children:[{
-            path:'index',
-            component: () => import('@/views/user/news/list.vue')
-        }]
-    },
-    {
-        path:'/user',
-        component: Layout,
-        redirect: '/user/index',
-        children:[{
-            path:'index',
-            component: () => import('@/views/user/index.vue')
-        }]
-    },
-    ...pages,
-    {
-        path:'/ref/:ref([a-zA-Z0-9]+)', // 接收邀请码，需配置在常规路由的下方
+        path:'/ref/:ref([a-zA-Z0-9]+)', // 接收邀请码
         component: Start
     }
 ]
+
+if(appWebviewEnable)routes.concat(loginPages)
+
+// 资产充提转
+routes.concat(assetPages)
+
+// 需配置在常规路由的下方
+routes.concat(theEndPages)
+
+export default routes;

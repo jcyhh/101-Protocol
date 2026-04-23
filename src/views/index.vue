@@ -1,21 +1,23 @@
 <template>
-    <img src="@/assets/start/1.png" class="pic1" />
-    <img src="@/assets/start/2.png" class="pic2 animate__animated animate__zoomIn delay3">
-    <div class="grey size20 tips animate__animated animate__slideInUp delay3">Welcome to X SmartPay</div>
+    <div class="start flex col jc ac">
+        <img src="@/assets/start/1.png" class="pic1 animate__animated animate__zoomIn delay3" />
+        <img src="@/assets/start/2.png" class="pic2 animate__animated animate__fadeIn">
+    </div>
 </template>
 
 <script setup lang="ts">
 import { apiDappLogin } from '@/api/login';
-import { getRef, getToken, setRef, setToken } from '@/config/storage';
+import { useStorage } from '@/config/storage';
 import { getSign } from '@/dapp';
 import { routerReplace } from '@/router';
-import { useAppStore, useDappStore } from '@/store';
+import { useDappStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { appWebviewEnable, appIsWebview } from '@/config'
+import { routerLogin, routerHome } from '@/config/router'
 
-const appStore = useAppStore()
-const { isH5 } = storeToRefs(appStore)
+const { getRef, getToken, setRef, setToken } = useStorage()
 
 const dappStore = useDappStore()
 const { providerStatus, walletAddress } = storeToRefs(dappStore)
@@ -23,18 +25,16 @@ const { providerStatus, walletAddress } = storeToRefs(dappStore)
 const { params } = useRoute()
 if(params?.ref)setRef(params?.ref as any)
 
-const homePath = '/home'
-
 const token = getToken()
 
-if(!isH5.value){
+if(appWebviewEnable && appIsWebview){
     // webview环境
     setTimeout(() => {
         if(params?.ref){
             routerReplace('/register')
         }else{
-            if(token)routerReplace(homePath)
-            else routerReplace('/login')
+            if(token)routerReplace(routerHome)
+            else routerReplace(routerLogin)
         }
     }, 1200);
 }
@@ -48,56 +48,39 @@ const dappLoginIn = async () => {
         ...signInfo
     })
     setToken(res.token)
-    routerReplace(homePath)
+    routerReplace(routerHome)
 }
 
 watch(providerStatus, status => {
-    if(!isH5.value)return;
+    if(appWebviewEnable && appIsWebview)return;
     if(status==1){
         // 有钱包环境
         setTimeout(() => {
-            token ? routerReplace(homePath) : dappLoginIn()
+            token ? routerReplace(routerHome) : dappLoginIn()
         }, 1200)
     }else if(status==2){
         // 无钱包环境
         setTimeout(() => {
-            if(token)routerReplace(homePath)
-            else routerReplace('/login')
+            if(token)routerReplace(routerHome)
+            else routerReplace(routerLogin)
         }, 1200);
     }
 }, {immediate: true})
 </script>
 
 <style lang="scss" scoped>
-.pic1{
+.start{
     width: 100vw;
-    height: 850px;
-    position: fixed;
-    bottom: 170px;
-    left: 0;
-    transform-origin: bottom center;
-    animation: scale-in 1.2s linear forwards;
+    height: 100vh;
+    height: 100dvh;
+    background: linear-gradient(#000000, #301500, #000000);
 }
-
-@keyframes scale-in {
-    from {
-        transform: scale(1.5);
-    }
-    to {
-        transform: scale(1);
-    }
+.pic1{
+    width: 350px;
+    height: 230px;
 }
 .pic2{
-    width: 224px;
-    height: 211px;
-    position: fixed;
-    bottom: 953px;
-    left: 263px;
-}
-.tips{
-    position: fixed;
-    bottom: 30px;
     width: 100vw;
-    text-align: center;
+    height: 306px;
 }
 </style>

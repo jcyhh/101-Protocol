@@ -2,33 +2,17 @@ import {
     createWalletClient,
     custom,
     publicActions,
-    type Address,
-    defineChain
+    type Address
 } from 'viem'
 import { bsc } from 'viem/chains'
 import detectEthereumProvider from '@metamask/detect-provider'
-import { minGasBalance, type SignMessage } from './config'
+import { dappMinGasBalance, dappLocalTestnet, dappDevCheckChainEnable } from '@/config/dapp'
 import { t } from '@/locale'
 import { message } from '@/utils/message'
+import type { TypeSignMessage } from '@/config/type'
 
-// 自定义测试网络配置
-const localTestnet = defineChain({
-    id: 31337,
-    name: 'Local Testnet',
-    nativeCurrency: {
-        decimals: 18,
-        name: 'GO',
-        symbol: 'GO',
-    },
-    rpcUrls: {
-        default: {
-            http: [import.meta.env.VITE_RPC_URL],
-        },
-    },
-})
-
-// 正式环境BSC(币安链)、开发环境本地测试网络
-export const currentChain = import.meta.env.PROD ? bsc : localTestnet
+// 当前链
+export const currentChain = import.meta.env.PROD ? bsc : dappLocalTestnet
 
 // viem写合约的实例
 let _walletClient: any = null
@@ -89,21 +73,17 @@ export const getConnectedAddress = async (): Promise<Address> => {
  * 如果当前网络不是 currentChain，则切换；如果钱包没有该网络则先添加
  */
 export const checkChain = async () => {
-    // 开发环境不判断网络
-    if(!import.meta.env.PROD)return true;
+    // 开发环境是否判断网络
+    if(!import.meta.env.PROD && !dappDevCheckChainEnable)return true;
     
     const ethereum = getEthereum()
     
     // 获取当前网络 chainId
     const currentChainId = await ethereum.request({ method: 'eth_chainId' })
     const targetChainId = `0x${currentChain.id.toString(16)}`
-    console.log(`当前网络${currentChainId}-${Number(currentChainId)}`, `需要切换到的网络${targetChainId}-${Number(targetChainId)}`);
-    
     
     // 已经是目标网络
-    if (currentChainId === targetChainId) {
-        return true
-    }
+    if (currentChainId === targetChainId) return true;
     
     try {
         // 尝试切换网络
@@ -147,7 +127,7 @@ export const checkGasBalance = async () => {
     const address = await getConnectedAddress()
     const balance = await walletClient.getBalance({ address })
     
-    if (balance < minGasBalance) {
+    if (balance < dappMinGasBalance) {
         message(t('Gas费用不足'))
         throw new Error('Gas费用不足')
     }
@@ -156,7 +136,7 @@ export const checkGasBalance = async () => {
 /**
  * 获取签名
  */
-export const getSign = async (message: SignMessage) => {
+export const getSign = async (message: TypeSignMessage) => {
     const walletClient = getWalletClient()
     const [address] = await walletClient.getAddresses()
     const timestamp = Math.floor(Date.now() / 1000)
@@ -171,9 +151,9 @@ export const getSign = async (message: SignMessage) => {
  * 获取所有客户端（智能合约批量）
  */
 export const getClients = async () => {
-        await detectProvider()
-        const walletClient = getWalletClient()
-        const address = await getConnectedAddress()
-        const ethereum = getEthereum()
-        return { walletClient, address, ethereum }
+    await detectProvider()
+    const walletClient = getWalletClient()
+    const address = await getConnectedAddress()
+    const ethereum = getEthereum()
+    return { walletClient, address, ethereum }
 }

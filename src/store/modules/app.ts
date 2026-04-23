@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { getLang, setLang } from '@/config/storage'
+import { useStorage } from '@/config/storage'
 import { i18n } from '@/locale'
 
 export const useAppStore = defineStore('app', () => {
 
-    const isH5 = ref((window as any).__FROM_FLUTTER__ !== true)
+    const { getLang, setLang } = useStorage()
 
     const lang = ref(getLang()) // 当前多语言
 
@@ -19,7 +19,6 @@ export const useAppStore = defineStore('app', () => {
     }
 
     return {
-        isH5,
         lang,
         setLocale
     }

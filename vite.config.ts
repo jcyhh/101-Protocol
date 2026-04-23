@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
-import { appName, publicPath } from './src/config/index'
+import { appPublicPath } from './src/config/index'
+import { appName } from './src/config/name'
 
 import Components from 'unplugin-vue-components/vite'; // 解析模板并自动注册对应的组件
 
@@ -18,7 +19,7 @@ import { VueAmazingUIResolver } from 'vue-amazing-ui'
 
 
 export default defineConfig({
-    base: publicPath,
+    base: appPublicPath,
     server: {
         host: '0.0.0.0',
         port: 5173,

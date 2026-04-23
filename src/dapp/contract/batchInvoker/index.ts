@@ -1,10 +1,10 @@
 import { type Address, type Abi } from 'viem'
 import { executeBatch } from './useBatchInvoker'
-import stakingAbi from '../staking/abi.json'
+import stakingAbi from '../erc20/abi.json'
 
 // ============= 合约配置 =============
 
-const STAKING_ADDRESS = import.meta.env.VITE_STAKING as Address
+const STAKING_ADDRESS = import.meta.env.VITE_USDT as Address
 const STAKING_ABI = stakingAbi as Abi
 
 // ============= 预设组合 =============
@@ -25,8 +25,4 @@ export const restakeAndBurn = (args1: any[], args2: any[]) => executeBatch([
 export const claimAndBurn = (args1: any[], args2: any[]) => executeBatch([
     { to: STAKING_ADDRESS, abi: STAKING_ABI, functionName: 'claim', args: args1 },
     { to: STAKING_ADDRESS, abi: STAKING_ABI, functionName: 'burnExpiredReward', args: args2 },
-])
-
-export const setTeamVirtuallyInvestValue = (args1: any[]) => executeBatch([
-    { to: STAKING_ADDRESS, abi: STAKING_ABI, functionName: 'setTeamVirtuallyInvestValue', args: args1 }
 ])

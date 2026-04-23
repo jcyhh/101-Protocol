@@ -1,7 +1,7 @@
 import { encodeFunctionData, type Address, type Abi } from 'viem'
 import { t } from '@/locale'
 import { getClients, currentChain } from '@/dapp'
-import { useDappStore } from '@/dapp/store'
+import { useDappStore } from '@/store'
 import { message } from '@/utils/message'
 
 // 调用项类型

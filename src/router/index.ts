@@ -1,11 +1,12 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from "./modules";
-import { publicPath } from '@/config'
+import { appPublicPath, appRouterMode } from '@/config'
+
 
 export const router = createRouter({
-    history: createWebHistory(publicPath),
+    history: appRouterMode === 'hash' ? createWebHashHistory(appPublicPath) : createWebHistory(appPublicPath),
     routes,
-    scrollBehavior(){
+    scrollBehavior() { // 切换页面后回滚到顶部
         return { top: 0 }
     }
 })
@@ -25,7 +26,7 @@ export const routerReplace = (path:string, query:any = null) => {
 }
 
 // 默认返回
-export const routerGo = (count:number = -1, fallbackPath:string = '/') => {
+export const routerBack = (count:number = -1, fallbackPath:string = '/') => {
     if(count < 0 && !window.history.state?.back){
         routerReplace(fallbackPath)
         return

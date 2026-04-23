@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import { showImagePreview } from 'vant';
+import { appTimeZone } from '@/config';
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -69,7 +70,7 @@ export function computedSub(a:number|string, b:number|string) {
  * @param {Number|String} designWidth - 设计稿宽度，默认750
  * @returns {Number} 当前屏幕对应像素
  */
-export function getAdaptPx(px:number|string, designWidth:number|string = 750) {
+export function getAdaptWidht(px:number|string, designWidth:number|string = 750) {
     const screenWidth = typeof window !== 'undefined' ? window.innerWidth : Number(designWidth)
     return computedDiv(computedMul(screenWidth, px), designWidth)
 }
@@ -114,16 +115,14 @@ export function padZero(value:number|string) {
     return `${value}`
 }
 
-const CHINA_TZ = 'Asia/Shanghai'
-
 /**
- * 判断当前是否在中国时区（Asia/Shanghai）的 start～end 时间段内；与设备本地时区无关
+ * 判断当前是否在指定时区的 start～end 时间段内；与设备本地时区无关
  * @param startStr - 开始：支持 HH:mm / HH:mm:ss，或 dayjs 可解析的日期时间字符串
  * @param endStr - 结束：同上；仅时间时按上海「当天」比较；若 start>end 视为跨天（如 22:00～06:00）
  */
-export function isNowInChinaRange(startStr: string, endStr: string): boolean {
+export function isNowInTimeZoneRange(startStr: string, endStr: string): boolean {
     if (!startStr || !endStr) return false
-    const now = dayjs.tz(new Date(), CHINA_TZ)
+    const now = dayjs.tz(new Date(), appTimeZone)
 
     const parseMinutes = (s: string) => {
         const m = String(s).trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/)
@@ -139,68 +138,23 @@ export function isNowInChinaRange(startStr: string, endStr: string): boolean {
         return n >= startM || n <= endM
     }
 
-    const start = dayjs.tz(startStr, CHINA_TZ)
-    const end = dayjs.tz(endStr, CHINA_TZ)
+    const start = dayjs.tz(startStr, appTimeZone)
+    const end = dayjs.tz(endStr, appTimeZone)
     if (!start.isValid() || !end.isValid()) return false
     return (now.isAfter(start) || now.isSame(start)) && (now.isBefore(end) || now.isSame(end))
 }
 
-export type ChinaFlashSalePhase = 'before' | 'during' | 'after'
-
 /**
- * 抢购倒计时：当前时刻一律按中国时区；返回阶段与距下一节点的剩余毫秒（供 van-count-down 等使用）
- * - before：未到 start，ms 为距开始的剩余时间
- * - during：在 start～end 内，ms 为距结束的剩余时间
- * - after：已过 end
+ * 计算当前时间距离目标时间还剩多少秒
+ * @param dateStr - 日期时间字符串，格式如：2026-04-23 16:00:00
+ * @returns 剩余秒数；如果目标时间已过，返回负数
  */
-export function getChinaFlashSaleCountdown(startStr: string, endStr: string): { phase: ChinaFlashSalePhase; ms: number } {
-    if (!startStr || !endStr) return { phase: 'after', ms: 0 }
-    const now = dayjs.tz(new Date(), CHINA_TZ)
-
-    const parseMinutes = (s: string) => {
-        const m = String(s).trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/)
-        if (!m) return null
-        return Number(m[1]) * 60 + Number(m[2])
-    }
-
-    const startM = parseMinutes(startStr)
-    const endM = parseMinutes(endStr)
-    if (startM !== null && endM !== null) {
-        const sod = now.clone().startOf('day')
-        const n = now.hour() * 60 + now.minute()
-
-        if (startM > endM) {
-            if (n >= startM) {
-                const endNext = sod.add(1, 'day').add(endM, 'minute')
-                return { phase: 'during', ms: Math.max(0, endNext.diff(now)) }
-            }
-            if (n <= endM) {
-                const endToday = sod.add(endM, 'minute')
-                return { phase: 'during', ms: Math.max(0, endToday.diff(now)) }
-            }
-            const startToday = sod.add(startM, 'minute')
-            return { phase: 'before', ms: Math.max(0, startToday.diff(now)) }
-        }
-
-        const startDt = sod.add(startM, 'minute')
-        const endDt = sod.add(endM, 'minute')
-        const nowMs = now.valueOf()
-        const sMs = startDt.valueOf()
-        const eMs = endDt.valueOf()
-        if (nowMs < sMs) return { phase: 'before', ms: sMs - nowMs }
-        if (nowMs <= eMs) return { phase: 'during', ms: eMs - nowMs }
-        return { phase: 'after', ms: 0 }
-    }
-
-    const start = dayjs.tz(startStr, CHINA_TZ)
-    const end = dayjs.tz(endStr, CHINA_TZ)
-    if (!start.isValid() || !end.isValid()) return { phase: 'after', ms: 0 }
-    const nowMs = now.valueOf()
-    const sMs = start.valueOf()
-    const eMs = end.valueOf()
-    if (nowMs < sMs) return { phase: 'before', ms: sMs - nowMs }
-    if (nowMs <= eMs) return { phase: 'during', ms: eMs - nowMs }
-    return { phase: 'after', ms: 0 }
+export function getSecondsDiffByDate(dateStr: string): number {
+    if (!dateStr) return 0
+    const now = dayjs.tz(new Date(), appTimeZone)
+    const target = dayjs.tz(dateStr, appTimeZone)
+    if (!target.isValid()) return 0
+    return Math.floor((target.valueOf() - now.valueOf()) / 1000)
 }
 
 export function isIOS() {
@@ -237,53 +191,6 @@ export function initAddress(value:string){
     return value.slice(0, 5) + '****' + value.slice(value.length - 4)
 }
 
-export function initTime(timestamp:string){
-    if(!timestamp)return '--'
-    const date = new Date(timestamp); // 将时间戳转换为 Date 对象
-    const now = new Date(); // 当前时间
-
-    // 获取日期信息
-    const isToday = date.toDateString() === now.toDateString();
-    const isYesterday = date.toDateString() === new Date(now.setDate(now.getDate() - 1)).toDateString();
-
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-
-    if (isToday) {
-        return `${hours}:${minutes}`;
-    } else if (isYesterday) {
-        return `${t('昨天')} ${hours}:${minutes}`;
-    } else {
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 月份从 0 开始
-        const day = date.getDate().toString().padStart(2, '0');
-
-        // 判断是否在当前年份内
-        if (year === now.getFullYear()) {
-            return `${month}-${day} ${hours}:${minutes}`;
-        } else {
-            return `${year}-${month}-${day} ${hours}:${minutes}`;
-        }
-    }
-}
-
-/**
- * 获取距离明天北京时间8点的倒计时秒数
- * @returns 倒计时秒数
- */
-export function getCountdownToTomorrowBeijing8AM(): number {
-    // 当前北京时间
-    const now = dayjs.tz(new Date(), 'Asia/Shanghai')
-    
-    // 明天北京时间8点
-    const tomorrow8AM = now.add(1, 'day').hour(8).minute(0).second(0).millisecond(0)
-    
-    // 计算差值（秒）
-    const countdown = tomorrow8AM.diff(now, 'second')
-    
-    return countdown > 0 ? countdown : 0
-}
-
 /**
  * 格式化倒计时秒数为时分秒
  * @param seconds 秒数
@@ -304,15 +211,6 @@ export function formatCountdown(seconds: number): string {
  */
 export function formatTimestamp(timestamp: number): string {
     return dayjs(timestamp * 1000).format('YYYY-MM-DD HH:mm:ss')
-}
-
-/**
- * 获取当前UTC时间的日期（YYYYMMDD格式）
- * UTC时间比北京时间慢8小时
- * @returns 格式化后的日期字符串，如 "20260109"
- */
-export function getCurrentUTCDate(): string {
-    return dayjs.utc().format('YYYYMMDD')
 }
 
 export function openLink (link: string) {

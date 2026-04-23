@@ -1,7 +1,7 @@
 import { getWalletClient, getConnectedAddress } from '@/dapp'
 import type { Abi, Address } from 'viem'
-import { useDappStore } from '../store'
-import { defaultGasPrice, gasLimitMultiplier } from '../config'
+import { useDappStore } from '@/store'
+import { dappDefaultGasPrice, dappGasLimitMultiplier, dappDevEstimateGasEnable } from '@/config/dapp'
 import { message } from '@/utils/message'
 import { t } from '@/locale'
 
@@ -75,8 +75,8 @@ export const useContract = <T extends Abi>(address: Address, abi: T) => {
     // 写合约（自动估算 gas 并设置 gas limit / gas price）
     const writeWithGas = async (functionName: string, args: any[] = [], options?: Omit<WriteOptions, 'gas'>) => {
 
-        // 开发环境不估算 gas，直接调用 write
-        if (!import.meta.env.PROD) {
+        // 开发环境是否估算 gas
+        if (!import.meta.env.PROD && !dappDevEstimateGasEnable) {
             return await write(functionName, args, options)
         }
         
@@ -84,8 +84,8 @@ export const useContract = <T extends Abi>(address: Address, abi: T) => {
         dappStore.dappLoading = true
         try {
             const estimated = await estimateGas(functionName, args)
-            const gas = estimated * gasLimitMultiplier / 100n
-            const gasPrice = defaultGasPrice
+            const gas = estimated * dappGasLimitMultiplier / 100n
+            const gasPrice = dappDefaultGasPrice
             return await write(functionName, args, { ...options, gas, gasPrice })
         } catch (error: any) {
             // 用户拒绝交易

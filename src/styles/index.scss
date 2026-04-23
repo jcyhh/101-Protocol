@@ -10,6 +10,19 @@ body {
     -moz-osx-font-smoothing: grayscale;
     -webkit-tap-highlight-color: transparent;
 }
+
+@font-face {
+    font-family: 'PoppinsSemiBold';
+    src: url('@/assets/font/Poppins-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+.poppins{
+    font-family: 'PoppinsSemiBold', Inter, system-ui, Avenir, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 600;
+}
 // 底部系统安全距离，meta标签里需设置viewport-fit=cover
 .safeArea{
 	width: 100vw;

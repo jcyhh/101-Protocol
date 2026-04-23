@@ -31,14 +31,16 @@
 
 <script setup lang="ts">
 import CusSms from '@/components/CusSms/index.vue'
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Password from './Password.vue';
-import { getRef, setAccount } from '@/config/storage';
+import { useStorage } from '@/config/storage';
 import { apiRegister } from '@/api/login';
 import { message } from '@/utils/message';
 import { t } from '@/locale';
 import { apiVersion } from '@/api/user';
 import { isIOS, openLink } from '@/utils';
+
+const { getRef, setAccount } = useStorage()
 
 const props = defineProps(['type'])
 
@@ -52,20 +54,6 @@ const pay_password = ref()
 
 const storage = getRef()
 if(storage)refCode.value = storage
-
-const download_url = ref()
-const loadData = async () => {
-    const res:any = await apiVersion({
-        version: '1.0.0',
-        device: isIOS() ? 'ios' : 'android'
-    })
-    download_url.value = res.download_url
-}
-loadData()
-
-const download = () => {
-    openLink(download_url.value)
-}
 
 const submit = async () => {
     if(!email.value)return message(t('请输入邮箱'))
@@ -87,6 +75,22 @@ const submit = async () => {
         emits('change')
     }
 }
+
+// 下载app链接
+const download_url = ref()
+const loadData = async () => {
+    const res:any = await apiVersion({
+        version: '1.0.0',
+        device: isIOS() ? 'ios' : 'android'
+    })
+    download_url.value = res.download_url
+}
+
+const download = () => openLink(download_url.value)
+
+onMounted(()=>{
+    loadData()
+})
 </script>
 
 <style lang="scss" scoped>

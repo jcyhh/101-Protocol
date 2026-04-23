@@ -1,5 +1,6 @@
 import { createI18n } from 'vue-i18n'
-import { getLang } from '../config/storage';
+import { useStorage } from '@/config/storage';
+import type { TypeLang } from '@/config/type';
 
 import enCommon from './common/en.json';
 import koCommon from './common/ko.json';
@@ -31,12 +32,14 @@ import fr from './modules/fr.json';
 import ma from './modules/ma.json';
 import hi from './modules/hi.json';
 
+const { getLang } = useStorage()
+
 const messages = {
     en: {...en, ...enCommon},
     ko: {...ko, ...koCommon},
     ja: {...ja, ...jaCommon},
-    hk: {...hk, ...hkCommon},
-    zh: {...zh, ...zhCommon},
+    'zh-Hant': {...hk, ...hkCommon},
+    'zh-Hans': {...zh, ...zhCommon},
     id: {...id, ...idCommon},
     es: {...es, ...esCommon},
     tr: {...tr, ...trCommon},
@@ -49,34 +52,26 @@ const messages = {
 }
 
 
-/**
- * name => 名称
- * lang => 前端使用的多语言值
- * value => 请求头传给后端的值
- */
-export const langs = [
-    { name: 'English', lang: 'en', value: 'en' }, // 英语
-    // { name:'french', lang: 'fr', value:'fr'},// 法语
-    { name: '한국어', lang: 'ko', value: 'ko' }, // 韩语
-    { name: '日本語', lang: 'ja', value: 'ja' }, // 日语
-    { name: 'Русский', lang: 'ru', value: 'ru' }, // 俄语
-    { name: 'हिन्दी', lang: 'hi', value: 'hi' }, // 印地语
-    { name:'malaysia', lang: 'ma', value:'ms'},// 马来语
-    // { name: 'Español', lang: 'es', value: 'es' }, // 西班牙语
-    { name: 'Indonesian', lang: 'id', value: 'id' }, // 印尼语
-    // { name: 'Türkçe', lang: 'tr', value: 'tr' }, // 土耳其语
-    { name: 'Tiếng Việt', lang: 'vi', value: 'vi' }, // 越南
-    // { name: 'ภาษาไทย', lang: 'th', value: 'th' } // 泰国
-    { name: '繁体中文', lang: 'hk', value: 'zh-Hant' }, // 繁体中文
-    { name: '简体中文', lang: 'zh', value: 'zh-Hans' }, // 简体中文
-]
-
-// 获取当前请求头要传的值
-export function getHeaderLang(): string {
-    let lang = getLang()
-    const langInfo = langs.find( item => item.lang == lang )!
-    return langInfo.value
+interface LangOption {
+  name: string
+  lang: TypeLang
 }
+export const langs: LangOption[] = [
+    { name: 'English', lang: 'en' },        // 英语
+    // { name:'french', lang: 'fr'},        // 法语
+    { name: '한국어', lang: 'ko' },           // 韩语
+    { name: '日本語', lang: 'ja' },          // 日语
+    { name: 'Русский', lang: 'ru' },        // 俄语
+    { name: 'हिन्दी', lang: 'hi' },            // 印地语
+    { name:'malaysia', lang: 'ma'},         // 马来语
+    // { name: 'Español', lang: 'es' },     // 西班牙语
+    { name: 'Indonesian', lang: 'id' },     // 印尼语
+    // { name: 'Türkçe', lang: 'tr' },      // 土耳其语
+    { name: 'Tiếng Việt', lang: 'vi' },     // 越南
+    // { name: 'ภาษาไทย', lang: 'th' },     // 泰国
+    { name: '繁体中文', lang: 'zh-Hant' },   // 繁体中文
+    { name: '简体中文', lang: 'zh-Hans' },   // 简体中文
+]
 
 export const i18n = createI18n({
     legacy: false,

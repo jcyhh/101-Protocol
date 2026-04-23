@@ -32,7 +32,10 @@ import { message } from '@/utils/message';
 import { t } from '@/locale';
 import { apiForgetPassword } from '@/api/login';
 import { routerReplace } from '@/router';
-import { setAccount } from '@/config/storage';
+import { useStorage } from '@/config/storage';
+import { routerLogin } from '@/config/router'
+
+const { setAccount } = useStorage()
 
 const email = ref()
 const password = ref()
@@ -55,7 +58,7 @@ const submit = async () => {
     setAccount(email.value)
 
     message(t('修改成功'), 'success')
-    routerReplace('/login')
+    routerReplace(routerLogin)
 }
 
 </script>
