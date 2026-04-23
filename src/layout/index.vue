@@ -11,7 +11,6 @@
             <img src="@/assets/common/menu.png" class="img48 ml20" @click="showMenu=true">
         </div>
     </div>
-    <div class="gap100"></div>
 
     <div class="content">
         <RouterView></RouterView>

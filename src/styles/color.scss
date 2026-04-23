@@ -19,7 +19,7 @@
 .bgYellow{ color: $yellow; }
 
 body{
-    background-color: #040404;
+    background-color: #000000;
     color: #FFFFFF;
 }
 
@@ -29,9 +29,16 @@ input{
     }
 }
 
+.page{
+    width: 100vw;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: linear-gradient(#000000, #2D1711);
+}
+
 .linearTxt{
     display: inline-block;
-    background: linear-gradient(to right,#EFB152, #EFCD80, #EFB152);
+    background: linear-gradient(281.88deg, #FFF1BF 24.66%, #FFF1BF 37.09%, #FFCD48 39.28%, #FFF1BF 59.99%, #FFCD48 64.38%, #FFF1BF 75.34%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
