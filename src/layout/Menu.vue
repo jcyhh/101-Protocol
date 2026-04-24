@@ -23,7 +23,7 @@
 
                 <div class="size28 bold6 mt80 mb30">服务</div>
 
-                <div class="pt30 pb30 flex jb ac" v-for="(item,index) in menus" :key="index">
+                <div class="pt30 pb30 flex jb ac" v-for="(item,index) in menus" :key="index" @click="jump(item.path)">
                     <div class="flex ac">
                         <img :src="currentRoute==item.path ? item.iconAct : item.icon" class="img40 mr10">
                         <div :class="currentRoute==item.path ? 'main' : ''">{{ item.name }}</div>
@@ -46,6 +46,7 @@ import teamHlIcon from '@/assets/tabbar/teamHL.png'
 import teamIcon from '@/assets/tabbar/team.png'
 import { t } from '@/locale';
 import { routerHome } from '@/config/router'
+import { routerReplace } from '@/router';
 
 const show = defineModel<boolean>('show', { default: false })
 
@@ -66,6 +67,11 @@ const menus = computed(()=>([
         path: '/team/index'
     }
 ]))
+
+const jump = (path:string) => {
+    show.value = false
+    if(currentRoute.value != path)routerReplace(path)
+}
 </script>
 
 <style lang="scss" scoped>

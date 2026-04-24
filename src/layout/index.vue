@@ -1,6 +1,6 @@
 <template>
     <div class="head flex jb ac">
-        <div class="flex ac">
+        <div class="flex ac" @click="backHome">
             <img src="@/assets/common/logo.png" class="logo">
             <div class="size28 ml10 poppins">{{ appName }}</div>
         </div>
@@ -28,13 +28,23 @@ import { ref } from 'vue';
 import { appName } from '@/config/name';
 import { useDappStore } from '@/store';
 import { storeToRefs } from 'pinia';
+import { routerHome } from '@/config/router'
+import { useRoute } from 'vue-router';
+import { routerReplace } from '@/router';
 
 const dappStore = useDappStore()
 const { walletAddress } = storeToRefs(dappStore)
 
+const route = useRoute()
+
 const show = ref(false)
 
 const showMenu = ref(false)
+
+const backHome = () => {
+    if(route.fullPath == routerHome)return
+    routerReplace(routerHome)
+}
 </script>
 
 <style lang="scss" scoped>
