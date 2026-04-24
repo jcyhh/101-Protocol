@@ -8,7 +8,7 @@
                 <div class="mainBox mb20 flex jb ac" v-for="(item,index) in list" :key="index" @click="routerPush(`/notice/${item.id}`)">
                     <div class="leftNotice">
                         <div class="line1 size28">{{ item.title }}</div>
-                        <div class="size24 gray mt10" v-init:time="item.updated_at"></div>
+                        <div class="size24 gray mt10">{{ item.updated_at }}</div>
                     </div>
                     <van-icon name="arrow" :size="20" color="#999999" />
                 </div>

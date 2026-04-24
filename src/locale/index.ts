@@ -61,13 +61,13 @@ export const langs: LangOption[] = [
     // { name:'french', lang: 'fr'},        // 法语
     { name: '한국어', lang: 'ko' },           // 韩语
     { name: '日本語', lang: 'ja' },          // 日语
-    { name: 'Русский', lang: 'ru' },        // 俄语
-    { name: 'हिन्दी', lang: 'hi' },            // 印地语
-    { name:'malaysia', lang: 'ma'},         // 马来语
+    // { name: 'Русский', lang: 'ru' },        // 俄语
+    // { name: 'हिन्दी', lang: 'hi' },            // 印地语
+    // { name:'malaysia', lang: 'ma'},         // 马来语
     // { name: 'Español', lang: 'es' },     // 西班牙语
-    { name: 'Indonesian', lang: 'id' },     // 印尼语
+    // { name: 'Indonesian', lang: 'id' },     // 印尼语
     // { name: 'Türkçe', lang: 'tr' },      // 土耳其语
-    { name: 'Tiếng Việt', lang: 'vi' },     // 越南
+    // { name: 'Tiếng Việt', lang: 'vi' },     // 越南
     // { name: 'ภาษาไทย', lang: 'th' },     // 泰国
     { name: '繁体中文', lang: 'zh-Hant' },   // 繁体中文
     { name: '简体中文', lang: 'zh-Hans' },   // 简体中文

@@ -85,7 +85,7 @@ watch(() => props.modelValue, (newVal) => {
         width: 56px;
         height: 56px;
         content: "";
-        background-image: linear-gradient(to right, #50D6FC, #1989F5);
+        background-image: linear-gradient(to right, #FF7810, #99480A);
         border-radius: 50%;
         box-shadow: 0 0 30px #152535;
     }

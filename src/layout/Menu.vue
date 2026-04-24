@@ -13,15 +13,15 @@
                     </div>
                 </div>
 
-                <div class="size28 bold6 mt80">邀请链接</div>
+                <div class="size28 bold6 mt80">{{ $t('邀请链接') }}</div>
 
-                <div class="box mt30 flex ac">
-                    <div class="flex1 size24 poppins opc5 link">0xalifuiewhgouerg564vbfd8sv69a45s8xc4asc4as86cs48sd15sa1c5s</div>
+                <div class="box mt30 flex ac" v-copy="inviteLink">
+                    <div class="flex1 size24 poppins opc5 link">{{ inviteLink }}</div>
                     <div class="line mr20"></div>
                     <img src="@/assets/common/copy.png" class="img32">
                 </div>
 
-                <div class="size28 bold6 mt80 mb30">服务</div>
+                <div class="size28 bold6 mt80 mb30">{{ $t('服务') }}</div>
 
                 <div class="pt30 pb30 flex jb ac" v-for="(item,index) in menus" :key="index" @click="jump(item.path)">
                     <div class="flex ac">
@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { appName } from '@/config/name';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import homeHlIcon from '@/assets/tabbar/homeHL.png'
 import homeIcon from '@/assets/tabbar/home.png'
@@ -47,6 +47,11 @@ import teamIcon from '@/assets/tabbar/team.png'
 import { t } from '@/locale';
 import { routerHome } from '@/config/router'
 import { routerReplace } from '@/router';
+import { useUserStore } from '@/store';
+import { storeToRefs } from 'pinia';
+
+const userStore = useUserStore()
+const { inviteLink } = storeToRefs(userStore)
 
 const show = defineModel<boolean>('show', { default: false })
 
@@ -55,7 +60,7 @@ const currentRoute = computed(()=> route.fullPath)
 
 const menus = computed(()=>([
     {
-        name: t('首页「认购」'),
+        name: `${t('首页')}「${t('认购')}」`,
         icon: homeIcon,
         iconAct: homeHlIcon,
         path: routerHome
@@ -72,6 +77,10 @@ const jump = (path:string) => {
     show.value = false
     if(currentRoute.value != path)routerReplace(path)
 }
+
+onMounted(()=>{
+    userStore.updateUserInfo()
+})
 </script>
 
 <style lang="scss" scoped>

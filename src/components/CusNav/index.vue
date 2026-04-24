@@ -1,7 +1,6 @@
 <template>
     <div class="cusnav flex ac" :class="showGlass?'glass':'defBg'">
-        <img src="@/assets/login/bg.png" class="cusnavbg animate__animated animate__slideInDown" v-if="showBg">
-        <div class="flex1 rel" @click="routerGo()">
+        <div class="flex1 rel" @click="routerBack()">
             <van-icon name="arrow-left" :size="25" />
         </div>
         <div class="flex3 size32 bold5 tc rel">{{ title }}</div>
@@ -9,21 +8,16 @@
             <slot></slot>
         </div>
     </div>
-    <img src="@/assets/login/bg.png" class="pagebg animate__animated animate__slideInDown" v-if="showBg">
     <div class="gap100"></div>
 </template>
 
 <script setup lang="ts">
-import { routerGo } from '@/router';
+import { routerBack } from '@/router';
 
 defineProps({
     title:{
         type: String,
         default: ''
-    },
-    showBg:{
-        type: Boolean,
-        default: true
     },
     showGlass:{
         type: Boolean,

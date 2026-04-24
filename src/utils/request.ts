@@ -30,13 +30,13 @@ export function logout() {
 
 const service = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
-    timeout: timeOut
+    timeout: timeOut * 1000
 })
 
 // 请求拦截器
 service.interceptors.request.use(
     config => {
-        if (config.data instanceof FormData) config.timeout = uploadTimeOut
+        if (config.data instanceof FormData) config.timeout = uploadTimeOut * 1000
         else config.headers['Content-Type'] = "application/json; charset=UTF-8"
 
         config.headers[httpHeaderToken] = `Bearer ${getToken()}`

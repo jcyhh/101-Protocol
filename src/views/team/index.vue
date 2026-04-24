@@ -7,9 +7,9 @@
 
             <div class="flex jb ac">
                 <div>
-                    <div class="size24">我的地址</div>
+                    <div class="size24">{{ $t('我的地址') }}</div>
                     <div class="size32 bold5 mt10" v-init:address="walletAddress"></div>
-                    <div class="size24 opc5 mt10">注册时间 2026.04.26</div>
+                    <div class="size24 opc5 mt10">{{ $t('注册时间') }} {{ userInfo?.created_at }}</div>
                 </div>
                 <img src="@/assets/home/19.png" class="pic19">
             </div>
@@ -18,52 +18,50 @@
                 <div class="box flex jb ac">
                     <div class="flex ac">
                         <img src="@/assets/home/20.png" class="img32 mr10">
-                        <div class="size24">上级邀请人</div>
+                        <div class="size24">{{ $t('上级邀请人') }}</div>
                     </div>
-                    <div class="size24 bold5" v-init:address="walletAddress"></div>
+                    <div class="size24 bold5" v-init:address="userInfo?.parent_address"></div>
                 </div>
-                <div class="tc mt40 size24">我的邀请码</div>
+                <div class="tc mt40 size24">{{ $t('我的邀请码') }}</div>
                 <div class="flex jc ac mt20">
-                    <div class="linearTxt size40 bold poppins">7C2EX8GN</div>
-                    <img src="@/assets/team/1.png" class="img30 ml20">
+                    <div class="linearTxt size40 bold poppins">{{ userInfo?.referral_code }}</div>
+                    <img src="@/assets/team/1.png" class="img30 ml20" v-copy="userInfo?.referral_code">
                 </div>
                 <div class="flex ac mt40">
                     <div class="cell size28 flex ac">
-                        <div style="overflow: hidden;">0xalifuiewhgouerg564vbfd8sv69a45s4s</div>
+                        <div style="overflow: hidden;">{{ inviteLink }}</div>
                     </div>
-                    <img src="@/assets/team/2.png" class="img80 ml10">
+                    <img src="@/assets/team/2.png" class="img80 ml10" v-scale v-copy="inviteLink">
                 </div>
             </div>
 
-            <div class="tc size24 mt80">直推节点收益</div>
+            <div class="tc size24 mt80">{{ $t('直推节点收益') }}</div>
             <div class="tc main size46 bold5 mt20">
-                <span v-init="1000"></span>
+                <span v-init="userInfo?.team_kpi"></span>
                 <span class="ml10">{{ assetUSDT }}</span>
             </div>
-            <div class="flex jb ac mt50">
+            <div class="flex jb mt50 ast">
                 <div class="stats flex1 tc">
-                    <div class="size32 bold5">100</div>
-                    <div class="size24 mt10 opc5">团队人数</div>
+                    <div class="size32 bold5">{{ userInfo?.team_count }}</div>
+                    <div class="size24 mt10 opc5">{{ $t('团队人数') }}</div>
                 </div>
                 <div class="stats flex1 tc ml15 mr15">
-                    <div class="size32 bold5">100</div>
-                    <div class="size24 mt10 opc5">直推人数</div>
+                    <div class="size32 bold5">{{ userInfo?.referral_count }}</div>
+                    <div class="size24 mt10 opc5">{{ $t('直推人数') }}</div>
                 </div>
                 <div class="stats flex1 tc">
-                    <div class="size32 bold5">100</div>
-                    <div class="size24 mt10 opc5">团队节点</div>
+                    <div class="size32 bold5">{{ userInfo?.team_node_count }}</div>
+                    <div class="size24 mt10 opc5">{{ $t('团队节点') }}</div>
                 </div>
             </div>
-            <div class="size32 bold5 mt60 mb30">邀请记录</div>
+            <div class="size32 bold5 mt60 mb30">{{ $t('邀请记录') }}</div>
             <van-list v-bind="listProps">
                 <div class="listcard mb20 flex jb ac" v-for="(item, index) in list" :key="index">
-                    <div class="size28 bold5" v-init:address="walletAddress"></div>
-                    <div class="size24 poppins opc5">2026</div>
+                    <div class="size28 bold5" v-init:address="item.nickname"></div>
+                    <div class="size24 poppins opc5">{{ item.created_at }}</div>
                 </div>
                 <CusEmpty v-if="list?.length==0"></CusEmpty>
             </van-list>
-            
-
         </div>
     </div>
 
@@ -71,16 +69,24 @@
 
 <script setup lang="ts">
 import { assetUSDT } from '@/config/name';
-import { useDappStore } from '@/store';
+import { useDappStore, useUserStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import { useLoadList } from '@/hooks/useLoadList';
 import CusEmpty from '@/components/CusEmpty/index.vue'
+import { onMounted } from 'vue';
 
 const dappStore = useDappStore()
 const { walletAddress } = storeToRefs(dappStore)
 
-const { list, props: listProps, loadList } = useLoadList('/api/notices', 'notices')
-// loadList()
+const userStore = useUserStore()
+const { userInfo, inviteLink } = storeToRefs(userStore)
+
+const { list, props: listProps, loadList } = useLoadList('/api/users/my/referrals', 'referrals')
+
+onMounted(()=>{
+    userStore.updateUserInfo()
+    loadList()
+})
 </script>
 
 <style lang="scss" scoped>

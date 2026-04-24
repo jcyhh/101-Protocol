@@ -6,14 +6,14 @@
         <div class="rel pl30 pr30 pt180">
 
             <div class="flex jc">
-                <div class="linearTxt size68 bold">全链自治・共识共治</div>
+                <div class="linearTxt size68 bold tc">{{ $t('全链自治・共识共治') }}</div>
             </div>
-            <div class="size24 tc mt10">链上透明决策，去中心化自主治理，构建无许可自治生态</div>
+            <div class="size24 tc mt10">{{ $t('链上透明决策，去中心化自主治理，构建无许可自治生态') }}</div>
             <div class="flex jc">
                 <img src="@/assets/home/2.png" class="pic2">
             </div>
 
-            <div class="notice mt30 flex ac">
+            <div class="notice mt30 flex ac" @click="routerPush('/notice')">
                 <img src="@/assets/home/3.png" class="img36 mr20">
                 <van-swipe class="noticeSwi" :show-indicators="false" :vertical="true" :autoplay="3000">
                     <van-swipe-item v-for="item in noticeList">
@@ -34,35 +34,35 @@
                 <div class="card">
                     <div class="flex jc">
                         <div class="linearTxt size60 bold">
-                            <span class="mr10" v-init="500"></span>
+                            <span class="mr10" v-init="node_price"></span>
                             <span>{{ assetUSDT }}</span>
                         </div>
                     </div>
                     <div class="flex jc ac mt20">
                         <div class="line"></div>
-                        <div class="size24 opc5 ml20 mr20">节点金额</div>
+                        <div class="size24 opc5 ml20 mr20">{{ $t('节点金额') }}</div>
                         <div class="line lineRight"></div>
                     </div>
                     <div class="flex jb ac mt40 size26">
-                        <div class="opc5">钱包余额</div>
+                        <div class="opc5">{{ $t('钱包余额') }}</div>
                         <div class="flex ac">
-                            <div v-init="1000"></div>
+                            <div v-init="balance"></div>
                             <div class="ml10">{{ assetUSDT }}</div>
                             <img src="@/assets/home/7.png" class="img30 ml20">
                         </div>
                     </div>
-                    <div class="mainBtn size32 bold flex jc ac mt50">认购</div>
+                    <div class="mainBtn size32 bold flex jc ac mt50" v-scale @click="showAsk=true">{{ $t('认购') }}</div>
                 </div>
             </div>
         </div>
 
         <div class="flex jc mt80">
-            <div class="title flex jc ac size32 bold6">关于我们</div>
+            <div class="title flex jc ac size32 bold6">{{ $t('关于我们') }}</div>
         </div>
         <img src="@/assets/home/10.png" class="pic10 mt20">
 
         <div class="pl30 pr30 mt40 size24 lh52 tc">
-            吉隆坡金融区块链机构NEM基金会(NEM.io Foundation Ltd.)是一家总部位于新加坡，在全球推广NEM区块链技术。它在马来西亚吉隆坡设立了其东南亚区域总部及核心研发中心。
+            {{ $t('desc') }}
         </div>
 
         <div class="desc pt60 pb60 flex">
@@ -70,29 +70,29 @@
             <div class="descitem item1 mr20">
                 <div class="flex jb ac">
                     <img src="@/assets/home/11.png" class="img40">
-                    <div class="size26 bold6 main">定位与规模</div>
+                    <div class="size26 bold6 main">{{ $t('定位与规模') }}</div>
                 </div>
-                <div class="size20 opc5 mt40 lh40">作为东南亚区域总部(不含中，澳，新)，中心面积达11,000平方英尺，是该区域最大的区块链中心。</div>
+                <div class="size20 opc5 mt40 lh40">{{ $t('desc1') }}</div>
             </div>
             <div class="descitem item2 mr20">
                 <div class="flex jb ac">
                     <img src="@/assets/home/12.png" class="img40">
-                    <div class="size26 bold6">资金支持</div>
+                    <div class="size26 bold6">{{ $t('资金支持') }}</div>
                 </div>
-                <div class="size20 opc5 mt40 lh40">金会已拨款500万美元支持入驻中财务与生态系统</div>
+                <div class="size20 opc5 mt40 lh40">{{ $t('desc2') }}</div>
             </div>
             <div class="descitem item1 mr20">
                 <div class="flex jb ac">
                     <img src="@/assets/home/13.png" class="img40">
-                    <div class="size26 bold6 main">资金实力</div>
+                    <div class="size26 bold6 main">{{ $t('资金实力') }}</div>
                 </div>
-                <div class="size20 opc5 mt40 lh40">基金会计划在2026年投入约4000万美元用于全球扩张生态应用，技术在金融和零售领域落地。</div>
+                <div class="size20 opc5 mt40 lh40">{{ $t('desc3') }}</div>
             </div>
             <div class="gap-30"></div>
         </div>
 
         <div class="flex jc mt20">
-            <div class="title flex jc ac size32 bold6">创始NFT权益</div>
+            <div class="title flex jc ac size32 bold6">{{ $t('创始NFT权益') }}</div>
         </div>
         <img src="@/assets/home/10.png" class="pic10 mt20">
 
@@ -101,61 +101,61 @@
                 <div class="pt6 pl6 pr6">
                     <img src="@/assets/home/14.png" class="pic14">
                 </div>
-                <div class="mt40 pl24 pr24 size32 bold6">{{ appName }} 正式开启NFT股东招募计划</div>
+                <div class="mt40 pl24 pr24 size32 bold6">{{ appName }} {{ $t('正式开启NFT股东招募计划') }}</div>
                 <div class="pl30 pr30 mt30">
                     <div class="flex jb ac">
                         <div class="flex ac">
-                            <div class="size28">第一阶段</div>
+                            <div class="size28">{{ $t('第一阶段') }}</div>
                             <img src="@/assets/home/15.png" class="img28 ml10">
                         </div>
-                        <div class="size24 opc5">限量 500 个</div>
+                        <div class="size24 opc5">{{ $t('限量 500 个') }}</div>
                     </div>
                     <div class="flex ac mt40">
                         <img src="@/assets/home/16.png" class="img24 mr10">
-                        <div class="size26 bold5">权益说明</div>
+                        <div class="size26 bold5">{{ $t('权益说明') }}</div>
                     </div>
                     <div class="mt20 size22 opc5 lh40 pb30">
                         <div class="flex">
                             <div class="pt15 pl10 mr20">
                                 <div class="dot"></div>
                             </div>
-                            <div>价值500000个101排单币，单边上涨；</div>
+                            <div>{{ $t('价值500000个101排单币，单边上涨；') }}</div>
                         </div>
                         <div class="flex">
                             <div class="pt15 pl10 mr20">
                                 <div class="dot"></div>
                             </div>
-                            <div>享受101交易手续费8%分红；</div>
+                            <div>{{ $t('享受101交易手续费8%分红；') }}</div>
                         </div>
                         <div class="flex">
                             <div class="pt15 pl10 mr20">
                                 <div class="dot"></div>
                             </div>
-                            <div>享受102交易手续费1.5%分红；</div>
+                            <div>{{ $t('享受102交易手续费1.5%分红；') }}</div>
                         </div>
                         <div class="flex">
                             <div class="pt15 pl10 mr20">
                                 <div class="dot"></div>
                             </div>
-                            <div>赠送20个102万倍通证;</div>
+                            <div>{{ $t('赠送20个102万倍通证;') }}</div>
                         </div>
                         <div class="flex">
                             <div class="pt15 pl10 mr20">
                                 <div class="dot"></div>
                             </div>
-                            <div>享受103价值500美金算力，每日0.5%挖矿产出，103不准买入，只有股东产出。后续用于生态游戏使用，也可直接卖入底池。</div>
+                            <div>{{ $t('享受...') }}</div>
                         </div>
                         <div class="flex">
                             <div class="pt15 pl10 mr20">
                                 <div class="dot"></div>
                             </div>
-                            <div>提前购买三天购买权;</div>
+                            <div>{{ $t('提前购买三天购买权;') }}</div>
                         </div>
                         <div class="flex">
                             <div class="pt15 pl10 mr20">
                                 <div class="dot"></div>
                             </div>
-                            <div>104白明单8折购买权。</div>
+                            <div>{{ $t('104白明单8折购买权。') }}</div>
                         </div>
                     </div>
                 </div>
@@ -163,7 +163,7 @@
         </div>
 
         <div class="flex jc mt80">
-            <div class="title flex jc ac size32 bold6">联系我们</div>
+            <div class="title flex jc ac size32 bold6">{{ $t('联系我们') }}</div>
         </div>
         <div class="bot rel mt35 pt70">
             <img src="@/assets/home/10.png" class="line">
@@ -174,25 +174,80 @@
             <div class="flex jc mt20">
                 <div class="link size24 main">https://</div>
             </div>
-            <div class="mt40 size26 tc">官网</div>
+            <div class="mt40 size26 tc">{{ $t('官网') }}</div>
             <div class="flex jc mt20">
                 <div class="link size24 main">https://</div>
             </div>
         </div>
     </div>
+
+    <CusAsk v-model:show="showAsk" @submit="submit">{{ $t('确认认购节点吗？') }}</CusAsk>
+
+    <PopupNotice v-model:show="showNoticePop" :data="noticePopInfo" @submit="readNotice"></PopupNotice>
 </template>
 
 <script setup lang="ts">
+import { buyNode, getNodeConfig } from '@/api/node';
 import { appName, assetUSDT } from '@/config/name';
+import { useErc20 } from '@/dapp/contract/erc20';
 import { useNotice } from '@/hooks/useNotice';
 import { routerPush } from '@/router';
-import { onMounted } from 'vue';
+import { useDappStore } from '@/store';
+import { storeToRefs } from 'pinia';
+import { formatEther, parseEther } from 'viem';
+import { onMounted, ref, watch } from 'vue';
+import CusAsk from '@/components/CusAsk/index.vue'
+import { checkGasBalance } from '@/dapp';
+import { useDonation } from '@/dapp/contract/donation';
+import PopupNotice from '@/views/notice/PopupNotice.vue';
 
-// 公告
-const { noticeList, loadNotice } = useNotice()
+const dappStore = useDappStore()
+const { walletAddress } = storeToRefs(dappStore)
+
+const { readBalanceOf, writeApprove } = useErc20()
+
+const { writeDonate } = useDonation()
+
+const { noticeList, loadNotice, showNoticePop, readNotice, noticePopInfo, loadNoticePop } = useNotice() // 公告
+
+// 钱包余额
+const balance = ref()
+const loadBalance = async () => {
+    const balanceOf = await readBalanceOf()
+    balance.value = Number(formatEther(balanceOf))
+}
+
+watch(walletAddress, val => {
+    if(!val)return
+    loadBalance()
+}, { immediate: true})
+
+// 价格
+const node_price = ref('')
+const loadData = async () => {
+    const res:any = await getNodeConfig()
+    node_price.value = res.node_price
+}
+
+const showAsk = ref(false)
+const submit = async () => {
+    const amount = parseEther(node_price.value)
+    await checkGasBalance()
+    await writeApprove(import.meta.env.VITE_DONATED, amount)
+    const res:any = await buyNode()
+    const { id, usdtAmount, receiver, referrer, referralReward, expired_at, sign } = res
+    console.log(id, usdtAmount, receiver, referrer, referralReward, expired_at, sign);
+    await writeDonate(id, usdtAmount, receiver, referrer, referralReward, expired_at, sign)
+    showAsk.value = false
+    setTimeout(() => {
+        loadBalance()
+    }, 1000);
+}
 
 onMounted(()=>{
-    // loadNotice()
+    loadNoticePop()
+    loadNotice()
+    loadData()
 })
 </script>
 

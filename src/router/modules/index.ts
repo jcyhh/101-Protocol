@@ -4,7 +4,8 @@
 import Start from '@/views/index.vue'
 import Layout from '@/layout/index.vue'
 import loginPages from './login'
-import assetPages from './asset'
+// import assetPages from './asset'
+import appPages from './app'
 import { appWebviewEnable } from '@/config'
 import type { RouteRecordRaw } from 'vue-router'
 
@@ -44,12 +45,15 @@ const theEndPages = [
     }
 ]
 
-if(appWebviewEnable)routes.concat(loginPages)
+if(appWebviewEnable)routes.push(...loginPages)
 
 // 资产充提转
-routes.concat(assetPages)
+// routes.push(...assetPages)
+
+// 通用页面
+routes.push(...appPages)
 
 // 需配置在常规路由的下方
-routes.concat(theEndPages)
+routes.push(...theEndPages)
 
 export default routes;

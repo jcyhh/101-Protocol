@@ -4,7 +4,7 @@ import { apiPost } from "@/utils/request";
 export const apiLogin = async (params:any) => await apiPost('/api/auth/login', params)
 
 // dapp登录
-export const apiDappLogin = async (params:any) => await apiPost('/api/auth/address_login', params)
+export const apiDappLogin = async (params:any) => await apiPost('/api/auth/login', params)
 
 // 注册
 export const apiRegister = async (params:any) => await apiPost('/api/auth/register', params)

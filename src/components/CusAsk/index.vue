@@ -7,13 +7,13 @@
                     <van-icon size="20" name="cross" color="#8D9094" @click="show=false" />
                 </div>
 
-                <div class="size26 mt50">
+                <div class="size28 bold5 mt50">
                     <slot></slot>
                 </div>
 
                 <div class="mt50 flex ac bold5">
-                    <div class="mainButton btn flex jc ac main" @click="show=false">{{ $t('取消') }}</div>
-                    <div class="mainBtn btn ml20 flex jc ac" @click="emits('submit')">{{ $t('确认') }}</div>
+                    <div class="leftBtn flex1 flex jc ac main" @click="show=false">{{ $t('取消') }}</div>
+                    <div class="rightBtn ml20 flex1 flex jc ac" @click="emits('submit')">{{ $t('确认') }}</div>
                 </div>
             </div>
         </div>
@@ -34,9 +34,16 @@ const show = defineModel<boolean>('show', { default: false })
 </script>
 
 <style lang="scss" scoped>
-.btn{
-    flex: 1;
-    height: 68px;
-    border-radius: 34px;
+.rightBtn{
+    height: 80px;
+    border-radius: 20px;
+    background-color: #FF7810;
+    color: #FFFFFF;
+}
+.leftBtn{
+    height: 80px;
+    border-radius: 20px;
+    background: #FF78101A;
+    border: 2px solid #FF7810;
 }
 </style>

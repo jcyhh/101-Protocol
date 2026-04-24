@@ -5,7 +5,7 @@
 
         <div class="size30 bold">{{ noticeDetail?.title }}</div>
 
-        <div class="size24 gray mt20" v-init:time="noticeDetail?.updated_at"></div>
+        <div class="size24 gray mt20">{{ noticeDetail?.updated_at }}</div>
 
         <div class="mt40" v-html="noticeDetail?.content"></div>
 

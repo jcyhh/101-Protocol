@@ -65,12 +65,10 @@
 }
 
 .mainButton{
-    border-radius: 40px;
-    background: linear-gradient(#FFFFFF66, #00000000 50%);
-    border: 1px solid rgba(255, 229, 165, 0.5);
-    box-shadow: 0px 4px 10px 0px #00000099 inset, 0px -4px 10px 0px #FFFFFF40 inset;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    height: 80px;
+    border-radius: 20px;
+    background: #FF78101A;
+    border: 2px solid #FF7810;
 }
 .mainButtonDel{
     background: linear-gradient(#F1463D66, #00000000 50%);
@@ -85,7 +83,7 @@
     border: 1px solid transparent;
     position: relative;
     z-index: 1;
-    background: linear-gradient(#FFE5A51F, #FFE5A500);
+    background: linear-gradient(#2D1711, #532800);
     &::before{
         content: '';
         position: absolute;
@@ -95,7 +93,7 @@
         right: -1px;
         bottom: -1px;
         border-radius: 20px;
-        background: linear-gradient(-135deg, #FFFFFF1A, #EFCD80 ,#FFFFFF1A);
+        background: linear-gradient(135deg, #FACA8A, #FACA8A00 ,#FACA8A);
         mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         mask-composite: xor;
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);

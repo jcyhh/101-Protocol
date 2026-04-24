@@ -17,7 +17,7 @@ const count = ref(60)
 const isWaiting = ref(false)
 
 const submit = async () => {
-    if(!props.account)return message(t('请输入邮箱'))
+    if(!props.account)return message(t('请输入账号'))
 
     if(isWaiting.value)return
     isWaiting.value = true
