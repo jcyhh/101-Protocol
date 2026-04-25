@@ -172,11 +172,11 @@
                 <div class="size26">Telegram</div>
             </div>
             <div class="flex jc mt20">
-                <div class="link size24 main">https://</div>
+                <div class="link size24 main" @click="openLink('https://t.me/p101102103')">https://t.me/p101102103</div>
             </div>
             <div class="mt40 size26 tc">{{ $t('官网') }}</div>
             <div class="flex jc mt20">
-                <div class="link size24 main">https://</div>
+                <div class="link size24 main">--</div>
             </div>
         </div>
     </div>
@@ -200,6 +200,7 @@ import CusAsk from '@/components/CusAsk/index.vue'
 import { checkGasBalance } from '@/dapp';
 import { useDonation } from '@/dapp/contract/donation';
 import PopupNotice from '@/views/notice/PopupNotice.vue';
+import { openLink } from '@/utils';
 
 const dappStore = useDappStore()
 const { walletAddress } = storeToRefs(dappStore)
