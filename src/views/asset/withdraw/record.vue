@@ -20,8 +20,6 @@
                         <div>{{ item.created_at }}</div>
                         <div>
                             <span v-if="current==0">{{ assetUSDT }}</span>
-                            <span v-else-if="current==1">{{ assetAIX }}</span>
-                            <span v-else>{{ assetNFTC }}</span>
                         </div>
                     </div>
                 </div>
@@ -37,7 +35,7 @@
 <script setup lang="ts">
 import CusNav from '@/components/CusNav/index.vue'
 import CusTab from '@/components/CusTab/index.vue'
-import { assetAIX, assetNFTC, assetUSDT } from '@/config';
+import { assetUSDT } from '@/config/name';
 import { t } from '@/locale';
 import { computed, ref, watch } from 'vue';
 import { useLoadList } from '@/hooks/useLoadList';

@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps(['data'])
+defineProps(['data'])
 
 const show = defineModel<boolean>('show', { default: false })
 

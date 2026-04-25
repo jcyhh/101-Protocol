@@ -24,7 +24,7 @@ import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { t } from '@/locale';
 import { apiBindEmail } from '@/api/login';
-import { routerGo } from '@/router';
+import { routerBack } from '@/router';
 import CusSms from '@/components/CusSms/index.vue'
 
 const email = ref()
@@ -41,7 +41,7 @@ const submit = async () => {
 
     message(t('绑定成功'), 'success')
     setTimeout(() => {
-        routerGo()
+        routerBack()
     }, 1200);
 }
 

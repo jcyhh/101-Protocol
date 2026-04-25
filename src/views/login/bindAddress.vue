@@ -17,7 +17,7 @@ import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { t } from '@/locale';
 import { apiBindAddress } from '@/api/login';
-import { routerGo, } from '@/router';
+import { routerBack } from '@/router';
 
 const address = ref()
 
@@ -30,7 +30,7 @@ const submit = async () => {
 
     message(t('绑定成功'), 'success')
     setTimeout(() => {
-        routerGo()
+        routerBack()
     }, 1200);
 }
 

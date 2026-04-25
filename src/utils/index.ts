@@ -1,4 +1,3 @@
-import { t } from '@/locale'
 import { showLoadingToast } from 'vant';
 import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs'

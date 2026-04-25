@@ -75,11 +75,10 @@
 
 <script setup lang="ts">
 import CusNav from '@/components/CusNav/index.vue'
-import { assetAIX, assetNFTC, assetUSDT } from '@/config'
+import { assetUSDT } from '@/config/name'
 import { computed, onMounted, ref } from 'vue'
 import CusPicker from '@/components/CusPicker/index.vue';
 import iconUsdt from '@/assets/common/usdt.png'
-import iconAix from '@/assets/common/aix.png'
 import { useUserStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import { message } from '@/utils/message';
@@ -111,8 +110,8 @@ const pickerCurrent = ref(0)
 const pickerShow = ref(false)
 const pickerList = [
     {name:assetUSDT, icon: iconUsdt, value:'balance_usdt', fee:0},
-    {name:assetAIX, icon: iconAix, value:'balance_aix', fee:0},
-    {name:assetNFTC, icon: iconUsdt, value:'balance_nftc', fee:0}
+    // {name:assetAIX, icon: iconAix, value:'balance_aix', fee:0},
+    // {name:assetNFTC, icon: iconUsdt, value:'balance_nftc', fee:0}
 ]
 const currentPicker = computed(()=>pickerList[pickerCurrent.value])
 const receiveAmount = computed(() => {

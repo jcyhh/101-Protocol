@@ -22,6 +22,7 @@ export const appTimeZone: string = 'Asia/Shanghai'; // 计算距离接口某个�
 
 export const appWebviewEnable = false; // 是否同时支持 Dapp && Webview
 
-export const appIsWebview = typeof window !== 'undefined' && (window as any).__FROM_WEBVIEW__ === true; // 当前是否是 webview 环境
+const runtimeGlobal = globalThis as typeof globalThis & { __FROM_WEBVIEW__?: boolean }
+export const appIsWebview = runtimeGlobal.__FROM_WEBVIEW__ === true; // 当前是否是 webview 环境
 
 export const appSaveAccountEnable = true; // 账号登录时，是否缓存登录账号，用于登录失效时自动填入

@@ -24,7 +24,7 @@ import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { t } from '@/locale';
 import { apiEditPassword } from '@/api/login';
-import { routerGo } from '@/router';
+import { routerBack } from '@/router';
 
 const o_password = ref()
 const n_password = ref()
@@ -43,7 +43,7 @@ const submit = async () => {
     })
 
     message(t('修改成功'), 'success')
-    setTimeout(() => routerGo(), 1200);
+    setTimeout(() => routerBack(), 1200);
 }
 
 </script>
