@@ -174,6 +174,12 @@
             <div class="flex jc mt20">
                 <div class="link size24 main" @click="openLink('https://t.me/p101102103')">https://t.me/p101102103</div>
             </div>
+            <div class="flex ac jc mt40">
+                <img src="@/assets/home/21.png" class="img28">
+            </div>
+            <div class="flex jc mt20">
+                <div class="link size24 main" @click="openLink('https://x.com/101102103104a')">https://x.com/101102103104a</div>
+            </div>
             <div class="mt40 size26 tc">{{ $t('官网') }}</div>
             <div class="flex jc mt20">
                 <div class="link size24 main">--</div>
@@ -462,7 +468,8 @@ onMounted(()=>{
 }
 .bot{
     background: linear-gradient(#FF78101A, #FF781000);
-    height: 400px;
+    min-height: 400px;
+    padding-bottom: 100px;
     .line{
         width: 100%;
         height: 36px;
