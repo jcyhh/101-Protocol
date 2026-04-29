@@ -22,6 +22,8 @@ declare module 'vue' {
     CusTitle: typeof import('./src/components/CusTitle/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Title: typeof import('./src/components/Title/index.vue')['default']
+    VanCountDown: typeof import('vant/es')['CountDown']
     VanIcon: typeof import('vant/es')['Icon']
     VanList: typeof import('vant/es')['List']
     VanPopup: typeof import('vant/es')['Popup']

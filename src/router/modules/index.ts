@@ -24,6 +24,45 @@ let routes: RouteRecordRaw[] = [
         }]
     },
     {
+        path:'/staking',
+        component: Layout,
+        redirect: '/staking/index',
+        children:[{
+            path:'index',
+            component: () => import('@/views/staking/index.vue')
+        }]
+    },
+    {
+        path:'/asset',
+        component: Layout,
+        redirect: '/asset/index',
+        children:[{
+            path:'index',
+            component: () => import('@/views/asset/index.vue')
+        }]
+    },
+    {
+        path:'/order',
+        component: Layout,
+        redirect: '/order/staking',
+        children:[{
+            path:'staking',
+            component: () => import('@/views/order/staking.vue')
+        },{
+            path:'subscribe',
+            component: () => import('@/views/order/subscribe.vue')
+        }]
+    },
+    {
+        path:'/asset',
+        component: Layout,
+        redirect: '/asset/index',
+        children:[{
+            path:'index',
+            component: () => import('@/views/asset/index.vue')
+        }]
+    },
+    {
         path:'/team',
         component: Layout,
         redirect: '/team/index',

@@ -56,10 +56,9 @@
             </div>
         </div>
 
-        <div class="flex jc mt80">
-            <div class="title flex jc ac size32 bold6">{{ $t('关于我们') }}</div>
-        </div>
-        <img src="@/assets/home/10.png" class="pic10 mt20">
+        <div class="gap80"></div>
+
+        <Title :title="$t('关于我们')"></Title>
 
         <div class="pl30 pr30 mt40 size24 lh52 tc">
             {{ $t('desc') }}
@@ -91,10 +90,8 @@
             <div class="gap-30"></div>
         </div>
 
-        <div class="flex jc mt20">
-            <div class="title flex jc ac size32 bold6">{{ $t('创始NFT权益') }}</div>
-        </div>
-        <img src="@/assets/home/10.png" class="pic10 mt20">
+        <div class="gap20"></div>
+        <Title :title="$t('创始NFT权益')"></Title>
 
         <div class="pl30 pr30 mt60">
             <div class="box">
@@ -207,6 +204,7 @@ import { checkGasBalance } from '@/dapp';
 import { useDonation } from '@/dapp/contract/donation';
 import PopupNotice from '@/views/notice/PopupNotice.vue';
 import { openLink } from '@/utils';
+import Title from '@/components/Title/index.vue'
 
 const dappStore = useDappStore()
 const { walletAddress } = storeToRefs(dappStore)
@@ -412,18 +410,6 @@ onMounted(()=>{
     .lineRight{
         background: linear-gradient(to right, #FFFFFF80, #FFFFFF00);
     }
-}
-
-.title{
-    width: 360px;
-    height: 52px;
-    background-image: url("@/assets/home/9.png");
-    background-size: 100% 100%;
-    color: #F4AF63;
-}
-.pic10{
-    width: 100vw;
-    height: 36px;
 }
 .desc{
     width: 100vw;

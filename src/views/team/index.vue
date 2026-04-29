@@ -35,12 +35,19 @@
                 </div>
             </div>
 
-            <div class="tc size24 mt80">{{ $t('直推节点收益') }}</div>
+            <div class="tc size24 mt90">{{ $t('直推节点收益') }}</div>
             <div class="tc main size46 bold5 mt20">
                 <span v-init="userInfo?.team_kpi"></span>
                 <span class="ml10">{{ assetUSDT }}</span>
             </div>
-            <div class="flex jb mt50 ast">
+            <div class="stats mt30 flex jb ac">
+                <div class="flex ac">
+                    <img src="@/assets/team/4.png" class="img18 mr12">
+                    <div class="size26">团队节点</div>
+                </div>
+                <div class="siz28 bold5">100</div>
+            </div>
+            <div class="flex jb mt20 ast">
                 <div class="stats flex1 tc">
                     <div class="size32 bold5">{{ userInfo?.team_count }}</div>
                     <div class="size24 mt10 opc5">{{ $t('团队人数') }}</div>
@@ -60,6 +67,32 @@
                     <div class="size28 bold5" v-init:address="item.nickname"></div>
                     <div class="size24 poppins opc5">{{ item.created_at }}</div>
                 </div>
+                <!-- <div class="listcard mb20">
+                    <div class="flex jb ac">
+                        <div class="flex ac">
+                            <div class="size28 bold5" v-init:address="'0x4493acaB7cef1B02da7E825b4E68f139dc2dE9f5'"></div>
+                            <div class="tag ml12 size20 flex ac">有效用户</div>
+                        </div>
+                        <van-count-down :time="96400 * 1000">
+                            <template #default="timeData">
+                                <div class="flex ac red size28 bold5">
+                                    <span>{{ padZero(timeData.days) }}</span>
+                                    <span class="ml5 mr5">:</span>
+                                    <span>{{ padZero(timeData.hours) }}</span>
+                                    <span class="ml5 mr5">:</span>
+                                    <span>{{ padZero(timeData.minutes) }}</span>
+                                    <span class="ml5 mr5">:</span>
+                                    <span>{{ padZero(timeData.seconds) }}</span>
+                                </div>
+                            </template>
+                        </van-count-down>
+                    </div>
+                    
+                    <div class="flex jb ac mt20 size24 opc5">
+                        <div>2026.04.26 12:08:44</div>
+                        <div>有效用户倒计时</div>
+                    </div>
+                </div> -->
                 <CusEmpty v-if="list?.length==0"></CusEmpty>
             </van-list>
         </div>
@@ -74,6 +107,7 @@ import { storeToRefs } from 'pinia';
 import { useLoadList } from '@/hooks/useLoadList';
 import CusEmpty from '@/components/CusEmpty/index.vue'
 import { onMounted } from 'vue';
+import { padZero } from '@/utils';
 
 const dappStore = useDappStore()
 const { walletAddress } = storeToRefs(dappStore)
@@ -173,5 +207,13 @@ onMounted(()=>{
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 20px;
+    .tag{
+        background-color: #FF78101A;
+        border: 1px solid $main-color;
+        height: 36px;
+        border-radius: 18px;
+        color: $main-color;
+        padding: 0 12px;
+    }
 }
 </style>

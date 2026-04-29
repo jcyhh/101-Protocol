@@ -1,10 +1,12 @@
 <template>
     <div class="cusTab flex ac size28 bold6">
-        <div class="cusTabBox" :class="{
-            'main cusTabAct': current==index,
-            'opc5 cusTabDef': current!=index,
-            'ml20': Number(index) > 0
-        }" v-for="(item, index) in list" :key="index" @click="onTabClick(index)">{{ item.name }}</div>
+        <div class="cusBox flex ac">
+            <div class="cusTabAct" :style="{left: current==0?'0%':'50%'}"></div>
+            <div class="flex1 flex jc ac rel ani" :class="{
+                'opc5': current!=index,
+                'ml20': Number(index) > 0
+            }" v-for="(item, index) in list" :key="index" @click="onTabClick(index)">{{ item.name }}</div>
+        </div>
     </div>
 </template>
 
@@ -22,49 +24,32 @@ const onTabClick = (index:any) => {
 <style lang="scss" scoped>
 .cusTab{
     width: 100vw;
-    height: 150px;
+    height: 160px;
     padding: 0 30px;
-    background-color: #040404;
-    position: sticky;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background-color: #03030333;
+    position: fixed;
     top: 100px;
     left: 0;
     z-index: 5;
-    .cusTabBox{
+    .cusBox{
+        width: 100%;
         height: 80px;
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 10px;
-        border: 1px solid transparent;
+        border-radius: 40px;
+        background-color: #FFFFFF1A;
         position: relative;
-        &::before{
-            content: '';
+        .cusTabAct{
+            width: 50%;
+            height: 80px;
+            border-radius: 40px;
+            background-color: $main-color;
             position: absolute;
-            z-index: -1;
-            top: -1px;
-            left: -1px;
-            right: -1px;
-            bottom: -1px;
-            border-radius: 10px;
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: xor;
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            padding: 1px;
+            top: 0;
+            left: 0%;
+            transition: all 0.3s;
         }
     }
-    .cusTabAct{
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
-        &::before{
-            background: linear-gradient(360deg, #FFE5A5 0%, rgba(255, 229, 165, 0.1) 100%);
-        }
-    }
-    .cusTabDef{
-        background: linear-gradient(180deg, rgba(255, 229, 165, 0.12) 0%, rgba(255, 229, 165, 0.04) 100%);
-        &::before{
-            background: linear-gradient(360deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
-        }
-    }
+    
 }
 </style>

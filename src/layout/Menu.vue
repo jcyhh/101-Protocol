@@ -44,6 +44,14 @@ import homeHlIcon from '@/assets/tabbar/homeHL.png'
 import homeIcon from '@/assets/tabbar/home.png'
 import teamHlIcon from '@/assets/tabbar/teamHL.png'
 import teamIcon from '@/assets/tabbar/team.png'
+import stakingHlIcon from '@/assets/tabbar/stakingHL.png'
+import stakingIcon from '@/assets/tabbar/staking.png'
+import assetHlIcon from '@/assets/tabbar/assetHL.png'
+import assetIcon from '@/assets/tabbar/asset.png'
+import stakingOrderHlIcon from '@/assets/tabbar/stakingOrderHL.png'
+import stakingOrderIcon from '@/assets/tabbar/stakingOrder.png'
+import subscribeOrderHlIcon from '@/assets/tabbar/subscribeHL.png'
+import subscribeOrderIcon from '@/assets/tabbar/subscribe.png'
 import { t } from '@/locale';
 import { routerHome } from '@/config/router'
 import { routerReplace } from '@/router';
@@ -66,10 +74,34 @@ const menus = computed(()=>([
         path: routerHome
     },
     {
+        name: t('入金'),
+        icon: stakingIcon,
+        iconAct: stakingHlIcon,
+        path: '/staking/index'
+    },
+    {
+        name: t('资产'),
+        icon: assetIcon,
+        iconAct: assetHlIcon,
+        path: '/asset/index'
+    },
+    {
         name: t('社区'),
         icon: teamIcon,
         iconAct: teamHlIcon,
         path: '/team/index'
+    },
+    {
+        name: t('入金订单'),
+        icon: stakingOrderIcon,
+        iconAct: stakingOrderHlIcon,
+        path: '/order/staking'
+    },
+    {
+        name: t('预约订单'),
+        icon: subscribeOrderIcon,
+        iconAct: subscribeOrderHlIcon,
+        path: '/order/subscribe'
     }
 ]))
 

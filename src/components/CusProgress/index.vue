@@ -1,5 +1,5 @@
 <template>
-    <div class="cusProgress">
+    <div class="cusProgress" :class="className">
         <div class="cusProgressLine" :style="{width: `${progress}%`}"></div>
     </div>
 </template>
@@ -19,7 +19,12 @@ defineProps(['progress', 'className'])
         height: inherit;
         border-radius: inherit;
         transition: all 0.3s;
-        background-color: #FFE5A5;
+        background-color: $main-color;
     }
+}
+.orderProgress{
+    width: 200px;
+    height: 14px;
+    border-radius: 7px;
 }
 </style>
