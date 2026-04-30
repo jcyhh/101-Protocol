@@ -13,7 +13,13 @@
                     </div>
                 </div>
 
-                <div class="size28 bold6 mt80">{{ $t('邀请链接') }}</div>
+                <div class="flex jb ac mt80">
+                    <div class="size28 bold6">{{ $t('邀请链接') }}</div>
+                    <div class="flex ac">
+                        <span class="size24 opc5 mr10">{{ $t('可卖出额度') }}</span>
+                        <span class="main size28" v-init="amount"></span>
+                    </div>
+                </div>
 
                 <div class="box mt30 flex ac" v-copy="inviteLink">
                     <div class="flex1 size24 poppins opc5 link">{{ inviteLink }}</div>
@@ -38,7 +44,7 @@
 
 <script setup lang="ts">
 import { appName } from '@/config/name';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import homeHlIcon from '@/assets/tabbar/homeHL.png'
 import homeIcon from '@/assets/tabbar/home.png'
@@ -55,13 +61,32 @@ import subscribeOrderIcon from '@/assets/tabbar/subscribe.png'
 import { t } from '@/locale';
 import { routerHome } from '@/config/router'
 import { routerReplace } from '@/router';
-import { useUserStore } from '@/store';
+import { useDappStore, useUserStore } from '@/store';
 import { storeToRefs } from 'pinia';
+import { useProject101 } from '@/dapp/contract/project101';
+import { formatEther } from 'viem';
 
 const userStore = useUserStore()
 const { inviteLink } = storeToRefs(userStore)
 
+const dappStore = useDappStore()
+const { walletAddress } = storeToRefs(dappStore)
+
+const { readSellableUsdtAmount } = useProject101()
+
+const amount = ref()
+const loadAmount = async () => amount.value = formatEther(await readSellableUsdtAmount())
+
+watch(walletAddress, val => {
+    if(!val)return
+    loadAmount()
+}, { immediate: true })
+
 const show = defineModel<boolean>('show', { default: false })
+
+watch(show, val => {
+    if(val)loadAmount()
+})
 
 const route = useRoute()
 const currentRoute = computed(()=> route.fullPath)
