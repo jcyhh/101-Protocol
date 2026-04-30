@@ -10,7 +10,7 @@
         <div class="card">
             <div class="flex jc">
                 <div class="linearTxt size60 bold poppins">
-                    <span v-init="1000"></span>
+                    <span v-init="price"></span>
                     <span class="ml10">{{ assetUSDT }}</span>
                 </div>
             </div>
@@ -20,20 +20,20 @@
                 <div class="line lineRight"></div>
             </div>
             <div class="flex jb ac mt40">
-                <div class="size26 opc5">钱包余额</div>
+                <div class="size26 opc5">{{ $t('钱包余额') }}</div>
                 <div class="flex ac size26">
-                    <div v-init="1000"></div>
+                    <div v-init="balanceUsdt"></div>
                     <div class="ml10">{{ assetUSDT }}</div>
                     <img src="@/assets/staking/3.png" class="img30 ml10">
                 </div>
             </div>
-            <!-- <div class="mainBtn size32 bold6 mt50 flex jc ac">确认入金</div> -->
-            <div class="countdownBtn flex jc ac mt50">
-                <van-count-down :time="96400 * 1000">
+            <div class="mainBtn size32 bold6 mt50 flex jc ac" v-if="can_order" @click="submit">确认入金</div>
+            <div class="countdownBtn flex jc ac mt50" v-else>
+                <van-count-down :time="Math.max(getSecondsDiffByDate(next_order_at), 0) * 1000">
                     <template #default="timeData">
                         <div class="flex ac red size26 bold5">
-                            <span>{{ padZero(timeData.days) }}</span>
-                            <span class="ml5 mr5">:</span>
+                            <span v-if="timeData.days > 0">{{ padZero(timeData.days) }}</span>
+                            <span v-if="timeData.days > 0" class="ml5 mr5">:</span>
                             <span>{{ padZero(timeData.hours) }}</span>
                             <span class="ml5 mr5">:</span>
                             <span>{{ padZero(timeData.minutes) }}</span>
@@ -42,7 +42,7 @@
                         </div>
                     </template>
                 </van-count-down>
-                <div class="size26 bold ml10 red">后再下单</div>
+                <div class="size26 bold ml10 red">{{ $t('后再下单') }}</div>
             </div>
         </div>
     </div>
@@ -53,9 +53,9 @@
     <div class="content pl30 pr30 mt30">
         <div class="box">
             <div class="flex jb ac">
-                <div class="size24">预约金额</div>
+                <div class="size24">{{ $t('预约金额') }}</div>
                 <div class="flex ac size24 opc5">
-                    <div v-init="1000"></div>
+                    <div v-init="balanceUsdt"></div>
                     <div class="ml10">{{ assetUSDT }}</div>
                     <img src="@/assets/staking/3.png" class="img30 ml10">
                 </div>
@@ -65,10 +65,10 @@
                     <img src="@/assets/common/usdt.png" class="img40 mr10">
                     <div class="size28 bold poppins">{{ assetUSDT }}</div>
                 </div>
-                <input type="number" placeholder="0.00" class="flex1 tr size40 bold">
+                <input type="number" v-model="inputAmount" placeholder="0.00" class="flex1 tr size40 bold">
             </div>
             <div class="line mt30"></div>
-            <div class="btn mt40 flex ac jc size28 bold">预约</div>
+            <div class="btn mt40 flex ac jc size28 bold" @click="confrim">{{ $t('预约') }}</div>
         </div>
     </div>
 
@@ -76,10 +76,87 @@
 </template>
 
 <script setup lang="ts">
+import { apiReservations, apiToken101Congfig, apiToken101Create } from '@/api/dapp';
 import Title from '@/components/Title/index.vue'
 import { assetUSDT } from '@/config/name';
-import { padZero } from '@/utils';
+import { useErc20 } from '@/dapp/contract/erc20';
+import { useProject101 } from '@/dapp/contract/project101';
+import { t } from '@/locale';
+import { useDappStore } from '@/store';
+import { getSecondsDiffByDate, padZero } from '@/utils';
+import { message } from '@/utils/message';
+import { storeToRefs } from 'pinia';
+import { formatEther, parseEther } from 'viem';
+import { onMounted, ref, watch } from 'vue';
 
+const dappStore = useDappStore()
+const { walletAddress } = storeToRefs(dappStore)
+
+const { readBalanceOf, writeApprove } = useErc20()
+
+const { writeOrder, writeDepositHostedOrder } = useProject101()
+
+const balanceUsdt = ref()
+const loadBalance = async () => balanceUsdt.value = formatEther(await readBalanceOf())
+
+watch(walletAddress, val => {
+    if(!val)return
+    loadBalance()
+}, { immediate: true })
+
+const next_order_at = ref()
+const can_order = ref(true)
+const price = ref()
+const loadData = async () => {
+    const res:any = await apiToken101Congfig()
+    next_order_at.value = res.next_order_at
+    can_order.value = res.can_order
+    price.value = res.price
+}
+
+const submit = async () => {
+
+    // 授权
+    await writeApprove(import.meta.env.VITE_PROJECT101, parseEther(price.value))
+
+    // 下单
+    const res:any = await apiToken101Create()
+    const { id, expired_at, sign } = res
+    console.log(id, expired_at, sign);
+    
+
+    // 合约
+    await writeOrder(id, expired_at, sign)
+
+    setTimeout(() => {
+        loadBalance()
+    }, 3000);
+}
+
+const inputAmount = ref()
+const confrim = async () => {
+    if(!inputAmount.value)return message(t('请输入预约金额'))
+
+    // 授权
+    await writeApprove(import.meta.env.VITE_PROJECT101, parseEther(price.value))
+
+    // 下单
+    const res:any = await apiReservations({
+        amount: inputAmount.value
+    })
+    const { id, usdtAmount, bnbAmount, bnbReceiver, expired_at, sign } = res
+
+    await writeDepositHostedOrder(id, usdtAmount, bnbAmount, bnbReceiver, expired_at, sign)
+
+    inputAmount.value = ''
+    setTimeout(() => {
+        loadBalance()
+    }, 3000);
+}
+
+onMounted(()=>{
+    loadData()
+})
 </script>
 
 <style lang="scss" scoped>

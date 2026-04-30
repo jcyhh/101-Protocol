@@ -3,16 +3,16 @@
 
     <div class="content pl30 pr30 pt140">
         <van-list v-bind="listProps">
-            <div class="cell mb20" v-for="(item,index) in 10" :key="index">
+            <div class="cell mb20" v-for="(item,index) in list" :key="index">
                 <div class="flex jb ac">
-                    <div>入金金额</div>
+                    <div>{{ $t('入金金额') }}</div>
                     <div class="size28 bold5 main">
-                        <span class="ml5 mr5" v-init="1000"></span>
+                        <span class="ml5 mr5" v-init="item.amount"></span>
                         <span>{{ assetUSDT }}</span>
                     </div>
                 </div>
                 <div class="flex jb ac mt20">
-                    <div class="opc5 size24">2026</div>
+                    <div class="opc5 size24">{{ item.created_at }}</div>
                 </div>
             </div>
             <CusEmpty v-if="list?.length==0"></CusEmpty>
@@ -28,7 +28,7 @@ import CusEmpty from '@/components/CusEmpty/index.vue'
 import { onMounted } from 'vue';
 import { assetUSDT } from '@/config/name';
 
-const { list, props: listProps, loadList } = useLoadList('/api/users/my/referrals', 'referrals')
+const { list, props: listProps, loadList } = useLoadList('/api/token101', 'orders')
 
 onMounted(()=>{
     loadList()

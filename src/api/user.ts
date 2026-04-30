@@ -2,6 +2,8 @@ import { apiGet, apiPost } from "@/utils/request";
 
 export const apiUserInfo = async () => await apiGet('/api/users/my')
 
+export const apiUserIncome = async () => await apiGet('/api/users/my/income')
+
 export const apiVersion = async (params:any) => await apiGet('/api/version', params)
 
 export const apiCardholder = async (params:any) => await apiGet('/api/cardholder', params)

@@ -19,13 +19,13 @@
                     <div class="size28">提取金额</div>
                     <div class="size24">
                         <span class="opc5">可提取</span>
-                        <span class="main ml10" v-init="1000"></span>
+                        <span class="main ml10" v-init="balance"></span>
                         <span class="main ml10">{{ assetUSDT }}</span>
                     </div>
                 </div>
 
                 <div class="mt20 popcell flex jb ac">
-                    <input type="number" placeholder="请输入提取金额" class="flex1 size28">
+                    <input type="number" v-model="inputAmount" placeholder="请输入提取金额" class="flex1 size28">
                     <img src="@/assets/common/usdt.png" class="img40">
                 </div>
 
@@ -39,12 +39,39 @@
 </template>
 
 <script setup lang="ts">
+import { apiWithdraw } from '@/api/dapp';
 import { assetUSDT } from '@/config/name';
+import { useProject101 } from '@/dapp/contract/project101';
+import { t } from '@/locale';
+import { message } from '@/utils/message';
+import { ref } from 'vue';
 
-const show = defineModel<boolean>('show', { default: true })
+defineProps(['balance'])
+
+const emtis = defineEmits(['success'])
+
+const { writeWithdraw } = useProject101()
+
+const show = defineModel<boolean>('show', { default: false })
+
+const inputAmount = ref()
 
 const submit = async () => {
+    if(!inputAmount.value)return message(t('请输入提取金额'))
 
+    const res:any = await apiWithdraw({
+        amount: inputAmount.value,
+        ccy: 'balance_usdt'
+    })
+
+    const { id, amount, expired_at, sign } = res
+    await writeWithdraw(id, amount, expired_at, sign)
+
+    inputAmount.value = ''
+
+    show.value = false
+
+    emtis('success')
 }
 </script>
 

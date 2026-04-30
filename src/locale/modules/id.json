@@ -1,1 +1,24 @@
-{}
+{
+    "入金": "Deposit",
+    "资产": "Aset",
+    "入金订单": "Pesanan deposit",
+    "预约订单": "Pesanan reservasi",
+    "确认入金": "Konfirmasi deposit",
+    "后再下单": "lalu lakukan pemesanan",
+    "预约下单": "Pesan reservasi",
+    "预约金额": "Jumlah reservasi",
+    "预约": "Reservasi",
+    "请输入预约金额": "Silakan masukkan jumlah reservasi",
+    "资产预览": "Pratinjau aset",
+    "提现": "Penarikan",
+    "累计推荐收益": "Pendapatan referal kumulatif",
+    "资产明显": "Detail aset",
+    "入金金额": "Jumlah deposit",
+    "总下单金额": "Total jumlah pesanan",
+    "下次自动下单时间": "Waktu pesanan otomatis berikutnya",
+    "剩余下单金额": "Sisa jumlah pesanan",
+    "已下单金额": "Jumlah yang sudah dipesan",
+    "下单时间": "Waktu pemesanan",
+    "进行中": "Sedang berlangsung",
+    "已完成": "Selesai"
+}

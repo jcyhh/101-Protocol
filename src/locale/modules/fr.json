@@ -1,1 +1,24 @@
-{}
+{
+    "入金": "Depot",
+    "资产": "Actifs",
+    "入金订单": "Ordres de depot",
+    "预约订单": "Ordres de reservation",
+    "确认入金": "Confirmer le depot",
+    "后再下单": "puis passez la commande",
+    "预约下单": "Commande de reservation",
+    "预约金额": "Montant de reservation",
+    "预约": "Reservation",
+    "请输入预约金额": "Veuillez saisir le montant de reservation",
+    "资产预览": "Apercu des actifs",
+    "提现": "Retrait",
+    "累计推荐收益": "Revenus de parrainage cumules",
+    "资产明显": "Details des actifs",
+    "入金金额": "Montant du depot",
+    "总下单金额": "Montant total des ordres",
+    "下次自动下单时间": "Prochaine heure de commande automatique",
+    "剩余下单金额": "Montant restant a commander",
+    "已下单金额": "Montant deja commande",
+    "下单时间": "Heure de commande",
+    "进行中": "En cours",
+    "已完成": "Termine"
+}

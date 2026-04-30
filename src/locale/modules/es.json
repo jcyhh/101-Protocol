@@ -1,1 +1,24 @@
-{}
+{
+    "入金": "Depósito",
+    "资产": "Activos",
+    "入金订单": "Órdenes de depósito",
+    "预约订单": "Órdenes de reserva",
+    "确认入金": "Confirmar depósito",
+    "后再下单": "y luego hacer el pedido",
+    "预约下单": "Orden de reserva",
+    "预约金额": "Monto de reserva",
+    "预约": "Reservar",
+    "请输入预约金额": "Por favor ingrese el monto de reserva",
+    "资产预览": "Vista previa de activos",
+    "提现": "Retiro",
+    "累计推荐收益": "Ingresos acumulados por referidos",
+    "资产明显": "Detalles de activos",
+    "入金金额": "Monto de depósito",
+    "总下单金额": "Monto total de órdenes",
+    "下次自动下单时间": "Próxima hora de pedido automático",
+    "剩余下单金额": "Monto restante por ordenar",
+    "已下单金额": "Monto ordenado",
+    "下单时间": "Hora del pedido",
+    "进行中": "En progreso",
+    "已完成": "Completado"
+}

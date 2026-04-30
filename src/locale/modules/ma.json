@@ -1,1 +1,24 @@
-{}
+{
+    "入金": "Deposit",
+    "资产": "Aset",
+    "入金订单": "Pesanan deposit",
+    "预约订单": "Pesanan tempahan",
+    "确认入金": "Sahkan deposit",
+    "后再下单": "kemudian buat pesanan",
+    "预约下单": "Tempah pesanan",
+    "预约金额": "Jumlah tempahan",
+    "预约": "Tempah",
+    "请输入预约金额": "Sila masukkan jumlah tempahan",
+    "资产预览": "Pratonton aset",
+    "提现": "Pengeluaran",
+    "累计推荐收益": "Pendapatan rujukan terkumpul",
+    "资产明显": "Butiran aset",
+    "入金金额": "Jumlah deposit",
+    "总下单金额": "Jumlah keseluruhan pesanan",
+    "下次自动下单时间": "Masa pesanan automatik seterusnya",
+    "剩余下单金额": "Jumlah pesanan berbaki",
+    "已下单金额": "Jumlah yang telah dipesan",
+    "下单时间": "Masa pesanan",
+    "进行中": "Sedang berlangsung",
+    "已完成": "Selesai"
+}

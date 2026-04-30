@@ -7,20 +7,20 @@
         <div class="card">
             <div class="flex jb ac">
                 <div>
-                    <div class="size24 mb10">资产预览({{ assetUSDT }})</div>
+                    <div class="size24 mb10">{{ $t('资产预览') }}({{ assetUSDT }})</div>
                     <div class="linearTxt size48 bold poppins">
-                        <span v-init="1000"></span>
+                        <span v-init="balance_usdt"></span>
                     </div>
                     <div class="flex mt10">
-                        <div class="btn flex jc ac size26 bold6">提现</div>
+                        <div class="btn flex jc ac size26 bold6" @click="show=true">{{ $t('提现') }}</div>
                     </div>
                 </div>
                 <img src="@/assets/staking/4.png" class="pic4">
             </div>
             <div class="cell flex jb ac mt50">
-                <div class="size24 opc5">累计推荐收益</div>
+                <div class="size24 opc5">{{ $t('累计推荐收益') }}</div>
                 <div class="size26">
-                    <span v-init="1000"></span>
+                    <span v-init="token101_referral_award"></span>
                     <span class="ml10">{{ assetUSDT }}</span>
                 </div>
             </div>
@@ -28,19 +28,19 @@
     </div>
 
     <div class="content pl30 pr30 mt40">
-        <div class="size32 bold5 mb30">资产明显</div>
+        <div class="size32 bold5 mb30">{{ $t('资产明显') }}</div>
         <van-list v-bind="listProps">
-            <div class="cell mb20" v-for="(item,index) in 10" :key="index">
+            <div class="cell mb20" v-for="(item,index) in list" :key="index">
                 <div class="flex jb ac">
-                    <div>备注</div>
-                    <div class="size28 bold5 green">
-                        <span>+</span>
-                        <span class="ml5 mr5" v-init="1000"></span>
+                    <div>{{ item.content }}</div>
+                    <div class="size28 bold5" :class="item.is_inc ? 'green' : 'red'">
+                        <span>{{ item.is_inc ? '+' : '-' }}</span>
+                        <span class="ml5 mr5" v-init="item.amount"></span>
                         <span>{{ assetUSDT }}</span>
                     </div>
                 </div>
                 <div class="flex jb ac mt20">
-                    <div class="opc5 size24">2026</div>
+                    <div class="opc5 size24">{{ item.created_at }}</div>
                 </div>
             </div>
             <CusEmpty v-if="list?.length==0"></CusEmpty>
@@ -49,21 +49,37 @@
 
     <div class="gap30"></div>
 
-    <Withdraw></Withdraw>
+    <Withdraw :balance="balance_usdt" v-model:show="show" @success="onSuccess"></Withdraw>
 </template>
 
 <script setup lang="ts">
-import Title from '@/components/Title/index.vue'
 import { assetUSDT } from '@/config/name';
-import { padZero } from '@/utils';
 import { useLoadList } from '@/hooks/useLoadList';
 import CusEmpty from '@/components/CusEmpty/index.vue'
-import { onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import Withdraw from './withdraw/Popup.vue'
+import { apiUserIncome } from '@/api/user';
 
-const { list, props: listProps, loadList } = useLoadList('/api/users/my/referrals', 'referrals')
+const show = ref(false)
+
+const balance_usdt = ref()
+const token101_referral_award = ref()
+const loadData = async () => {
+    const res:any = await apiUserIncome()
+    balance_usdt.value = res.balance_usdt
+    token101_referral_award.value = res.token101_referral_award
+}
+
+const params = computed(()=>({ccy: 'balance_usdt'}))
+const { list, props: listProps, loadList } = useLoadList('/api/users/my/balance_logs', 'asset_logs', params)
+
+const onSuccess = () => {
+    loadData()
+    loadList()
+}
 
 onMounted(()=>{
+    loadData()
     loadList()
 })
 </script>

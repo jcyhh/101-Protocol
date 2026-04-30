@@ -1,1 +1,24 @@
-{}
+{
+    "入金": "Yatirim",
+    "资产": "Varliklar",
+    "入金订单": "Yatirim emirleri",
+    "预约订单": "Rezervasyon emirleri",
+    "确认入金": "Yatirimi onayla",
+    "后再下单": "sonra tekrar emir verin",
+    "预约下单": "Rezervasyon emri",
+    "预约金额": "Rezervasyon tutari",
+    "预约": "Rezervasyon",
+    "请输入预约金额": "Lutfen rezervasyon tutarini girin",
+    "资产预览": "Varlik onizlemesi",
+    "提现": "Cekim",
+    "累计推荐收益": "Toplam referans geliri",
+    "资产明显": "Varlik detaylari",
+    "入金金额": "Yatirim tutari",
+    "总下单金额": "Toplam emir tutari",
+    "下次自动下单时间": "Sonraki otomatik emir zamani",
+    "剩余下单金额": "Kalan emir tutari",
+    "已下单金额": "Verilen emir tutari",
+    "下单时间": "Emir zamani",
+    "进行中": "Devam ediyor",
+    "已完成": "Tamamlandi"
+}

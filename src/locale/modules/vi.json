@@ -1,1 +1,24 @@
-{}
+{
+    "入金": "Nạp tiền",
+    "资产": "Tài sản",
+    "入金订单": "Lệnh nạp tiền",
+    "预约订单": "Lệnh đặt trước",
+    "确认入金": "Xác nhận nạp tiền",
+    "后再下单": "sau đó mới đặt lệnh",
+    "预约下单": "Đặt lệnh trước",
+    "预约金额": "Số tiền đặt trước",
+    "预约": "Đặt trước",
+    "请输入预约金额": "Vui lòng nhập số tiền đặt trước",
+    "资产预览": "Xem trước tài sản",
+    "提现": "Rút tiền",
+    "累计推荐收益": "Tổng thu nhập giới thiệu",
+    "资产明显": "Chi tiết tài sản",
+    "入金金额": "Số tiền nạp",
+    "总下单金额": "Tổng số tiền đặt lệnh",
+    "下次自动下单时间": "Thời gian tự động đặt lệnh tiếp theo",
+    "剩余下单金额": "Số tiền đặt lệnh còn lại",
+    "已下单金额": "Số tiền đã đặt lệnh",
+    "下单时间": "Thời gian đặt lệnh",
+    "进行中": "Đang thực hiện",
+    "已完成": "Đã hoàn thành"
+}
