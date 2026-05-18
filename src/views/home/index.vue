@@ -25,7 +25,7 @@
                 <img src="@/assets/home/4.png" class="img20 ml20">
             </div>
 
-            <div class="rel mt42">
+            <!-- <div class="rel mt42">
                 <img src="@/assets/home/5.png" class="pic5">
                 <img src="@/assets/home/6.png" class="pic6">
                 <img src="@/assets/home/8.png" class="pic8">
@@ -53,7 +53,7 @@
                     </div>
                     <div class="mainBtn size32 bold flex jc ac mt50" v-scale @click="showAsk=true">{{ $t('认购') }}</div>
                 </div>
-            </div>
+            </div> -->
         </div>
 
         <div class="gap80"></div>
@@ -191,7 +191,7 @@
 
 <script setup lang="ts">
 import { buyNode, getNodeConfig } from '@/api/node';
-import { appName, assetUSDT } from '@/config/name';
+import { appName } from '@/config/name';
 import { useErc20 } from '@/dapp/contract/erc20';
 import { useNotice } from '@/hooks/useNotice';
 import { routerPush } from '@/router';
